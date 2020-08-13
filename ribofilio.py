@@ -191,7 +191,7 @@ def plots(outName,N,coverage,all_bins,binsize, posmax, posmin,last_pos,gLength,y
     LOGBINS = []
     pgLength = []
     gbins = []
-    outName = outName #+ '.'+str(last_pos)
+    outName = outName 
     genesfile = outName +".genes" 
     for gene in coverage: 
         if gene in gLength:
@@ -246,7 +246,7 @@ def plots(outName,N,coverage,all_bins,binsize, posmax, posmin,last_pos,gLength,y
     plt.title(outName+' Coverage per Bin (Log/Linear) ', fontsize=10)
     plt.savefig(outName+"_"+str(binsize)+"_"+str(cutoff)+".LogLinear.png", format='png')
     plt.clf()
-     
+    print('Printing bins in plotting', gbins) 
     #Linear Regression 
     #------------------
     x = np.array(BINS).reshape(-1, 1)
@@ -267,14 +267,12 @@ def plots(outName,N,coverage,all_bins,binsize, posmax, posmin,last_pos,gLength,y
     print('Root mean squared error: ', rmse)
     print('R2 score: ', r2)
     plt.scatter(x, y, s=10)
-    xtext = ' Slope: '+str(np.round(regression_model.coef_,2))+' Intercept: '+str(np.round(regression_model.intercept_,2))+' RMSE: '+str(np.round(rmse,2))+' R2 score :'+ str(np.round(r2,2)) 
+    xtext = ' Slope: '+str(regression_model.coef_)+' Intercept: '+str(regression_model.intercept_)+' RMSE: '+str(rmse)+' R2 score :'+ str(r2) 
     plt.xlabel('x:' + str(label)+'\n'+str(xtext), fontsize=8)
     plt.ylabel('y')
-    #plot_text = ' Slope: '+str(np.round(regression_model.coef_,2))+'\n Intercept: '+str(np.round(regression_model.intercept_,2))+'\n RMSE: '+str(np.round(rmse,2))+'\n R2 score :'+ str(np.round(r2,2))
     # predicted values
     plt.plot(x, y_predicted, color='r')
     plt.title(outName+' Linear Regression', fontsize=10)
-    #plt.text(40,-1.9,plot_text,fontsize=9)
     plt.savefig(outName+"_"+str(binsize)+"_"+str(cutoff)+".LR.png", format='png')
 
     plt.clf()
@@ -310,7 +308,7 @@ def main():
         
     cutoff = int(args.cutoff)
 
-    outName = sample #+'.'+str(args.binsize)+'.'+str(args.cutoff)  
+    outName = sample   
     if subset != "NULL": 
         subset_name = subset.split('.')[0]
         outName += '.'+subset_name 
@@ -369,7 +367,6 @@ def main():
             gbins1, posmax, gLength = run_subset(args.transcripts,args.footprint, subset, binsize)  
             last_pos = posmax
     
-    #N = int (posmax / binsize) + 1
     N = int (last_pos/binsize) + 1 
     BINS = []
     gbins = gbins1
