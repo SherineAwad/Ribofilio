@@ -20,6 +20,7 @@ def profile(sample, BINSIZE, coverage, gLength,posmax, posmin,cutoff):
     gbins = [] 
     c = 0.000001
     gCovered = [0] * 100000000
+    
     pos = [0] * 100000000
     j = 0
     for line in open(sample):
@@ -30,13 +31,14 @@ def profile(sample, BINSIZE, coverage, gLength,posmax, posmin,cutoff):
             coverage[str(gname)].append(int(x[2])) 
             pos[int(x[2])] =0
             j +=1
-            if (j%100000 ==0):
+            if (j%1000000 ==0):
                  print (".....................",j)
     print('Done filling the counts dictionary')
 
     N = int (posmax / BINSIZE) + 1
     gbins = [0] * N
     npos = [0] * posmax
+    bCovered = [0] * N
     print("Posmax is ", posmax)
  
     #Counts genes in each position 
@@ -57,13 +59,16 @@ def profile(sample, BINSIZE, coverage, gLength,posmax, posmin,cutoff):
     last_pos = 0
     #Normalize bin position  with the number of gene covering that position
     #Discard bins with number of genes less than cutoff and record the position in last_pos 
-    while(i < posmax) and (gCovered[i] >= cutoff) :
+    while(i < posmax):
+        if (gCovered[i] >= cutoff) :
+            i +=1
+            continue  
+        else:     
             npos[int(i)] = pos[int(i)] / (gCovered[int(i)] + c)
             last_pos = i
             i +=1
     print('last_pos is ', last_pos)     
     print("Normalizing pos is done")
-
     #Here, we group reads into bins and normalize by BINSIZE, we stop at last_pos
     index = 0
     a = 0
@@ -77,11 +82,12 @@ def profile(sample, BINSIZE, coverage, gLength,posmax, posmin,cutoff):
                 break
             posum = float(npos[i])
             gbins[index] +=posum
+            bCovered[index] =gCovered[i]
         gbins[index] = (float(c +  (gbins[index]/BINSIZE) ) )
         index +=1
         a = b+1
         b = b +BINSIZE
-    return gbins, last_pos 
+    return gbins, last_pos, bCovered 
 
 #--------------------------------------------------------------------------
 #----------run_subset function
@@ -135,7 +141,7 @@ def run_subset(transcripts,sample, subset_file, binsize):
                 coverage[gname].append(x[2])
                 pos[int(x[2])] =0
                 j +=1
-                if (j%100000 ==0):
+                if (j%1000000 ==0):
                     print (".....................",j)
     print('Done filling the counts dictionary')
 
@@ -185,7 +191,7 @@ def run_subset(transcripts,sample, subset_file, binsize):
 #plots function, plot several figures for the ribosome profiling 
 #-------------------------------------------------------------------------------------------
 
-def plots(outName,N,coverage,all_bins,binsize, posmax, posmin,last_pos,gLength,ymin,ymax,ylogmin,ylogmax,cutoff):
+def plots(plot_flag,outName,N,coverage,all_bins,binsize, posmax, posmin,last_pos,gLength,ymin,ymax,ylogmin,ylogmax,cutoff,end,bCovered,regfile):
     print('Start plotting')  
     BINS = []
     LOGBINS = []
@@ -198,7 +204,9 @@ def plots(outName,N,coverage,all_bins,binsize, posmax, posmin,last_pos,gLength,y
             if gLength[gene] <= posmax and gLength[gene] > posmin:
                 pgLength.append(int(gLength[gene]))
     print('N is: ', N) 
-    
+    if end !=-1: 
+        N = N - end
+    print('N now is ', N)
     #Take log of bins indeces for LOG/LOG plotting
     for i in range (0,N) :
         BINS.append(i)
@@ -209,72 +217,104 @@ def plots(outName,N,coverage,all_bins,binsize, posmax, posmin,last_pos,gLength,y
         LOGBINS.append(np.log(i) )
     print('Prining BINS, gbins and LOGBINS:')
     print('lengths of bins, logbins, and gbins is:', len(BINS), len(LOGBINS), len(gbins))
-    #Genes Length Histogram 
-    #-------------------------
-    plt.hist(pgLength, 100,density=False,histtype='bar',facecolor='Navy',alpha=0.5)
-    plt.xlabel('Genes Length')
-    plt.ylabel('Frequency')
-    plt.title(outName+' genes length distribution', fontsize=10)
-    plt.savefig(outName+".Length.Histogram.png", format='png')
-    plt.clf()
-    #Plot Coverage without Log
-    #----------------------------
-    label = "Bins  (Binsize = " + str(binsize) + " Cutoff = "+ str(cutoff) +" Max gene Length ="+str(last_pos)+")"
-    plt.plot(np.array(BINS),np.array(gbins),color='Navy')
-    plt.ylim(ymin,ymax)
-    plt.ylabel('Sums of coverage of genes at each position in each bin')
-    plt.xlabel(label)
-    plt.title(outName+' Coverage per Bin (Sum without log) ', fontsize=10)
-    plt.savefig(outName+"_"+str(binsize)+"_"+str(cutoff)+".NoLog.png", format='png')
-    plt.clf()
+    label = "Bins  (Binsize = " + str(binsize) + " Cutoff = "+ str(cutoff) +" Max gene Length ="+str(last_pos)+" End= "+str(end)+")"
 
-    #Plot Coverage Log/Log 
-    #--------------------------
-    plt.plot(np.array(LOGBINS),np.array(np.log(gbins)),color='Navy')
-    plt.ylabel('Log of sums of coverage of genes at each position in each bin')
-    plt.ylim(ylogmin,ylogmax)
-    plt.xlabel(label)
-    plt.title(outName+' Coverage per Bin (Log/Log) ', fontsize=10)
-    plt.savefig(outName+"_"+str(binsize)+"_"+str(cutoff)+".LogLog.png", format='png')
-    plt.clf()
-    #Plot coverage Log /Linear 
-    #-----------------------------
-    plt.plot(np.array(BINS),np.log(gbins),color='Navy')
-    plt.ylim(ylogmin, ylogmax)
-    plt.ylabel('Log of sums of coverage of genes at each position in each bin')
-    plt.xlabel(label)
-    plt.title(outName+' Coverage per Bin (Log/Linear) ', fontsize=10)
-    plt.savefig(outName+"_"+str(binsize)+"_"+str(cutoff)+".LogLinear.png", format='png')
-    plt.clf()
-    print('Printing bins in plotting', gbins) 
+    if plot_flag ==1: 
+        #Genes Length Histogram 
+        #-------------------------
+        plt.hist(pgLength, 100,density=False,histtype='bar',facecolor='Navy',alpha=0.5)
+        plt.xlabel('Genes Length')
+        plt.ylabel('Frequency')
+        plt.title(outName+' genes length distribution', fontsize=12)
+        plt.savefig(outName+".Length.Histogram.png", format='png')
+        plt.clf()
+
+        #Gene bins Histogram 
+        #-----------------------
+        plt.hist(bCovered, 100,density=False,histtype='bar',facecolor='Navy',alpha=0.5)
+        plt.xlabel('No. of Genes')
+        plt.ylabel('Bin') 
+        plt.title(outName+'Genes covered in each bin distribution', fontsize =12) 
+        plt.savefig(outName+".Bcovered.Histogram.png", format='png')
+        plt.clf()
+    
+        #Plot Coverage without Log
+        #----------------------------
+        plt.figure(figsize=(15,10))
+        plt.plot(np.array(BINS),np.array(gbins),color='Navy')
+        plt.ylim(ymin,ymax)
+        plt.ylabel('Sums of coverage of genes at each position in each bin')
+        plt.xlabel(label)
+        plt.title(outName+' Coverage per Bin (Sum without log) ', fontsize=12)
+        plt.savefig(outName+"_"+str(binsize)+"_"+str(cutoff)+"_"+str(end)+".NoLog.png", format='png')
+        plt.clf()
+    
+        #Plot Coverage Log/Log 
+        #--------------------------
+        plt.figure(figsize=(15,10))
+        plt.plot(np.array(LOGBINS),np.array(np.log(gbins)),color='Navy')
+        plt.ylabel('Log of sums of coverage of genes at each position in each bin')
+        plt.ylim(ylogmin,ylogmax)
+        plt.xlabel(label)
+        plt.title(outName+' Coverage per Bin (Log/Log) ', fontsize=12)
+        plt.savefig(outName+"_"+str(binsize)+"_"+str(cutoff)+"_"+str(end)+".LogLog.png", format='png')
+        plt.clf()
+        #Plot coverage Log /Linear 
+        #-----------------------------
+        plt.figure(figsize=(15,10))
+        plt.plot(np.array(BINS),np.log(gbins),color='Navy')
+        plt.ylim(ylogmin, ylogmax)
+        plt.ylabel('Log of sums of coverage of genes at each position in each bin')
+        plt.xlabel(label)
+        plt.title(outName+' Coverage per Bin (Log/Linear) ', fontsize=12)
+        plt.savefig(outName+"_"+str(binsize)+"_"+str(cutoff)+"_"+str(end)+".LogLinear.png", format='png')
+        plt.clf()
+        #print('Printing bins in plotting', gbins) 
     #Linear Regression 
     #------------------
     x = np.array(BINS).reshape(-1, 1)
     y = np.array(np.log(gbins)).reshape(-1, 1)
     regression_model = LinearRegression()
+    W = binsize
+    weight = BINS
+    for i in range(0, len(weight)):
+        #weight[i] = 1/bCovered[i] #5002
+        weight[i] = bCovered[i] /(i+1) #5003
+        #weight[i] = len(weight) - i
+        #weight[i] = abs(BINS[i] - W) 
+        #weight[i] = BINS[i] * ( len(BINS) - BINS[i])
+        #weight[i] = gbins[i]/(BINS[i] + c) 
+        #weight[i] = (BINS[i]+c)/gbins[i]
+    #print('Weight is ')
+    #print(weight)
+
     # Fit the data(train the model)
-    regression_model.fit(x, y)
+    regression_model.fit(x, y,weight)
     # Predict
     y_predicted = regression_model.predict(x)
 
     # model evaluation
-    rmse = mean_squared_error(y, y_predicted)
-    r2 = r2_score(y, y_predicted)
+
+    rmse = mean_squared_error(y, y_predicted,weight)
+    r2 = r2_score(y, y_predicted,weight)
 
     # printing values
     print('Slope:' ,regression_model.coef_)
     print('Intercept:', regression_model.intercept_)
     print('Root mean squared error: ', rmse)
     print('R2 score: ', r2)
+    plt.figure(figsize=(15,10))
+    plt.ylim(ylogmin,ylogmax) 
     plt.scatter(x, y, s=10)
     xtext = ' Slope: '+str(regression_model.coef_)+' Intercept: '+str(regression_model.intercept_)+' RMSE: '+str(rmse)+' R2 score :'+ str(r2) 
-    plt.xlabel('x:' + str(label)+'\n'+str(xtext), fontsize=8)
+    plt.xlabel(str(label)+'\n'+str(xtext), fontsize=10)
     plt.ylabel('y')
     # predicted values
     plt.plot(x, y_predicted, color='r')
-    plt.title(outName+' Linear Regression', fontsize=10)
-    plt.savefig(outName+"_"+str(binsize)+"_"+str(cutoff)+".LR.png", format='png')
-
+    plt.title(outName+' Linear Regression', fontsize=12)
+    plt.savefig(outName+"_"+str(binsize)+"_"+str(cutoff)+"_"+str(end)+".WLR.png", format='png')
+    regfp=open(str(regfile),'a+')
+    print(str(regression_model.coef_[0][0]),str(regression_model.intercept_[0]),str(rmse),str(r2), file=regfp)
     plt.clf()
 
 #---------------------------------------------------------------------------
@@ -289,12 +329,14 @@ def main():
     parser.add_argument('-r','--rna', dest='rna',default="NULL")
     parser.add_argument('-s','--subset',dest='subset', default ="NULL")
     parser.add_argument('-b','--binsize',dest='binsize',type=int, default=50)
-    parser.add_argument('-c','--cutoff',dest='cutoff', type=int,default=0)
+    parser.add_argument('-c','--cutoff',dest='cutoff', type=int,default=1000000000)
+    parser.add_argument('--plots', dest='plots',type=int, default=1)
+    parser.add_argument('-n', '--name', dest='regfile_name', default='regfile.log') 
+    parser.add_argument('-e', '--end', dest='end', type=int,default=0)
     parser.add_argument('--ymin' ,dest='ymin',type=int, default=0) 
     parser.add_argument('--ymax',dest='ymax', type=int,default=30) 
-    parser.add_argument('--ylogmin', type=int, default=-5)
+    parser.add_argument('--ylogmin', type=int, default=-15)
     parser.add_argument('--ylogmax', type=int, default=5) 
-   
     args = parser.parse_args()
 
     
@@ -312,7 +354,8 @@ def main():
     if subset != "NULL": 
         subset_name = subset.split('.')[0]
         outName += '.'+subset_name 
-
+    plot_flag = args.plots
+    print('plot_flag is', plot_flag)
     print('outName is', outName) 
     coverage = {}
     gLength = {}  
@@ -352,8 +395,8 @@ def main():
     print('We are calling profile for' , args.footprint)
     if args.rna != "NULL": 
         if subset == "NULL":
-            gbins1, last_pos = profile(args.footprint,binsize, coverage, gLength,posmax, posmin,cutoff)
-            gbins2,_ = profile(args.rna,binsize, coverage, gLength,posmax, posmin,cutoff) 
+            gbins1, last_pos, bCovered = profile(args.footprint,binsize, coverage, gLength,posmax, posmin,cutoff)
+            gbins2,_,_ = profile(args.rna,binsize, coverage, gLength,posmax, posmin,cutoff) 
         else:
             gbins1, posmax, gLength = run_subset(args.transcripts,args.footprint, subset, binsize)
             gbins2, posmax, gLength = run_subset(args.transcripts,args.rna, subset, binsize)
@@ -362,7 +405,7 @@ def main():
         print ('Length of gbins2 is ', len(gbins2) ) 
     else:
         if subset =="NULL":
-            gbins1,last_pos = profile(args.footprint,binsize, coverage, gLength,posmax, posmin,cutoff)
+            gbins1,last_pos, bCovered = profile(args.footprint,binsize, coverage, gLength,posmax, posmin,cutoff)
         else: 
             gbins1, posmax, gLength = run_subset(args.transcripts,args.footprint, subset, binsize)  
             last_pos = posmax
@@ -376,7 +419,7 @@ def main():
     #-----------------------------------------
     #Plotting and summarizing  
     #-----------------------------------------
-    plots(outName,N,coverage,gbins,binsize, posmax, posmin,last_pos,gLength,int(args.ymin),int(args.ymax),int(args.ylogmin),int(args.ylogmax),cutoff )
+    plots(plot_flag,outName,N,coverage,gbins,binsize, posmax, posmin,last_pos,gLength,int(args.ymin),int(args.ymax),int(args.ylogmin),int(args.ylogmax),cutoff,int(args.end),bCovered,args.regfile_name )
     print('Done Plotting and summarizing')
     print("All is done") 
 if __name__ == '__main__':
