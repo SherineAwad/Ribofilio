@@ -108,49 +108,25 @@ SRR5945809_GO0006119_regfile.log: SRR5945809_1000.bed yeastchrXVI.txt
 #------------------------------------------------------------------------------------------
 #Case Study:GSE91068
 #------------------------------------------------------------------------------------------
-s31 = SRR5090934 #GSM2420486
-s32 = SRR5090935 #GSM2420487
-s33 = SRR5090936 #GSM2420488
-s34 = SRR5090937 #GSM2420489
+s1 = SRR5090934 #GSM2420486
+s2 = SRR5090935 #GSM2420487
+s3 = SRR5090936 #GSM2420488
+s4 = SRR5090937 #GSM2420489
 
-SAMPLES3 = ${s31} ${s32} ${s33} ${s34}
+SAMPLES = ${s1} ${s2} ${s3} ${s4}
 
-ribofilio/datasets/SRR5090937.fastq:
-	wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090934/SRR5090934.1
-	wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090935/SRR5090935.1
-	wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090936/SRR5090936.1
-	wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090937/SRR5090937.1
-	fasterq-dump --split-files SRR5090934.1
-	fasterq-dump --split-files SRR5090935.1
-	fasterq-dump --split-files SRR5090936.1
-	fasterq-dump --split-files SRR5090937.1
-	mv SRR5090934.1.fastq  SRR5090934.fastq 
-	mv SRR5090935.1.fastq  SRR5090935.fastq
-	mv SRR5090936.1.fastq  SRR5090936.fastq
-	mv SRR5090937.1.fastq  SRR5090937.fastq
 
 #Adpaters reported by dataset author @jiashun@genome.ucsf.edu 
-SRR5090937_trimmed.fastq.gz: ${DATASETS}/SRR5090937.fastq
-	$(foreach i, $(SAMPLES3), trim_galore --gzip --retain_unpaired --trim1 -a "CTGTAGGCACCATCAAT" --fastqc --fastqc_args "--outdir ${CURRENT}/fastqc" -o ${CURRENT}/galore  ${CURRENT}/$(i).fastq ; )
+galore/SRR5090937_trimmed.fastq.gz: ${DATASETS}/GSE91068/SRR5090937.fastq
+	$(foreach i, $(SAMPLES), trim_galore --gzip --retain_unpaired --trim1 -a "CTGTAGGCACCATCAAT" --fastqc --fastqc_args "--outdir ${CURRENT}/fastqc" -o ${CURRENT}/galore  ${DATASETS}/GSE91068/$(i).fastq ; )
 
-SRR5090937.bowtie2.bam: SRR5090937_trimmed.fastq.gz
-	$(foreach i, $(SAMPLES3), bowtie2 -x yeast -U galore/$(i)_trimmed.fq.gz  -S $(i).bowtie2.sam;)
-	$(foreach i, $(SAMPLES3), samtools view -S -b $(i).bowtie2.sam > $(i).bowtie2.bam;)
+SRR5090937.bowtie2.bam: galore/SRR5090937_trimmed.fastq.gz
+	$(foreach i, $(SAMPLES), bowtie2 -x yeast -U galore/$(i)_trimmed.fq.gz  -S $(i).bowtie2.sam;)
+	$(foreach i, $(SAMPLES), samtools view -S -b $(i).bowtie2.sam > $(i).bowtie2.bam;)
 
 SRR5090937.bed: SRR5090937.bowtie2.bam
-	$(foreach i, $(SAMPLES3), bedtools bamtobed -i $(i).bowtie2.bam > $(i).bed;)
+	$(foreach i, $(SAMPLES), bedtools bamtobed -i $(i).bowtie2.bam > $(i).bed;)
 
-SRR5090936_SRR5090934.yeastGenes15000_50_0.LR.png:
-	$(foreach i, $(LEN), python ${SCRIPTS}/ribofilio.py -t yeast.fa -f SRR5090937.bed -r SRR5090935.bed -b 50 -s yeastGenes$(i).txt;)
-	$(foreach i, $(LEN), python ${SCRIPTS}/ribofilio.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed -b 50 -s yeastGenes$(i).txt;)
-
-SRR5090936_SRR5090934.200.LR.png:  
-	$(foreach i, $(CUTOFFS), python ${SCRIPTS}/ribofilio.py -t yeast.fa -f SRR5090937.bed -r SRR5090935.bed -b 50 -c ${i};)
-	$(foreach i, $(CUTOFFS), python ${SCRIPTS}/ribofilio.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed -b 50 -c ${i};)
-
-SRR5090936_SRR5090934_50_0_200.LR.png:
-	$(foreach i, $(Ns), python ${SCRIPTS}/ribofilio.py -t yeast.fa -f SRR5090937.bed -r SRR5090935.bed -b 50 -e $(i);)
-	$(foreach i, $(Ns), python ${SCRIPTS}/ribofilio.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed -b 50 -e $(i);)
 
 #Get TPM and high and low expressed genes  
 SRR5090934_l50.tpm: #SalmonYeastIndex
@@ -165,30 +141,6 @@ SRR5090934_l50.tpm: #SalmonYeastIndex
 	@cmd2 = `awk '$$2 >50 {print $$0}' SRR5090934.tpm > SRR5090934_g50.tpm` ; echo $$cmd2
 	@cmd3 = `awk '$$2 <50 {print $$0}' SRR5090934.tpm > SRR5090934_l50.tpm` ; echo $$cmd3
 
-#Run ribofilio on a subset of genes: high and low expressed genes 
-SRR5090936.SRR5090934.l50tpm.LogLinear.png:  
-	python ${SCRIPTS}/ribofilio.py -t yeast.fa -f SRR5090937.bed -r SRR5090935.bed -s SRR5090935_g50.tpm -b 50
-	python ${SCRIPTS}/ribofilio.py -t yeast.fa -f SRR5090937.bed -r SRR5090935.bed -s SRR5090935_l50.tpm -b 50
-	python ${SCRIPTS}/ribofilio.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed -s SRR5090934_g50.tpm -b 50
-	python ${SCRIPTS}/ribofilio.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed -s SRR5090934_l50.tpm -b 50
-
-#Run ribofilio on genes clustered by GO  
-SRR5090936.SRR5090934.GO.LR.png: 
-	$(foreach i, $(GO),python ${SCRIPTS}/ribofilio.py -t yeast.fa -f SRR5090937.bed -r SRR5090935.bed -b 50 -s ${i}.txt ;)
-	$(foreach i, $(GO),python ${SCRIPTS}/ribofilio.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed -b 50 -s ${i}.txt ;)
-
-
-#Run ribofilio on genes clustered by Chromosomes
-SRR5090936_SRR5090934.yeastchrXVI_50_0.LR.png:
-	$(foreach i, $(CHRs),python ${SCRIPTS}/ribofilio.py -t yeast.fa -f SRR5090937.bed -r SRR5090935.bed -b 50 --subset yeast${i}.txt;)
-	$(foreach i, $(CHRs),python ${SCRIPTS}/ribofilio.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed -b 50 --subset yeast${i}.txt;)
-
-#Run ribofilio on orthogolus genes to human and mouse 
-SRR5090936_SRR5090934.yeastorthuman_50_0.png:  
-	python ${SCRIPTS}/ribofilio.py -t yeast.fa -f SRR5090937.bed -r SRR5090935.bed  -b 50 --subset yeastorthuman.txt
-	python ${SCRIPTS}/ribofilio.py -t yeast.fa -f SRR5090937.bed -r SRR5090935.bed  -b 50 --subset yeastortmouse.txt
-	python ${SCRIPTS}/ribofilio.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed  -b 50 --subset yeastorthuman.txt
-	python ${SCRIPTS}/ribofilio.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed  -b 50 --subset yeastortmouse.txt
 
 #Generate vcf file 
 SRR5090934.vcf: SRR5090935.bowtie2.bam
@@ -207,12 +159,6 @@ SRR5090934_1.snps:
 	python countsnps.py  yeast.fa SRR5090935.vcf --cutoff 1
 	python countsnps.py  yeast.fa SRR5090934.vcf --cutoff 1
 
-#Run ribofilio on genes with zero snps and one or more snp
 
-SRR5090936_SRR5090934.SRR5090934_1_50_0.LR.png:
-	python ${SCRIPTS}/ribofilio.py -t yeast.fa -f SRR5090937.bed -r SRR5090935.bed  -b 50 --subset SRR5090935_zerosnps.txt 
-	python ${SCRIPTS}/ribofilio.py -t yeast.fa -f SRR5090937.bed -r SRR5090935.bed  -b 50 --subset SRR5090935_1snps.txt
-	python ${SCRIPTS}/ribofilio.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed  -b 50 --subset SRR5090934_zerosnps.txt
-	python ${SCRIPTS}/ribofilio.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed  -b 50 --subset SRR5090934_1snps.txt
 
 
