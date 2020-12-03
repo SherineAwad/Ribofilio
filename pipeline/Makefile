@@ -127,6 +127,22 @@ SRR5090937.bowtie2.bam: galore/SRR5090937_trimmed.fastq.gz
 SRR5090937.bed: SRR5090937.bowtie2.bam
 	$(foreach i, $(SAMPLES), bedtools bamtobed -i $(i).bowtie2.bam > $(i).bed;)
 
+	
+SRR5090936_nocutoff_WLR_regfile.log:
+	python  ribofilioWLR.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed  -b 50  -n SRR5090936_nocutoff_WLR_regfile.log
+	$(foreach i, $(subset1), python  ribofilioWLR.py -t yeast.fa -f SRR5090936_$(i).bed -r SRR5090934.bed  -b 50 --plots 0 -n SRR5090936_nocutoff_WLR_regfile.log;)
+	$(foreach i, $(subset2), python  ribofilioWLR.py -t yeast.fa -f SRR5090936_$(i).bed -r SRR5090934.bed  -b 50 --plots 0 -n SRR5090936_nocutoff_WLR_regfile.log;)
+
+SRR5090936_WLR_Bregfile.log:	
+	python  ribofilioWLRB.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed  -b 50 -n SRR5090936_WLR_Bregfile.log
+	$(foreach i, $(subset1), python  ribofilioWLRB.py -t yeast.fa -f SRR5090936_$(i).bed -r SRR5090934.bed  -b 50 --plots 0 -n SRR5090936_WLR_Bregfile.log;)
+	$(foreach i, $(subset2), python  ribofilioWLRB.py -t yeast.fa -f SRR5090936_$(i).bed -r SRR5090934.bed  -b 50 --plots 0 -n SRR5090936_WLR_Bregfile.log;)
+
+SRR5090937_WLR_regfile.log:
+	python  ribofilioWLR.py -t yeast.fa -f SRR5090937.bed -r SRR5090935.bed  -b 50  -n SRR5090937_WLR_regfile.log
+	$(foreach i, $(subset1), python  ribofilioWLR.py -t yeast.fa -f SRR5090937_$(i).bed -r SRR5090935.bed  -b 50 --plots 0 -n SRR5090937_WLR_regfile.log;)
+	$(foreach i, $(subset2), python  ribofilioWLR.py -t yeast.fa -f SRR5090937_$(i).bed -r SRR5090935.bed  -b 50 --plots 0 -n SRR5090937_WLR_regfile.log;)
+
 
 #Get TPM and high and low expressed genes  
 SRR5090934_l50.tpm: #SalmonYeastIndex
