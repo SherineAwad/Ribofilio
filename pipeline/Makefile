@@ -106,7 +106,7 @@ SRR5945809_GO0006119_regfile.log: SRR5945809_1000.bed yeastchrXVI.txt
 
 
 #------------------------------------------------------------------------------------------
-#Case Study:GSE91068
+#Dataset: GSE91068
 #------------------------------------------------------------------------------------------
 s1 = SRR5090934 #GSM2420486
 s2 = SRR5090935 #GSM2420487
@@ -183,4 +183,17 @@ SRR5090934_1.snps:
 
 
 
+#-----------------------------------------
+#Dataset GSE81966
+#-----------------------------------------
+
+galore/SRR3591816_trimmed.fq.gz:
+	trim_galore --gzip --retain_unpaired --trim1  --fastqc --fastqc_args "--outdir ${CURRENT}/fastqc" -o ${CURRENT}/galore  ${DATASETS}/GSE81966/SRR3591812.fastq
+	trim_galore --gzip --retain_unpaired --trim1  --fastqc --fastqc_args "--outdir ${CURRENT}/fastqc" -o ${CURRENT}/galore  ${DATASETS}/GSE81966/SRR3591816.fastq 
+
+SRR3591816.bam:	
+	bowtie2 -x yeast -U galore/SRR3591812_trimmed.fq.gz -S SRR3591812.bowtie2.sam
+	samtools view -S -b SRR3591812.bowtie2.sam > SRR3591812.bowtie2.bam
+	bowtie2 -x yeast -U galore/SRR3591816_trimmed.fq.gz -S SRR3591816.bowtie2.sam
+	samtools view -S -b SRR3591816.bowtie2.sam > SRR3591816.bowtie2.bam
 
