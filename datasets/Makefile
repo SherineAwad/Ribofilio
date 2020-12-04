@@ -46,11 +46,11 @@ GSE134152/SRR9670816.fastq:
 
 #Dataset GSE81966
 GSE81966/SRR3591816.fastq:  
-	#wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-7/SRR3591816/SRR3591816.1
-	#wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-7/SRR3591812/SRR3591812.1
-	#there is more, checking this for now
-	#fastq-dump --split-files SRR3591816.1
-	#fastq-dump --split-files SRR3591812.1
+	wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-7/SRR3591816/SRR3591816.1
+	wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-7/SRR3591812/SRR3591812.1
+	there is more, checking this for now
+	fastq-dump --split-files SRR3591816.1
+	fastq-dump --split-files SRR3591812.1
 	mv SRR3591816.1_1.fastq GSE81966/SRR3591816.fastq
 	mv SRR3591812.1_1.fastq GSE81966/SRR3591812.fastq
 
