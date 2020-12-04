@@ -331,6 +331,7 @@ def main():
     parser.add_argument('-b','--binsize',dest='binsize',type=int, default=50)
     parser.add_argument('-c','--cutoff',dest='cutoff', type=int,default=1000000000)
     parser.add_argument('--plots', dest='plots',type=int, default=1)
+    parser.add_argument('-o', '--out', dest="out", default="")
     parser.add_argument('-n', '--name', dest='regfile_name', default='regfile.log') 
     parser.add_argument('-e', '--end', dest='end', type=int,default=0)
     parser.add_argument('--ymin' ,dest='ymin',type=int, default=0) 
@@ -350,10 +351,13 @@ def main():
         
     cutoff = int(args.cutoff)
 
-    outName = sample   
-    if subset != "NULL": 
-        subset_name = subset.split('.')[0]
-        outName += '.'+subset_name 
+    outName =args.out
+    if outName =="":
+        outName = sample
+        if subset != "NULL":
+            subset_name = subset.split('.')[0]
+            outName += '.'+subset_name
+
     plot_flag = args.plots
     print('plot_flag is', plot_flag)
     print('outName is', outName) 
