@@ -1,12 +1,10 @@
-=================================================================
-**Ribofilio: A tool to measure ribosomal profiling drop rate**
-=================================================================
+
+# Ribofilio: A tool to measure ribosomal profiling drop rate
 
 Ribofilio is a tool to measure ribosomal profiling drop rate that has been tested in ecoli and yeast so far.
 
 
-Dependencies
-###############
+## Dependencies
 
        python 3.7 
 
@@ -26,8 +24,7 @@ And for plotting:
        scikit-learn  
 
 
-Installation 
-#################
+## Installation 
 
 To Install Ribofilio::
 
@@ -79,8 +76,7 @@ Where:
    ``--ylogmax is the maximum y axis for log plots (default: 5)``
 
 
-Example 
-########
+### Example 
 
 Running ribofilio on all gene:: 
    
