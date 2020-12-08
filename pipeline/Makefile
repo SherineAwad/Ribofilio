@@ -2,9 +2,9 @@ BBMAP = /home/sa941/software/bbmap
 
 YEAST = /rds/project/yhbl2/rds-yhbl2-genehunter/SM/annotations/Saccharomyces_cerevisiae/Ensembl/R64-1-1
 
-DATASETS = /home/ec2-user/ribofilio/datasets
-SCRIPTS = /home/ec2-user/ribofilio/scripts
-CURRENT  =  /home/ec2-user/ribofilio/pipeline
+DATASETS = /rds/project/yhbl2/rds-yhbl2-genehunter/SM/RibosomalProfiling/ribofilio/datasets 
+SCRIPTS = /rds/project/yhbl2/rds-yhbl2-genehunter/SM/RibosomalProfiling/ribofilio/scripts
+CURRENT  =  /rds/project/yhbl2/rds-yhbl2-genehunter/SM/RibosomalProfiling/ribofilio/pipeline
 
 subset1 := $(shell seq 1 500)
 subset2 := $(shell seq 501 1000)
@@ -127,9 +127,13 @@ SRR5090937.bowtie2.bam: galore/SRR5090937_trimmed.fastq.gz
 SRR5090937.bed: SRR5090937.bowtie2.bam
 	$(foreach i, $(SAMPLES), bedtools bamtobed -i $(i).bowtie2.bam > $(i).bed;)
 
-SRR5945809_1000.bed: 
-	$(foreach i, $(subset1), python shuffle.py -t yeast.fa -b SRR5945809.bed  -o SRR5945809_$(i).bed;) 
-	$(foreach i, $(subset2), python shuffle.py -t yeast.fa -b SRR5945809.bed  -o SRR5945809_$(i).bed;) 
+SRR5090937_1000.bed:     
+	$(foreach i, $(subset1), python ${SCRIPTS}/shuffle.py -t yeast.fa -b SRR5090937.bed  -o SRR5090937_$(i).bed;) 
+	$(foreach i, $(subset2), python ${SCRIPTS}/shuffle.py -t yeast.fa -b SRR5090937.bed  -o SRR5090937_$(i).bed;) 
+
+SRR5090936_1000.bed: 
+	$(foreach i, $(subset1), python ${SCRIPTS}/shuffle.py -t yeast.fa -b SRR5090936.bed  -o SRR5090936_$(i).bed;) 
+	$(foreach i, $(subset2), python ${SCRIPTS}/shuffle.py -t yeast.fa -b SRR5090936.bed  -o SRR5090936_$(i).bed;) 
 
 SRR5090936_WLR_regfile.log:
 	python  ${SCRIPTS}/ribofilioWLR.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed  -b 50  -n SRR5090936_nocutoff_WLR_regfile.log
