@@ -127,7 +127,10 @@ SRR5090937.bowtie2.bam: galore/SRR5090937_trimmed.fastq.gz
 SRR5090937.bed: SRR5090937.bowtie2.bam
 	$(foreach i, $(SAMPLES), bedtools bamtobed -i $(i).bowtie2.bam > $(i).bed;)
 
-	
+SRR5945809_1000.bed: 
+	$(foreach i, $(subset1), python shuffle.py -t yeast.fa -b SRR5945809.bed  -o SRR5945809_$(i).bed;) 
+	$(foreach i, $(subset2), python shuffle.py -t yeast.fa -b SRR5945809.bed  -o SRR5945809_$(i).bed;) 
+
 SRR5090936_WLR_regfile.log:
 	python  ${SCRIPTS}/ribofilioWLR.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed  -b 50  -n SRR5090936_nocutoff_WLR_regfile.log
 	$(foreach i, $(subset1), python  ${SCRIPTS}/ribofilioWLR.py -t yeast.fa -f SRR5090936_$(i).bed -r SRR5090934.bed  -b 50 --plots 0 -n SRR5090936_nocutoff_WLR_regfile.log;)
