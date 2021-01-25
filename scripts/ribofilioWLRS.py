@@ -293,7 +293,7 @@ def plots(plot_flag,outName,N,coverage,all_bins,binsize, posmax, posmin,last_pos
     W = binsize
     weight = BINS
     for i in range(0, len(weight)):
-        weight[i] = bCovered[i]  
+        weight[i] = sqrt(bCovered[i]) 
     # Fit the data(train the model)
     regression_model.fit(x, y,weight)
     # Predict
