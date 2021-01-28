@@ -43,10 +43,10 @@ def profile(sample, BINSIZE, coverage, gLength,posmax, posmin,cutoff):
     
     #Fill bCovered 
     for gene in gLength: 
-        for i in range(0, len(gbins) ): 
-            if int(gLength[gene]) > int((i+1)*BINSIZE) :
-                    bCovered[i]+=1 
-
+        bin_fit = math.ceil(gLength[gene]/BINSIZE)
+        for i in range(0,bin_fit):
+            bCovered[i] +=1 
+        
     #Counts genes in each position 
     for gene in coverage:
         for i in coverage[gene]:
@@ -100,7 +100,7 @@ def profile(sample, BINSIZE, coverage, gLength,posmax, posmin,cutoff):
 #--------------------------------------------------------------------------
 
 #This function finds runs the ribosome profile on a subset of genes
-def run_subset(transcripts,sample, subset_file, binsize): 
+def run_subset(transcripts,sample, subset_file, BINSIZE): 
     
     subset = []
     coverage = {}
@@ -151,7 +151,7 @@ def run_subset(transcripts,sample, subset_file, binsize):
                     print (".....................",j)
     print('Done filling the counts dictionary')
 
-    N = int (posmax / binsize) + 1
+    N = int (posmax / BINSIZE) + 1
     print ("Number of bins is ", N)
 
     gbins = [0] * N
@@ -162,9 +162,9 @@ def run_subset(transcripts,sample, subset_file, binsize):
     
     #Fill bCovered 
     for gene in gLength:
-        for i in range(0, len(gbins) ):
-            if int(gLength[gene]) > int((i+1)*BINSIZE) :
-                    bCovered[i]+=1
+        bin_fit = math.ceil(gLength[gene]/BINSIZE)
+        for i in range(0,bin_fit):
+            bCovered[i] +=1
 
     for gene in coverage:
         for i in coverage[gene]:
@@ -186,7 +186,7 @@ def run_subset(transcripts,sample, subset_file, binsize):
 
     index = 0
     a = 0
-    b = binsize 
+    b = BINSIZE
     gcounts = 0
     while a< posmax:
         for i in range (a,b+1):
@@ -194,10 +194,10 @@ def run_subset(transcripts,sample, subset_file, binsize):
                 break
             posum = float(npos[i])
             gbins[index] +=posum
-        gbins[index] = (float(c +  (gbins[index]/binsize) ) )
+        gbins[index] = (float(c +  (gbins[index]/BINSIZE) ) )
         index +=1
         a = b+1
-        b = b +binsize
+        b = b + BINSIZE
     print("Binning is done")
     print("N and index, gbins[0],and gbins[index-1] are:", N,index,gbins[0],gbins[index-1])
     return gbins, posmax, gLength, bCovered 
