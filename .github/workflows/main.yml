@@ -8,5 +8,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: GitHub Action for Pytest
+    - name: Test with pytest
       run: pytest   
