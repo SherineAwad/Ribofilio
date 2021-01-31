@@ -18,5 +18,4 @@ jobs:
     - name: itHubActionsForPytest
       uses: cclauss/GitHub-Action-for-pytest@master
       with:
-        args: pytest tests/tests.py
-        
+        args: pytest        
