@@ -9,6 +9,4 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: GitHub Action for Pytest
-      uses: clauss/GitHub-Action-for-pytest@master
-      with:
-        args: pytest -h       
+      run: pytest   
