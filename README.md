@@ -6,10 +6,6 @@ Ribofilio is a tool to measure ribosomal profiling drop rate that has been teste
 
 ## Dependencies
 
-	coverage
-
-	pytest
-
 	screed
 
 	numpy
