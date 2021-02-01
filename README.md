@@ -25,7 +25,7 @@ To Install Ribofilio::
 To run ribofilio::
 
 
-    python ribofilio.py --transcript --footprint footprint_sample --rnaseq rnaseq_sample --binsize  
+    python ribofilio.py --transcripts --footprint footprint_sample --rnaseq rnaseq_sample --binsize  
     
 or simply::
 
@@ -36,7 +36,7 @@ or simply::
 Where: 
 
 
-   ``--transcript or -t for transcripts (required)`` 
+   ``--transcripts or -t for transcripts (required)`` 
 
 
    ``--footprint or -f for footprint bed file (required)`` 
