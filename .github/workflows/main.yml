@@ -1,4 +1,4 @@
-name: Github Actions For Pytest
+name: Ribofilio_Github_Actions_For_Pytest
 on:
   push:
     branches:
