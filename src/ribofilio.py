@@ -24,9 +24,6 @@ def _get_genes():
     assert get_genes('sample.bed') ==392, {"YKL152C":93, "YIL152W":214, "YGL008C":392}
 def _get_reads():
     assert get_reads('sample.bed',  {"YKL152C":93, "YIL152W":214, "YGL008C":392}) == {"YKL152C":93, "YIL152W":214, "YGL008C":392}
-''' 
-
-
 def get_transcripts(transcripts_file):
     transcripts = {}
     for record in screed.open(transcripts_file):
@@ -36,13 +33,28 @@ def get_transcripts(transcripts_file):
         transcripts[gene_name] = record.sequence
     return transcripts
 
+''' 
 
-def get_subset_genes(transcripts, subset_file):
-    subset = {}
+def get_subset_genes(transcripts_file, subset_file):
+    subset = []
+    max_gene_length = -100 
+    genes_length = {} 
     for line in open(subset_file):
         gene_name = line.rstrip()
-        subset[gene_name] = transcripts[gene_name]
-    return subset
+        if "mRNA" in gene_name:
+            gene_name=gene_name.split('_')[0]
+        subset.append(gene_name) 
+    for record in screed.open(transcripts_file):
+        gene_name = record.name.split(' ')[0]
+        if "mRNA" in gene_name:
+            gene_name=gene_name.split('_')[0]
+        if gene_name in subset:
+            genes_length[str(gene_name)] = int(len(record.sequence))
+            if genes_length[gene_name] > max_gene_length:
+                max_gene_length = genes_length[gene_name]
+    print ('max_gene_length is',max_gene_length)
+    return max_gene_length, genes_length
+
 
 
 
@@ -50,12 +62,12 @@ def get_genes(transcripts_file):
     max_gene_length = -100 
     genes_length = {} 
     for record in screed.open(transcripts_file):
-        gname = record.name.split(' ')[0]
-        if "mRNA" in gname:
+        gene_name = record.name.split(' ')[0]
+        if "mRNA" in gene_name:
             gname=gname.split('_')[0]
-        genes_length[str(gname)] = int(len(record.sequence))
-        if genes_length[gname] > max_gene_length:
-            max_gene_length = genes_length[gname]
+        genes_length[str(gene_name)] = int(len(record.sequence))
+        if genes_length[gene_name] > max_gene_length:
+            max_gene_length = genes_length[gene_name]
     print ('max_gene_length is',max_gene_length)
     return max_gene_length, genes_length 
 
@@ -69,7 +81,8 @@ def get_reads(infile, genes_length):
         gene_name = str(record[0])
         if "mRNA" in gene_name:
             gene_name = gene_name.split("_")[0]
-        coverage[str(gene_name)].append(int(record[2]) )
+        if gene_name in genes_length: 
+            coverage[str(gene_name)].append(int(record[2]) )
     return coverage 
 
 # ------------------------------------------------------------------------
@@ -143,7 +156,7 @@ def ribosomes_profile(
         index += 1
         a = b + 1
         b = b + bin_size
-    #print('gbins', gene_bins)
+    print('cov', coverage['YKR082W']) #,coverage['YKL066W'])
     return gene_bins, last_pos, gene_coverage_at_bin
 # -------------------------------------------------------------------------------------------
 # plots function, plot several figures for the ribosome profiling
@@ -300,7 +313,8 @@ def main():
     parser.add_argument("--ylogmin", type=int, default=-15)
     parser.add_argument("--ylogmax", type=int, default=5)
     args = parser.parse_args()
-
+    
+    '''
      # Check required files exist
     if not os.path.exists(args.transcripts_file):
         sys.exit("transcripts file is required and does not exist, exiting !")
@@ -311,7 +325,7 @@ def main():
             sys.exit(
                 "rna  file does not exist: either run with footprint only option or enter a valid rna file, exiting !"
             )
-
+   ''' 
     plot_flag = args.plots
     print("plot_flag is", plot_flag)
 
@@ -331,8 +345,8 @@ def main():
     #transcripts = get_transcripts(args.transcripts_file)
     if args.subset_file == "NULL":
         max_gene_length, genes_length = get_genes(args.transcripts_file)
-    #else:
-    #    max_gene_length, genes_length = get_subset_genes(subset_file)
+    else:
+        max_gene_length, genes_length = get_subset_genes(args.transcripts_file, args.subset_file)
    
     
     print(args.footprint)
