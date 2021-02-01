@@ -2,7 +2,6 @@ coverage
 pytest
 screed
 numpy
-math
 matplotlib
 sklearn
 pylab 
