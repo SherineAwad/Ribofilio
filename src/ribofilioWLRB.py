@@ -16,7 +16,8 @@ from sklearn.metrics import mean_squared_error, r2_score
 #profile function: estimates the drop rate of ribosomes after binning
 #------------------------------------------------------------------------
 def profile(sample, BINSIZE, coverage, gLength,posmax, posmin):
-   
+  
+    print('cov', coverage['YBR024W'])
     gbins = [] 
     c = 0.000001
     gCovered = [0] * 100000000
@@ -87,6 +88,7 @@ def profile(sample, BINSIZE, coverage, gLength,posmax, posmin):
         index +=1
         a = b+1
         b = b +BINSIZE
+    print('cov', coverage['YBR024W']) #,coverage['YKL066W']) 
     return gbins, last_pos, bCovered 
 
 #--------------------------------------------------------------------------
@@ -194,6 +196,7 @@ def run_subset(transcripts,sample, subset_file, BINSIZE):
         b = b + BINSIZE
     print("Binning is done")
     print("N and index, gbins[0],and gbins[index-1] are:", N,index,gbins[0],gbins[index-1])
+    print('cov', coverage['YKR082W']) 
     return gbins, posmax, gLength, bCovered 
 
 #-------------------------------------------------------------------------------------------

@@ -1,3 +1,6 @@
 >YBR024W cdna chromosome:R64-1-1:II:289445:290350:1 gene:YBR024W gene_biotype:protein_coding transcript_biotype:protein_coding description:Protein anchored to mitochondrial inner membrane; may have a redundant function with Sco1p in delivery of copper to cytochrome c oxidase; interacts with Cox2p; SCO2 has a paralog, SCO1, that arose from the whole genome duplication [Source:SGD;Acc:S000000228]
 ATGTTGAATAGTTCAA
-
+>YDL245C cdna chromosome:R64-1-1:IV:11657:13360:-1 gene:YDL245C gene_biotype:protein_coding transcript_biotype:protein_coding description:Putative transmembrane polyol transporter; supports growth on and uptake of mannitol, sorbitol and xylitol with moderate affinity when overexpressed in a strain deleted for hexose family members; minor hexose transport activity when overexpressed in a similar strain; similarity to hexose transporters; expression is induced by low levels of glucose and repressed by high levels of glucose [Source:SGD;Acc:S000002404]
+ATGGCAAGCGAACAGTCCTCACCAGAAATTAATGCAGATAATCTAAACAGTAGTGCAGCT
+>YBR021W cdna chromosome:R64-1-1:II:281443:283344:1 gene:YBR021W gene_biotype:protein_coding transcript_biotype:protein_coding description:Plasma membrane localized uracil permease; expression is tightly regulated by uracil levels and environmental cues; conformational alterations induced by unfolding or substrate binding result in Rsp5p-mediated ubiquitination and degradation [Source:SGD;Acc:S000000225]
+ATGCCAGA
