@@ -16,25 +16,6 @@ from sklearn.metrics import mean_squared_error, r2_score
 # -----------------------------------------------
 # Read and parse input files
 # -----------------------------------------------
-'''
-def _get_transcipts(): 
-    assert get_transcripts('transcripts_sample.fa') == {"YBR024W":"ATGTTGAATAGTTCAA"}
-
-def _get_genes():
-    assert get_genes('sample.bed') ==392, {"YKL152C":93, "YIL152W":214, "YGL008C":392}
-def _get_reads():
-    assert get_reads('sample.bed',  {"YKL152C":93, "YIL152W":214, "YGL008C":392}) == {"YKL152C":93, "YIL152W":214, "YGL008C":392}
-def get_transcripts(transcripts_file):
-    transcripts = {}
-    for record in screed.open(transcripts_file):
-        gene_name = record.name.split(" ")[0]
-        if "mRNA" in gene_name:
-            gene_name = gene_name.split("_")[0]
-        transcripts[gene_name] = record.sequence
-    return transcripts
-
-''' 
-
 def get_subset_genes(transcripts_file, subset_file):
     subset = []
     max_gene_length = -100 
@@ -125,7 +106,6 @@ def ribosomes_profile(
         ):
             for i in range(0, genes_length[gene] + 1):
                 gene_coverage_at_pos[i] += 1
-    #print('gcapos',gene_coverage_at_pos)
     print("Filling gCoverered is done")
     i = 0
     last_pos = 0
@@ -134,7 +114,6 @@ def ribosomes_profile(
         normalized_positions[int(i)] = positions[int(i)] / (gene_coverage_at_pos[int(i)] + c)
         last_pos = i
         i += 1
-    #print('npos', normalized_positions)
     print("last_pos is ", last_pos)
     print("Normalizing pos is done")
     
@@ -150,13 +129,10 @@ def ribosomes_profile(
                 break
             position_sum = float(normalized_positions[i])
             gene_bins[index] += position_sum
-        #print('pos_sum',position_sum)
         gene_bins[index] = float(c + (gene_bins[index] / bin_size))
-        #print('gbins', gene_bins[index])
         index += 1
         a = b + 1
         b = b + bin_size
-    print('cov', coverage['YKR082W']) #,coverage['YKL066W'])
     return gene_bins, last_pos, gene_coverage_at_bin
 # -------------------------------------------------------------------------------------------
 # plots function, plot several figures for the ribosome profiling
@@ -236,7 +212,6 @@ def plots(
         plt.title(output + " Coverage per Bin (Log/Linear) ", fontsize=12)
         plt.savefig(output + "_" + str(bin_size) + ".LogLinear.png", format="png")
         plt.clf()
-        # print('Printing bins in plotting', gene_bins)
     # Linear Regression
     # ------------------
     x = np.array(bins).reshape(-1, 1)
@@ -328,7 +303,7 @@ def main():
    ''' 
     plot_flag = args.plots
     print("plot_flag is", plot_flag)
-
+    
     sample = str(args.footprint).split(".")[0]
     if args.rnaseq != "NULL":
         sample += "_" + str(args.rnaseq).split(".")[0]
@@ -336,13 +311,12 @@ def main():
     output = args.output
     if output == "":
         output = sample
-        if subset != "NULL":
-            subset_name = subset.split(".")[0]
+        if args.subset_file != "NULL":
+            subset_name = args.subset_file.split(".")[0]
             output += "." + subset_name
 
     bin_size = int(args.bin_size)
 
-    #transcripts = get_transcripts(args.transcripts_file)
     if args.subset_file == "NULL":
         max_gene_length, genes_length = get_genes(args.transcripts_file)
     else:
@@ -355,9 +329,6 @@ def main():
 
     fp_coverage = get_reads(args.footprint, genes_length) 
     mRNA_coverage  = get_reads(args.rnaseq, genes_length) 
-
-    #print('fpreads', fp_coverage) 
-    #print('mreads', mRNA_coverage)
 
 
     min_gene_length = 0
