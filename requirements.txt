@@ -1,4 +1,8 @@
 coverage
 pytest
 screed
-numpy 
+numpy
+math
+matplotlib
+sklearn
+pylab 
