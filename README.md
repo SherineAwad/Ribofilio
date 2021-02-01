@@ -25,12 +25,12 @@ To Install Ribofilio::
 To run ribofilio::
 
 
-    python ribofilio.py --transcript --footprint footprint_sample --mRNA mRNA_sample --binsize  
+    python ribofilio.py --transcript --footprint footprint_sample --rnaseq rnaseq_sample --binsize  
     
 or simply::
 
 
-    python ribofilio.py -t transcripts -f -r  -b  -c 
+    python ribofilio.py -t transcripts -f -r  -b  
 
  
 Where: 
@@ -42,7 +42,7 @@ Where:
    ``--footprint or -f for footprint bed file (required)`` 
 
 
-   ``--mRNA or -r for mRNA bed file (if not available, drop rate won't be normalized by mRNA)`` 
+   ``--rnaseq or -r for rnaseq bed file (if not available, drop rate won't be normalized by mRNA)`` 
 
 
    ``--subset or -s is a list of genes in file to run ribofilio on this subset only``
