@@ -25,7 +25,7 @@ To Install Ribofilio::
 To run ribofilio::
 
 
-    python ribofilio.py --transcript --footprint footprint_sample --mRNA mRNA_sample --binsize --cutoff 
+    python ribofilio.py --transcript --footprint footprint_sample --mRNA mRNA_sample --binsize  
     
 or simply::
 
