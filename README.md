@@ -6,23 +6,17 @@ Ribofilio is a tool to measure ribosomal profiling drop rate that has been teste
 
 ## Dependencies
 
-       python 3.7 
+	coverage
 
+	pytest
 
-       numpy
+	screed
 
-
-       screed 
-
-
-And for plotting: 
-
-
-       matplotlib 
-
-
-       scikit-learn  
-
+	numpy
+	
+	matplotlib
+	
+	sklearn
 
 ## Installation 
 
@@ -35,7 +29,7 @@ To Install Ribofilio::
 To run ribofilio::
 
 
-    python ribofilio.py --transcript --footprint footprint_sample --mRNA mRNA_sample --binsize (default is 50) --cutoff (default is 0)
+    python ribofilio.py --transcript --footprint footprint_sample --mRNA mRNA_sample --binsize --cutoff 
     
 or simply::
 
@@ -61,9 +55,6 @@ Where:
    ``--binsize or -b for binsize (default: 50)`` 
 
 
-   ``--cutoff or -c  for cutoff or minimum number of genes required to contribute to a position to be counted (default: 0)``
-
-
    ``--ymin is the minimum y axis for linear plots (default: 0)`` 
 
 
@@ -80,17 +71,15 @@ Where:
 
 Running ribofilio on all gene:: 
    
-    python ribofilio.py -t yeast.fa -f SRR5945809.bed -r SRR5945808.bed -b 50 -c 50 
+    python ribofilio.py -t yeast.fa -f SRR5945809.bed -r SRR5945808.bed -b 50  
 
-Where yeast.fa is the transcripts, SRR5945809.bed is the bed file of footprints of sample, SRR5945808.bed is the mRNA bed file, binsize is 50 and no cutoff is 50 which means
-at least 50 genes should contribute to the reads in a position to be considered in bins. 
-
+Where yeast.fa is the transcripts, SRR5945809.bed is the bed file of footprints of sample, SRR5945808.bed is the mRNA bed file
 
 
 To run ribofilio on a subset of genes:: 
 
 
-    python ribofilio.py -t yeast.fa -f SRR5945809.bed -r SRR5945808.bed -b 50 -c 50 -s subsetofgenes.txt 
+    python ribofilio.py -t yeast.fa -f SRR5945809.bed -r SRR5945808.bed -b 50 -s subsetofgenes.txt 
 
 Where subsetofgenes.txt is a list of genes: 
 
