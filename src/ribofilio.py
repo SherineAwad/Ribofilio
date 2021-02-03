@@ -28,14 +28,18 @@ def get_subset_genes(transcripts_file, subset_file):
             genes_length[str(gene_name)] = int(len(record.sequence))
             if genes_length[gene_name] > max_gene_length:
                 max_gene_length = genes_length[gene_name]
-    print ('max_gene_length is',max_gene_length)
+    print ('Maximum gene length is',max_gene_length)
     return max_gene_length, genes_length
 
 def get_genes(transcripts_file): 
     max_gene_length = -100 
     genes_length = {} 
+    itr = 0 
     for record in screed.open(transcripts_file):
         gene_name = record.name.split(' ')[0]
+        itr += 1 
+        if (itr % 1000) ==0: 
+            print(".....................")
         if "mRNA" in gene_name:
             gname=gname.split('_')[0]
         genes_length[str(gene_name)] = int(len(record.sequence))
@@ -47,10 +51,14 @@ def get_genes(transcripts_file):
 
 def get_reads(infile, genes_length):
     coverage = {} 
+    itr = 0 
     for gene in genes_length: 
         coverage[gene] = [] 
     for  line in open(infile):
         record = line.rstrip().split("\t")
+        itr += 1
+        if (itr % 5000000) ==0:
+            print(".....................")
         gene_name = str(record[0])
         if "mRNA" in gene_name:
             gene_name = gene_name.split("_")[0]
@@ -101,8 +109,6 @@ def binning(
         normalized_positions[int(i)] = positions[int(i)] / (gene_coverage_at_pos[int(i)] + c)
         last_pos = i
         i += 1
-    print("last_pos is ", last_pos)
-    print("Normalizing pos is done")
     
     # Here, we group reads into bins and normalize by bin_size, we stop at last_pos
     index = 0
@@ -143,13 +149,11 @@ def regression(
     regfile,
 ):
 
-    print("Start plotting")
     bins = []
     log_gene_bins = []
     gene_bins = []
     output = output
     genesfile = output + ".genes"
-    print("num_bins is: ", num_bins)
     # Take log of bins indeces for LOG/LOG plotting
     for i in range(0, num_bins):
         bins.append(i)
@@ -158,16 +162,9 @@ def regression(
     i = 0
     for i in range(1, num_bins):
         log_gene_bins.append(np.log(i))
-    print(
-        "Printing Lengths of: bins, log gene_bins, and gene_bins is:",
-        len(bins),
-        len(log_gene_bins),
-        len(gene_bins),
-    )
     label = "Bins  Binsize = " + str(bin_size) + " Max gene Length =" + str(last_pos)
 
     if plot_flag == 1:
-        print("plot flag is on")
         # Plot coverage Log /Linear
         # -----------------------------
         plt.figure(figsize=(15, 10))
@@ -287,8 +284,8 @@ def main():
             )
    ''' 
     plot_flag = args.plots
-    print("plot_flag is", plot_flag)
-    
+    if plot_flag == 1:
+        print("plot mode is on:  extra plots will be generated")
     sample = str(args.footprint).split(".")[0]
     if args.rnaseq != "NULL":
         sample += "_" + str(args.rnaseq).split(".")[0]
@@ -301,12 +298,13 @@ def main():
             output += "." + subset_name
 
     bin_size = int(args.bin_size)
-     
+    
+    print("Reading transcripts")
     if args.subset_file == "NULL":
         max_gene_length, genes_length = get_genes(args.transcripts_file)
     else:
         max_gene_length, genes_length = get_subset_genes(args.transcripts_file, args.subset_file)
-   
+    print("Done reading transcripts")  
     gene_coverage_at_bin = get_gene_coverage_at_bin(max_gene_length, bin_size, genes_length)
     print("Reading ribosome footprint", args.footprint)
     fp_coverage = get_reads(args.footprint, genes_length) 
@@ -339,9 +337,7 @@ def main():
     )
     
 
-    print("Length of ribosomes_gene_bins is ", len(ribosomes_gene_bins))
-    print("Length of mRNA_gene_bins is ", len(mRNA_gene_bins))
-    
+    print("No. of bins:", len(ribosomes_gene_bins))
 
     num_bins = int(last_pos / bin_size) + 1
     gene_bins = ribosomes_gene_bins
