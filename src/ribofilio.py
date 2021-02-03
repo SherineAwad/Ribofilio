@@ -65,25 +65,28 @@ def get_gene_coverage_at_bin(max_gene_length, bin_size, genes_length):
     num_bins = int(max_gene_length / bin_size) + 1
     gene_coverage_at_bin = [0] * num_bins
     # Fill gene_coverage_at_bin
-    print('gcov at', gene_coverage_at_bin, len(gene_coverage_at_bin) )
     for gene in genes_length:
         bin_fit = math.ceil(genes_length[gene] / bin_size)
-        print('binfit is',bin_fit)
         for i in range(0, bin_fit):
             gene_coverage_at_bin[i] += 1
-
     return gene_coverage_at_bin
 
+def get_gene_coverage_at_pos(max_gene_length, coverage, genes_length) :
+    gene_coverage_at_pos = [0] * (max_gene_length +1)
+    for gene in coverage:
+        if (genes_length[gene] <= max_gene_length):
+            for i in range(0, genes_length[gene] + 1):
+                gene_coverage_at_pos[i] += 1
+    print("Filling gCoverered is done")
+    return gene_coverage_at_pos
 # ------------------------------------------------------------------------
 # ribosomes_profile function: estimates the drop rate of ribosomes after binning
 # ------------------------------------------------------------------------
 def ribosomes_profile(
-     bin_size, coverage, genes_length, max_gene_length, min_gene_length
-):
+     bin_size, coverage, genes_length, gene_coverage_at_pos, max_gene_length):
     positions = [0] * 100000000  
     gene_bins = []
     c = 0.000001
-    gene_coverage_at_pos = [0] * 100000000
     j = 0
     
     num_bins = int(max_gene_length / bin_size) + 1
@@ -93,21 +96,10 @@ def ribosomes_profile(
     # Counts genes in each position
     for gene in coverage:
         for i in coverage[gene]:
-            if (
-                genes_length[gene] <= max_gene_length
-                and genes_length[gene] > min_gene_length
-            ):
+            if (genes_length[gene] <= max_gene_length):
                 positions[int(i)] += 1
     print("Filling pos is done")
 
-    for gene in coverage:
-        if (
-            genes_length[gene] <= max_gene_length
-            and genes_length[gene] > min_gene_length
-        ):
-            for i in range(0, genes_length[gene] + 1):
-                gene_coverage_at_pos[i] += 1
-    print("Filling gCoverered is done")
     i = 0
     last_pos = 0
     # Normalize bin position  with the number of gene covering that position
@@ -147,7 +139,6 @@ def plots(
     all_bins,
     bin_size,
     max_gene_length,
-    min_gene_length,
     last_pos,
     genes_length,
     y_min,
@@ -173,14 +164,13 @@ def plots(
     i = 0
     for i in range(1, num_bins):
         log_gene_bins.append(np.log(i))
-    print("Prining bins, gene_bins and logene_bins:")
     print(
-        "lengths of bins, logene_bins, and gene_bins is:",
+        "Printing Lengths of: bins, log gene_bins, and gene_bins is:",
         len(bins),
         len(log_gene_bins),
         len(gene_bins),
     )
-    label = "Bins  (Binsize = " + str(bin_size) + " Max gene Length =" + str(last_pos)
+    label = "Bins  Binsize = " + str(bin_size) + " Max gene Length =" + str(last_pos)
 
     if plot_flag == 1:
         # Plot Coverage without Log
@@ -331,25 +321,24 @@ def main():
 
     fp_coverage = get_reads(args.footprint, genes_length) 
     mRNA_coverage  = get_reads(args.rnaseq, genes_length) 
+    fp_gene_coverage_at_pos = get_gene_coverage_at_pos(max_gene_length, fp_coverage, genes_length) 
+    mRNA_gene_coverage_at_pos = get_gene_coverage_at_pos(max_gene_length, mRNA_coverage, genes_length)
 
-
-    min_gene_length = 0
     
-    print("We are calling ribosomes_profile for", args.footprint)
     ribosomes_gene_bins, last_pos = ribosomes_profile(
         bin_size,
         fp_coverage,
         genes_length,
-        max_gene_length,
-        min_gene_length
+        fp_gene_coverage_at_pos,
+        max_gene_length
     )
     
     mRNA_gene_bins, _ = ribosomes_profile(
         bin_size,
         mRNA_coverage, 
-        genes_length, 
-        max_gene_length, 
-        min_gene_length
+        genes_length,
+        mRNA_gene_coverage_at_pos,
+        max_gene_length 
     )
 
 
@@ -362,7 +351,6 @@ def main():
     if args.rnaseq != "NULL":
         for i in range(0, num_bins):
             gene_bins[i] = float(ribosomes_gene_bins[i] / mRNA_gene_bins[i])
-    print('gene_bins is', gene_bins)
     # -----------------------------------------
     # Plotting and summarizing
     # -----------------------------------------
@@ -374,7 +362,6 @@ def main():
         gene_bins,
         bin_size,
         max_gene_length,
-        min_gene_length,
         last_pos,
         genes_length,
         int(args.y_min),
