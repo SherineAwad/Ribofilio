@@ -36,6 +36,12 @@ def test_get_gene_coverage_at_bin():
     genes_length = {"YBR024W":52,"YBR021W":45}
     max_gene_length = 52 
     bin_size =50
+    assert(rb.get_gene_coverage_at_bin(max_gene_length, bin_size, genes_length) == [2,1])
+
+def test_get_gene_coverage_at_pos():
+    max_gene_length = 6
+    coverage = {"YBR024W":[1,2,3], "YBR021W":[5,6,7]}
+    gene_coverage_at_pos = [0] * (max_gene_length +1)
+    genes_length = {"YBR024W":6,"YBR021W":4, "YKL152C":23}
+    assert (rb.get_gene_coverage_at_pos(max_gene_length, coverage, genes_length) == [0,2,2,2,2,1,1]) 
     
-    print (rb.get_gene_coverage_at_bin(max_gene_length, bin_size, genes_length) )
-    assert(rb.get_gene_coverage_at_bin(max_gene_length, bin_size, genes_length) == [2,1]) 

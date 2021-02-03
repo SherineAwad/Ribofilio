@@ -31,9 +31,6 @@ def get_subset_genes(transcripts_file, subset_file):
     print ('max_gene_length is',max_gene_length)
     return max_gene_length, genes_length
 
-
-
-
 def get_genes(transcripts_file): 
     max_gene_length = -100 
     genes_length = {} 
@@ -72,10 +69,9 @@ def get_gene_coverage_at_bin(max_gene_length, bin_size, genes_length):
     return gene_coverage_at_bin
 
 def get_gene_coverage_at_pos(max_gene_length, coverage, genes_length) :
-    gene_coverage_at_pos = [0] * (max_gene_length +1)
+    gene_coverage_at_pos = [0] * (max_gene_length + 1)
     for gene in coverage:
-        if (genes_length[gene] <= max_gene_length):
-            for i in range(0, genes_length[gene] + 1):
+            for i in range(1, genes_length[gene] + 1):
                 gene_coverage_at_pos[i] += 1
     print("Filling gCoverered is done")
     return gene_coverage_at_pos
@@ -83,27 +79,26 @@ def get_gene_coverage_at_pos(max_gene_length, coverage, genes_length) :
 # ribosomes_profile function: estimates the drop rate of ribosomes after binning
 # ------------------------------------------------------------------------
 def ribosomes_profile(
-     bin_size, coverage, genes_length, gene_coverage_at_pos, max_gene_length):
-    positions = [0] * 100000000  
+    bin_size, coverage, genes_length, gene_coverage_at_pos, max_gene_length):
+    positions = [0] * (max_gene_length + 1 ) 
     gene_bins = []
     c = 0.000001
     j = 0
     
     num_bins = int(max_gene_length / bin_size) + 1
     gene_bins = [0] * num_bins
-    normalized_positions = [0] * max_gene_length
+    normalized_positions = [0] * (max_gene_length + 1)
 
     # Counts genes in each position
     for gene in coverage:
         for i in coverage[gene]:
-            if (genes_length[gene] <= max_gene_length):
                 positions[int(i)] += 1
     print("Filling pos is done")
 
-    i = 0
-    last_pos = 0
+    i = 1
+    last_pos = 1
     # Normalize bin position  with the number of gene covering that position
-    while i < max_gene_length:
+    while i <= max_gene_length:
         normalized_positions[int(i)] = positions[int(i)] / (gene_coverage_at_pos[int(i)] + c)
         last_pos = i
         i += 1
@@ -112,9 +107,9 @@ def ribosomes_profile(
     
     # Here, we group reads into bins and normalize by bin_size, we stop at last_pos
     index = 0
-    a = 0
+    a = 1
     b = bin_size
-    while a < max_gene_length:
+    while a <= max_gene_length:
         for i in range(a, b + 1):
             if i > (len(normalized_positions) - 1):
                 break
