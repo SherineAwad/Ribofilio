@@ -29,4 +29,13 @@ def test_get_reads():
     path = os.getcwd()
     path = os.path.join(path, "tests/test-data", "sample.bed") 
     coverage = rb.get_reads(path,  {"YKL152C":50}) 
-    assert (coverage == {"YKL152C":[93]}) 
+    assert (coverage == {"YKL152C":[93]})
+
+def test_get_gene_coverage_at_bin():
+    path = os.getcwd()
+    genes_length = {"YBR024W":52,"YBR021W":45}
+    max_gene_length = 52 
+    bin_size =50
+    
+    print (rb.get_gene_coverage_at_bin(max_gene_length, bin_size, genes_length) )
+    assert(rb.get_gene_coverage_at_bin(max_gene_length, bin_size, genes_length) == [2,1]) 

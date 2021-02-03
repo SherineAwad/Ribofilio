@@ -1,11 +1,9 @@
 #! /usr/bin/env python
-import sys
 import argparse
 import screed
 import math
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib as mpl
 from pylab import *
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
@@ -63,6 +61,19 @@ def get_reads(infile, genes_length):
             coverage[str(gene_name)].append(int(record[2]) )
     return coverage 
 
+def get_gene_coverage_at_bin(max_gene_length, bin_size, genes_length):
+    num_bins = int(max_gene_length / bin_size) + 1
+    gene_coverage_at_bin = [0] * num_bins
+    # Fill gene_coverage_at_bin
+    print('gcov at', gene_coverage_at_bin, len(gene_coverage_at_bin) )
+    for gene in genes_length:
+        bin_fit = math.ceil(genes_length[gene] / bin_size)
+        print('binfit is',bin_fit)
+        for i in range(0, bin_fit):
+            gene_coverage_at_bin[i] += 1
+
+    return gene_coverage_at_bin
+
 # ------------------------------------------------------------------------
 # ribosomes_profile function: estimates the drop rate of ribosomes after binning
 # ------------------------------------------------------------------------
@@ -78,13 +89,6 @@ def ribosomes_profile(
     num_bins = int(max_gene_length / bin_size) + 1
     gene_bins = [0] * num_bins
     normalized_positions = [0] * max_gene_length
-    gene_coverage_at_bin = [0] * num_bins
-
-    # Fill gene_coverage_at_bin
-    for gene in genes_length:
-        bin_fit = math.ceil(genes_length[gene] / bin_size)
-        for i in range(0, bin_fit):
-            gene_coverage_at_bin[i] += 1
 
     # Counts genes in each position
     for gene in coverage:
@@ -130,7 +134,8 @@ def ribosomes_profile(
         index += 1
         a = b + 1
         b = b + bin_size
-    return gene_bins, last_pos, gene_coverage_at_bin
+    return gene_bins, last_pos
+
 # -------------------------------------------------------------------------------------------
 # plots function, plot several figures for the ribosome profiling
 # -------------------------------------------------------------------------------------------
@@ -271,7 +276,7 @@ def main():
     print("Initializing and reading arguments")
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-t", "--transcripts_file", dest="transcripts_file", default=False
+        "-t", "--transcripts", dest="transcripts_file", default=False
     )
     parser.add_argument("-f", "--footprint", dest="footprint", default=False)
     parser.add_argument("-r", "--rnaseq", dest="rnaseq", default="NULL")
@@ -313,13 +318,13 @@ def main():
             output += "." + subset_name
 
     bin_size = int(args.bin_size)
-
+     
     if args.subset_file == "NULL":
         max_gene_length, genes_length = get_genes(args.transcripts_file)
     else:
         max_gene_length, genes_length = get_subset_genes(args.transcripts_file, args.subset_file)
    
-    
+    gene_coverage_at_bin = get_gene_coverage_at_bin(max_gene_length, bin_size, genes_length)
     print(args.footprint)
     print(args.rnaseq) 
 
@@ -331,7 +336,7 @@ def main():
     min_gene_length = 0
     
     print("We are calling ribosomes_profile for", args.footprint)
-    ribosomes_gene_bins, last_pos, gene_coverage_at_bin = ribosomes_profile(
+    ribosomes_gene_bins, last_pos = ribosomes_profile(
         bin_size,
         fp_coverage,
         genes_length,
@@ -339,7 +344,7 @@ def main():
         min_gene_length
     )
     
-    mRNA_gene_bins, _, _ = ribosomes_profile(
+    mRNA_gene_bins, _ = ribosomes_profile(
         bin_size,
         mRNA_coverage, 
         genes_length, 
