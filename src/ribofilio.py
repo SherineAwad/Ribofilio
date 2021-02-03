@@ -75,25 +75,26 @@ def get_gene_coverage_at_pos(max_gene_length, coverage, genes_length) :
                 gene_coverage_at_pos[i] += 1
     print("Filling gCoverered is done")
     return gene_coverage_at_pos
-# ------------------------------------------------------------------------
-# ribosomes_profile function: estimates the drop rate of ribosomes after binning
-# ------------------------------------------------------------------------
-def ribosomes_profile(
-    bin_size, coverage, genes_length, gene_coverage_at_pos, max_gene_length):
-    positions = [0] * (max_gene_length + 1 ) 
-    gene_bins = []
-    c = 0.000001
-    j = 0
-    
-    num_bins = int(max_gene_length / bin_size) + 1
-    gene_bins = [0] * num_bins
-    normalized_positions = [0] * (max_gene_length + 1)
 
-    # Counts genes in each position
+def fill_positions (coverage, max_gene_length):
+    positions = [0] * (max_gene_length + 1 ) 
     for gene in coverage:
         for i in coverage[gene]:
                 positions[int(i)] += 1
     print("Filling pos is done")
+    return positions
+
+# ------------------------------------------------------------------------
+# binning function: estimates the drop rate of ribosomes after binning
+# ------------------------------------------------------------------------
+def binning(
+    bin_size,  genes_length, positions, gene_coverage_at_pos, max_gene_length):
+    gene_bins = []
+    c = 0.000001
+    
+    num_bins = int(max_gene_length / bin_size) + 1
+    gene_bins = [0] * num_bins
+    normalized_positions = [0] * (max_gene_length + 1)
 
     i = 1
     last_pos = 1
@@ -318,24 +319,27 @@ def main():
     mRNA_coverage  = get_reads(args.rnaseq, genes_length) 
     fp_gene_coverage_at_pos = get_gene_coverage_at_pos(max_gene_length, fp_coverage, genes_length) 
     mRNA_gene_coverage_at_pos = get_gene_coverage_at_pos(max_gene_length, mRNA_coverage, genes_length)
-
     
-    ribosomes_gene_bins, last_pos = ribosomes_profile(
+    fp_positions = fill_positions(fp_coverage, max_gene_length) 
+    mRNA_positions = fill_positions(mRNA_coverage, max_gene_length) 
+    
+    
+    ribosomes_gene_bins, last_pos = binning(
         bin_size,
-        fp_coverage,
         genes_length,
+        fp_positions,
         fp_gene_coverage_at_pos,
         max_gene_length
     )
     
-    mRNA_gene_bins, _ = ribosomes_profile(
+    mRNA_gene_bins, _ = binning(
         bin_size,
-        mRNA_coverage, 
         genes_length,
+        mRNA_positions,
         mRNA_gene_coverage_at_pos,
         max_gene_length 
     )
-
+    
 
     print("Length of ribosomes_gene_bins is ", len(ribosomes_gene_bins))
     print("Length of mRNA_gene_bins is ", len(mRNA_gene_bins))

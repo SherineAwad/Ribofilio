@@ -44,4 +44,10 @@ def test_get_gene_coverage_at_pos():
     gene_coverage_at_pos = [0] * (max_gene_length +1)
     genes_length = {"YBR024W":6,"YBR021W":4, "YKL152C":23}
     assert (rb.get_gene_coverage_at_pos(max_gene_length, coverage, genes_length) == [0,2,2,2,2,1,1]) 
-    
+   
+
+def test_fill_positions ():
+    max_gene_length = 9
+    positions = [0] * (max_gene_length + 1 )
+    coverage = {"YKL152C":[5,7,9], "YBR021W":[3,6,7], "YBR024W":[1,2,3]}
+    assert(rb.fill_positions(coverage, max_gene_length) == [0,1,1,2,0,1,1,2,0,1] )
