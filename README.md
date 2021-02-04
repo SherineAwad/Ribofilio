@@ -1,5 +1,5 @@
 
-# Ribofilio: A tool to measure ribosomal profiling drop rate
+# Ribofilio: A tool to measure ribosomal profiling dropoff rate
 
 Ribofilio is a tool to measure ribosomal profiling drop rate that has been tested in ecoli and yeast so far.
 
@@ -12,18 +12,18 @@ Ribofilio is a tool to measure ribosomal profiling drop rate that has been teste
 	
 	matplotlib
 	
-for plotting:: 
+for plotting: 
 
 	sklearn 
 
 
-To run ribofilio::
+To run ribofilio:
 
 
 	python ribofilio.py --transcripts --footprint footprint_sample --rnaseq rnaseq_sample --binsize --output output 
    
  
-or simply::
+or simply:
 
 
 	python ribofilio.py -t transcripts -f -r  -b -o 
@@ -64,7 +64,7 @@ Where:
 
 ### Example 
 
-Running ribofilio on all gene:: 
+Running ribofilio on all gene: 
 
    
 	python ribofilio.py -t yeast.fa -f SRR5945809.bed -r SRR5945808.bed 
@@ -73,9 +73,11 @@ Running ribofilio on all gene::
 Where yeast.fa is the transcripts, SRR5945809.bed is the bed file of footprints of sample, SRR5945808.bed is the mRNA bed file
 
 
-To run ribofilio on a subset of genes:: 
+To run ribofilio on a subset of genes:
+ 
 
 	python ribofilio.py -t yeast.fa -f SRR5945809.bed -r SRR5945808.bed -s subsetofgenes.txt 
+
 
 Where subsetofgenes.txt is a list of genes: 
 
