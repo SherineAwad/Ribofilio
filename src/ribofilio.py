@@ -11,16 +11,16 @@ from sklearn.metrics import mean_squared_error, r2_score
 # -----------------------------------------------
 # Read and parse input files
 # -----------------------------------------------
-def get_subset_genes(transcripts_file, subset_file):
+def get_subset_genes(transcripts, subset):
     subset = []
     max_gene_length = -100 
     genes_length = {} 
-    for line in open(subset_file):
+    for line in open(subset):
         gene_name = line.rstrip()
         if "mRNA" in gene_name:
             gene_name=gene_name.split('_')[0]
         subset.append(gene_name) 
-    for record in screed.open(transcripts_file):
+    for record in screed.open(transcripts):
         gene_name = record.name.split(' ')[0]
         if "mRNA" in gene_name:
             gene_name=gene_name.split('_')[0]
@@ -31,11 +31,11 @@ def get_subset_genes(transcripts_file, subset_file):
     print ('Maximum gene length is',max_gene_length)
     return max_gene_length, genes_length
 
-def get_genes(transcripts_file): 
+def get_genes(transcripts): 
     max_gene_length = -100 
     genes_length = {} 
     itr = 0 
-    for record in screed.open(transcripts_file):
+    for record in screed.open(transcripts):
         gene_name = record.name.split(' ')[0]
         itr += 1 
         if (itr % 1000) ==0: 
@@ -66,12 +66,12 @@ def get_reads(infile, genes_length):
             coverage[str(gene_name)].append(int(record[2]) )
     return coverage 
 
-def get_gene_coverage_at_bin(max_gene_length, bin_size, genes_length):
-    num_bins = int(max_gene_length / bin_size) + 1
+def get_gene_coverage_at_bin(max_gene_length, binsize, genes_length):
+    num_bins = int(max_gene_length / binsize) + 1
     gene_coverage_at_bin = [0] * num_bins
     # Fill gene_coverage_at_bin
     for gene in genes_length:
-        bin_fit = math.ceil(genes_length[gene] / bin_size)
+        bin_fit = math.ceil(genes_length[gene] / binsize)
         for i in range(0, bin_fit):
             gene_coverage_at_bin[i] += 1
     return gene_coverage_at_bin
@@ -94,11 +94,11 @@ def fill_positions (coverage, max_gene_length):
 # binning function: estimates the drop rate of ribosomes after binning
 # ------------------------------------------------------------------------
 def binning(
-    bin_size,  genes_length, positions, gene_coverage_at_pos, max_gene_length):
+    binsize,  genes_length, positions, gene_coverage_at_pos, max_gene_length):
     gene_bins = []
     c = 0.000001
     
-    num_bins = int(max_gene_length / bin_size) + 1
+    num_bins = int(max_gene_length / binsize) + 1
     gene_bins = [0] * num_bins
     normalized_positions = [0] * (max_gene_length + 1)
 
@@ -110,10 +110,10 @@ def binning(
         last_pos = i
         i += 1
     
-    # Here, we group reads into bins and normalize by bin_size, we stop at last_pos
+    # Here, we group reads into bins and normalize by binsize, we stop at last_pos
     index = 0
     a = 1
-    b = bin_size
+    b = binsize
     while a <= max_gene_length:
         for i in range(a, b + 1):
             if i > (len(normalized_positions) - 1):
@@ -122,38 +122,35 @@ def binning(
                 break
             position_sum = float(normalized_positions[i])
             gene_bins[index] += position_sum
-        gene_bins[index] = float(c + (gene_bins[index] / bin_size))
+        gene_bins[index] = float(c + (gene_bins[index] / binsize))
         index += 1
         a = b + 1
-        b = b + bin_size
+        b = b + binsize
     return gene_bins, last_pos
 
 # -------------------------------------------------------------------------------------------
 # Regression function, plot several figures for the ribosome profiling
 # -------------------------------------------------------------------------------------------
 def regression(
-    plot_flag,
     output,
     num_bins,
     coverage,
     all_bins,
-    bin_size,
+    binsize,
     max_gene_length,
     last_pos,
     genes_length,
-    y_min,
-    y_max,
+    ymin,
+    ymax,
     ylogmin,
     ylogmax,
-    gene_coverage_at_bin, 
-    regfile,
+    gene_coverage_at_bin,plot 
 ):
 
     bins = []
     log_gene_bins = []
     gene_bins = []
     output = output
-    genesfile = output + ".genes"
     # Take log of bins indeces for LOG/LOG plotting
     for i in range(0, num_bins):
         bins.append(i)
@@ -162,25 +159,14 @@ def regression(
     i = 0
     for i in range(1, num_bins):
         log_gene_bins.append(np.log(i))
-    label = "Bins  Binsize = " + str(bin_size) + " Max gene Length =" + str(last_pos)
+    label = "Bins  Binsize = " + str(binsize) + " Max gene Length =" + str(last_pos)
 
-    if plot_flag == 1:
-        # Plot coverage Log /Linear
-        # -----------------------------
-        plt.figure(figsize=(15, 10))
-        plt.plot(np.array(bins), np.log(gene_bins), color="Navy")
-        plt.ylim(ylogmin, ylogmax)
-        plt.ylabel("Log of sums of coverage of genes at each position in each bin")
-        plt.xlabel(label)
-        plt.title(output + " Coverage per Bin (Log/Linear) ", fontsize=12)
-        plt.savefig(output + "_" + str(bin_size) + ".LogLinear.png", format="png")
-        plt.clf()
     # Weighted Linear Regression
     # ------------------
     x = np.array(bins).reshape(-1, 1)
     y = np.array(np.log(gene_bins)).reshape(-1, 1)
     regression_model = LinearRegression()
-    W = bin_size
+    W = binsize
     weight = bins
     for i in range(0, len(weight)):
         weight[i] = gene_coverage_at_bin[i]
@@ -193,60 +179,57 @@ def regression(
 
     rmse = mean_squared_error(y, y_predicted, sample_weight =weight)
     r2 = r2_score(y, y_predicted, sample_weight =weight)
-
+    regfp = open(str(output)+".regression.log", "a+")
+    print("Drop off =",str(regression_model.coef_[0][0]),file =regfp )
+    print("RMSE =",str(rmse), file=regfp)
+    print("Rsquare = ",str(r2),file=regfp) 
     # printing values
-    print("----------------------------------------")
     print("----------------------------------------")
     print("Dropoff Rate:", regression_model.coef_)
     print("Root mean squared error: ", rmse)
     print("R2 score: ", r2)
     print("----------------------------------------")
-    print("----------------------------------------")
-    plt.figure(figsize=(15, 10))
-    plt.ylim(ylogmin, ylogmax)
-    plt.scatter(x, y, s=10)
-    xtext = (
-        " Slope: "
-        + str(regression_model.coef_)
-        + " RMSE: "
-        + str(rmse)
-        + " R2 score :"
-        + str(r2)
-    )
-    plt.xlabel(str(label) + "\n" + str(xtext), fontsize=10)
-    plt.ylabel("y")
-    # predicted values
-    plt.plot(x, y_predicted, color="r")
-    plt.title(output + " Linear Regression", fontsize=12)
-    plt.savefig(output + "_" + str(bin_size) + "Log.WLR.png", format="png")
-    regfp = open(str(regfile), "a+")
-    print(
+    print("Regression is done") 
+    if plot ==1 : 
+
+        plt.figure(figsize=(15, 10))
+        plt.ylim(ylogmin, ylogmax)
+        plt.scatter(x, y, s=10)
+        xtext = (" Slope: "+str(regression_model.coef_)+ " RMSE: "+ str(rmse)+ " R2 score :"+ str(r2) )
+        plt.xlabel(str(label) + "\n" + str(xtext), fontsize=10)
+        plt.ylabel("y")
+        # predicted values
+        plt.plot(x, y_predicted, color="r")
+        plt.title(output + " Linear Regression", fontsize=12)
+        plt.savefig(output + "_" + str(binsize) + "Log.WLR.png", format="png")
+        regfp = open(str(output)+"regression.log", "a+")
+        print(
         str(regression_model.coef_[0][0]),
         str(regression_model.intercept_[0]),
         str(rmse),
         str(r2),
         file=regfp,
-    )
-    plt.clf()
-    #WLR in linear plot 
-    plt.figure(figsize=(15, 10))
-    plt.ylim(y_min, y_max)
-    plt.scatter(x, y, s=10)
-    xtext = (
+        )
+        plt.clf()
+        #WLR in linear plot 
+        plt.figure(figsize=(15, 10))
+        plt.ylim(ymin, ymax)
+        plt.scatter(x, y, s=10)
+        xtext = (
         " Slope: "
         + str(regression_model.coef_)
         + " RMSE: "
         + str(rmse)
         + " R2 score :"
         + str(r2)
-    )
-    plt.xlabel(str(label) + "\n" + str(xtext), fontsize=10)
-    plt.ylabel("y")
-    # predicted values
-    plt.plot(x, y_predicted, color="r")
-    plt.title(output + " Linear Regression", fontsize=12)
-    plt.savefig(output + "_" + str(bin_size) + ".Linear.WLR.png", format="png")
-
+        )
+        plt.xlabel(str(label) + "\n" + str(xtext), fontsize=10)
+        plt.ylabel("y")
+        # predicted values
+        plt.plot(x, y_predicted, color="r")
+        plt.title(output + " Linear Regression", fontsize=12)
+        plt.savefig(output + "_" + str(binsize) + ".Linear.WLR.png", format="png")
+        print("Plotting is done") 
 # ---------------------------------------------------------------------------
 # Main function: gets input paramters and calls corresponding functions
 # ---------------------------------------------------------------------------
@@ -255,25 +238,30 @@ def regression(
 def main():
     print("Initializing and reading arguments")
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-t", "--transcripts", dest="transcripts_file", default=False
-    )
-    parser.add_argument("-f", "--footprint", dest="footprint", default=False)
-    parser.add_argument("-r", "--rnaseq", dest="rnaseq", default="NULL")
-    parser.add_argument("-s", "--subset_file", dest="subset_file", default="NULL")
-    parser.add_argument("-b", "--bin_size", dest="bin_size", type=int, default=50)
-    parser.add_argument("--plots", dest="plots", type=int, default=1)
-    parser.add_argument("-o", "--out", dest="output", default="")
-    parser.add_argument("-n", "--name", dest="reg_file_name", default="regfile.log")
-    parser.add_argument("--y_min", dest="y_min", type=int, default=-20)
-    parser.add_argument("--y_max", dest="y_max", type=int, default=20)
-    parser.add_argument("--ylogmin", type=int, default=-15)
-    parser.add_argument("--ylogmax", type=int, default=5)
+    parser._action_groups.pop()
+    required = parser.add_argument_group('required arguments')
+    optional = parser.add_argument_group('optional arguments')
+    required.add_argument('-t','--transcripts', required=True, help="Transcripts file")
+    optional.add_argument('--optional_arg')
+    required.add_argument('-f','--footprint', default=False, help="Ribosomes bed file")
+    optional.add_argument("-r", "--rnaseq", dest="rnaseq", default="NULL",help="mRNA bed file, if mRNA bed is not provided, ribosomes dropoff won't be normalized with mRNA")
+    optional.add_argument("-s", "--subset", dest="subset", default="NULL",help="subset of genes to run the analysis on")
+    optional.add_argument("-b", "--binsize", dest="binsize", type=int, default=50, help="Bin size default is 50")
+    optional.add_argument("-o", "--out", dest="output", default="", help="Output file name")
+    optional.add_argument("--plot", dest="plot",type=int, default=1, help="Plotting mode is on by default, use --plot 0 to turn off plots")
+    optional.add_argument("--ymin", dest="ymin", type=int, default=-20,help="ymin for the y axis min position in linear plot")
+    optional.add_argument("--ymax", dest="ymax", type=int, default=20, help="ymax for the y axis max position in linear plot")
+    optional.add_argument("--ylogmin", type=int, default=-15, help="ylogmin for y axis min posiiton in log plot")
+    optional.add_argument("--ylogmax", type=int, default=5, help="ylogmax for y axis max position in log plot")
     args = parser.parse_args()
-    
+    plot = args.plot 
+    if plot ==1:
+        print("Plot mode is on, regression plots will be printed")
+    else: 
+        print("Plot mode is off, no plots will be printed") 
     '''
      # Check required files exist
-    if not os.path.exists(args.transcripts_file):
+    if not os.path.exists(args.transcripts):
         sys.exit("transcripts file is required and does not exist, exiting !")
     if not os.path.exists(args.footprint):
         sys.exit("footprint file is required and does not exist, exiting !")
@@ -283,29 +271,28 @@ def main():
                 "rna  file does not exist: either run with footprint only option or enter a valid rna file, exiting !"
             )
    ''' 
-    plot_flag = args.plots
-    if plot_flag == 1:
-        print("plot mode is on:  extra plots will be generated")
     sample = str(args.footprint).split(".")[0]
     if args.rnaseq != "NULL":
         sample += "_" + str(args.rnaseq).split(".")[0]
     
+    plot = args.plot
+
     output = args.output
     if output == "":
         output = sample
-        if args.subset_file != "NULL":
-            subset_name = args.subset_file.split(".")[0]
+        if args.subset != "NULL":
+            subset_name = args.subset.split(".")[0]
             output += "." + subset_name
 
-    bin_size = int(args.bin_size)
+    binsize = int(args.binsize)
     
     print("Reading transcripts")
-    if args.subset_file == "NULL":
-        max_gene_length, genes_length = get_genes(args.transcripts_file)
+    if args.subset == "NULL":
+        max_gene_length, genes_length = get_genes(args.transcripts)
     else:
-        max_gene_length, genes_length = get_subset_genes(args.transcripts_file, args.subset_file)
+        max_gene_length, genes_length = get_subset_genes(args.transcripts, args.subset)
     print("Done reading transcripts")  
-    gene_coverage_at_bin = get_gene_coverage_at_bin(max_gene_length, bin_size, genes_length)
+    gene_coverage_at_bin = get_gene_coverage_at_bin(max_gene_length, binsize, genes_length)
     print("Reading ribosome footprint", args.footprint)
     fp_coverage = get_reads(args.footprint, genes_length) 
     print("Reading mRNA",args.rnaseq) 
@@ -321,7 +308,7 @@ def main():
 
     print("Started binning porcess") 
     ribosomes_gene_bins, last_pos = binning(
-        bin_size,
+        binsize,
         genes_length,
         fp_positions,
         fp_gene_coverage_at_pos,
@@ -329,7 +316,7 @@ def main():
     )
     
     mRNA_gene_bins, _ = binning(
-        bin_size,
+        binsize,
         genes_length,
         mRNA_positions,
         mRNA_gene_coverage_at_pos,
@@ -339,7 +326,7 @@ def main():
 
     print("No. of bins:", len(ribosomes_gene_bins))
 
-    num_bins = int(last_pos / bin_size) + 1
+    num_bins = int(last_pos / binsize) + 1
     gene_bins = ribosomes_gene_bins
     if args.rnaseq != "NULL":
         for i in range(0, num_bins):
@@ -349,24 +336,21 @@ def main():
     # Plotting and summarizing
     # -----------------------------------------
     regression(
-        plot_flag,
         output,
         num_bins,
         fp_coverage,
         gene_bins,
-        bin_size,
+        binsize,
         max_gene_length,
         last_pos,
         genes_length,
-        int(args.y_min),
-        int(args.y_max),
+        int(args.ymin),
+        int(args.ymax),
         int(args.ylogmin),
         int(args.ylogmax),
-        gene_coverage_at_bin, 
-        args.reg_file_name,
+        gene_coverage_at_bin,plot 
     )
     
-    print("Done Plotting and Regression")
     print("All is done")
     
 
