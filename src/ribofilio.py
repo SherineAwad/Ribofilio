@@ -11,11 +11,11 @@ from sklearn.metrics import mean_squared_error, r2_score
 # -----------------------------------------------
 # Read and parse input files
 # -----------------------------------------------
-def get_subset_genes(transcripts, subset):
+def get_subset_genes(transcripts, subset_file):
     subset = []
     max_gene_length = -100 
     genes_length = {} 
-    for line in open(subset):
+    for line in open(subset_file):
         gene_name = line.rstrip()
         if "mRNA" in gene_name:
             gene_name=gene_name.split('_')[0]
