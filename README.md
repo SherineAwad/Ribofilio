@@ -50,13 +50,13 @@ Where:
    ``--output or -o for output name`` 
 
 
-   ``--ymin is the minimum y axis for linear plots (default: 0)`` 
+   ``--ymin is the minimum y axis for linear plots (default: -20)`` 
 
 
-   ``--ymax is the maximum y axis for linear plots (default: 30)``
+   ``--ymax is the maximum y axis for linear plots (default: 20)``
 
 
-   ``--ylogmin is the minimum y axis for log plots (default: -5)``
+   ``--ylogmin is the minimum y axis for log plots (default: -15)``
 
 
    ``--ylogmax is the maximum y axis for log plots (default: 5)``
