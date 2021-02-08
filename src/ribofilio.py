@@ -96,7 +96,7 @@ def fill_positions (coverage, max_gene_length):
 def binning(
     binsize, positions, gene_coverage_at_pos, max_gene_length):
     gene_bins = []
-    c = 0 #0.000001
+    c = 0.000001
     
     num_bins = int(max_gene_length / binsize) + 1
     gene_bins = [0] * num_bins
