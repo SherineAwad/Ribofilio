@@ -175,9 +175,7 @@ def regression(
     rmse = mean_squared_error(y, y_predicted, sample_weight =weight)
     r2 = r2_score(y, y_predicted, sample_weight =weight)
     regfp = open(str(output)+".regression.log", "a+")
-    print("Drop off =",str(regression_model.coef_[0][0]),file =regfp )
-    print("RMSE =",str(rmse), file=regfp)
-    print("Rsquare = ",str(r2),file=regfp) 
+    print(str(regression_model.coef_[0][0]),str(regression_model.intercept_[0]),str(rmse),str(r2), file=regfp)
     # printing values
     print("----------------------------------------")
     print("Dropoff Rate:", regression_model.coef_)
@@ -196,15 +194,7 @@ def regression(
         # predicted values
         plt.plot(x, y_predicted, color="r")
         plt.title(output + " Linear Regression", fontsize=12)
-        plt.savefig(output + "_" + str(binsize) + "Log.WLR.png", format="png")
-        regfp = open(str(output)+"regression.log", "a+")
-        print(
-        str(regression_model.coef_[0][0]),
-        str(regression_model.intercept_[0]),
-        str(rmse),
-        str(r2),
-        file=regfp,
-        )
+        plt.savefig(output + "_" + str(binsize) + ".Log.WLR.png", format="png")
         plt.clf()
         #WLR in linear plot 
         plt.figure(figsize=(15, 10))
