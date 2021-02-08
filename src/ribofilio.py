@@ -103,11 +103,9 @@ def binning(
     normalized_positions = [0] * (max_gene_length + 1)
 
     i = 1
-    last_pos = 1
     # Normalize bin position  with the number of gene covering that position
     while i <= max_gene_length:
         normalized_positions[int(i)] = positions[int(i)] / (gene_coverage_at_pos[int(i)] + c)
-        last_pos = i
         i += 1
     
     # Here, we group reads into bins and normalize by binsize, we stop at last_pos
@@ -118,15 +116,13 @@ def binning(
         for i in range(a, b + 1):
             if i > (len(normalized_positions) - 1):
                 break
-            if i > last_pos:
-                break
             position_sum = float(normalized_positions[i])
             gene_bins[index] += position_sum
         gene_bins[index] = float(c + (gene_bins[index] / binsize))
         index += 1
         a = b + 1
         b = b + binsize
-    return gene_bins, last_pos
+    return gene_bins
 
 # -------------------------------------------------------------------------------------------
 # Regression function, plot several figures for the ribosome profiling
@@ -138,7 +134,6 @@ def regression(
     all_bins,
     binsize,
     max_gene_length,
-    last_pos,
     genes_length,
     ymin,
     ymax,
@@ -159,7 +154,7 @@ def regression(
     i = 0
     for i in range(1, num_bins):
         log_gene_bins.append(np.log(i))
-    label = "Bins  Binsize = " + str(binsize) + " Max gene Length =" + str(last_pos)
+    label = "Bins  Binsize = " + str(binsize) + " Max gene Length =" 
 
     # Weighted Linear Regression
     # ------------------
@@ -307,14 +302,14 @@ def main():
     mRNA_positions = fill_positions(mRNA_coverage, max_gene_length) 
 
     print("Started binning porcess") 
-    ribosomes_gene_bins, last_pos = binning(
+    ribosomes_gene_bins = binning(
         binsize,
         fp_positions,
         fp_gene_coverage_at_pos,
         max_gene_length
     )
     
-    mRNA_gene_bins, _ = binning(
+    mRNA_gene_bins = binning(
         binsize,
         mRNA_positions,
         mRNA_gene_coverage_at_pos,
@@ -324,7 +319,7 @@ def main():
 
     print("No. of bins:", len(ribosomes_gene_bins))
 
-    num_bins = int(last_pos / binsize) + 1
+    num_bins = int(max_gene_length / binsize) + 1
     gene_bins = ribosomes_gene_bins
     if args.rnaseq != "NULL":
         for i in range(0, num_bins):
@@ -340,7 +335,6 @@ def main():
         gene_bins,
         binsize,
         max_gene_length,
-        last_pos,
         genes_length,
         int(args.ymin),
         int(args.ymax),
