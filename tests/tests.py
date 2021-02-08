@@ -22,6 +22,7 @@ def test_get_subsets():
     file1 =  os.path.join(path, "tests/test-data","transcripts_sample.fa")
     file2 = os.path.join(path, "tests/test-data","subset.txt")
     max_gene_length, gene_length = rb.get_subset_genes(file1,file2) 
+    
     assert (max_gene_length ==16) 
     assert (gene_length ==  {"YBR024W":16,"YBR021W":8})
 
@@ -51,3 +52,13 @@ def test_fill_positions ():
     positions = [0] * (max_gene_length + 1 )
     coverage = {"YKL152C":[5,7,9], "YBR021W":[3,6,7], "YBR024W":[1,2,3]}
     assert(rb.fill_positions(coverage, max_gene_length) == [0,1,1,2,0,1,1,2,0,1] )
+
+
+def test_binning():
+     positions =[0,2/3, 1,2/3] 
+     gene_coverage_at_pos = [0,2,3,2]
+     max_gene_length = 3 
+     genes_bin, last_pos = rb.binning(2,positions, gene_coverage_at_pos, max_gene_length)
+     print(genes_bin)
+     assert genes_bin == [0.3333333333333333, 0.16666666666666666]
+     assert last_pos == 3

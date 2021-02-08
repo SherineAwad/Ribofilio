@@ -94,9 +94,9 @@ def fill_positions (coverage, max_gene_length):
 # binning function: estimates the drop rate of ribosomes after binning
 # ------------------------------------------------------------------------
 def binning(
-    binsize,  genes_length, positions, gene_coverage_at_pos, max_gene_length):
+    binsize, positions, gene_coverage_at_pos, max_gene_length):
     gene_bins = []
-    c = 0.000001
+    c = 0 #0.000001
     
     num_bins = int(max_gene_length / binsize) + 1
     gene_bins = [0] * num_bins
@@ -248,7 +248,7 @@ def main():
     optional.add_argument("-s", "--subset", dest="subset", default="NULL",help="subset of genes to run the analysis on")
     optional.add_argument("-b", "--binsize", dest="binsize", type=int, default=50, help="Bin size default is 50")
     optional.add_argument("-o", "--out", dest="output", default="", help="Output file name")
-    optional.add_argument("--plot", dest="plot",type=int, default=1, help="Plotting mode is on by default, use --plot 0 to turn off plots")
+    optional.add_argument("-p", "--plot", dest="plot",type=int, default=1, help="Plotting mode is on by default, use --plot 0 to turn off plots")
     optional.add_argument("--ymin", dest="ymin", type=int, default=-20,help="ymin for the y axis min position in linear plot")
     optional.add_argument("--ymax", dest="ymax", type=int, default=20, help="ymax for the y axis max position in linear plot")
     optional.add_argument("--ylogmin", type=int, default=-15, help="ylogmin for y axis min posiiton in log plot")
@@ -309,7 +309,6 @@ def main():
     print("Started binning porcess") 
     ribosomes_gene_bins, last_pos = binning(
         binsize,
-        genes_length,
         fp_positions,
         fp_gene_coverage_at_pos,
         max_gene_length
@@ -317,7 +316,6 @@ def main():
     
     mRNA_gene_bins, _ = binning(
         binsize,
-        genes_length,
         mRNA_positions,
         mRNA_gene_coverage_at_pos,
         max_gene_length 
