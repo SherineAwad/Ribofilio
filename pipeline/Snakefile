@@ -35,3 +35,12 @@ rule  shuffle:
       
     shell: 
         "python src/shuffle.py -t {input.genome} -b {input.fp} -o {params.prefix}"
+
+rule tobed: 
+	input: 
+             "{SAMPLE}.bowtie2.bam" 
+	output: 
+	     "{SAMPLE}.bed"
+	shell: 
+            "bedtools bamtobed -i {input} > {output}"
+
