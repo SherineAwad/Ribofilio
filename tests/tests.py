@@ -60,4 +60,4 @@ def test_binning():
      max_gene_length = 3 
      genes_bin  = rb.binning(2,positions, gene_coverage_at_pos, max_gene_length)
      print(genes_bin)
-     assert genes_bin == [0.3333333333333333, 0.16666666666666666]
+     assert genes_bin == [0.3333341944445046, 0.16666758333337497]
