@@ -1,3 +1,5 @@
+GENOME = "yeast.fa"
+INDEX = "yeast"
 rule run: 
     input:
         fp = "{SAMPLE1}.bed",
@@ -15,7 +17,7 @@ rule run_subset:
         fp = "{SAMPLE1}.bed",
         rna = "{SAMPLE2}.bed",
 	smallset ="{SUBSET}.txt",
-        genome = "yeast.fa"
+        genome = GENOME
     output:
          "{SAMPLE1}_{SAMPLE2}_{SUBSET}.regression.log"
     params:
@@ -27,7 +29,7 @@ rule run_subset:
 rule  shuffle: 
     input: 
         fp = "{SAMPLE}.bed",
-        genome ="yeast.fa"
+        genome = GENOME
     params: 
         prefix = "{SAMPLE}_{IDX}" 
     output:
@@ -44,3 +46,20 @@ rule tobed:
 	shell: 
             "bedtools bamtobed -i {input} > {output}"
 
+rule index: 
+     input: 
+        genome = GENOME
+     output: 
+        INDEX
+     shell: 
+         "bowtie2-build {input.genome} {output} && touch {output}"
+rule tobam:
+      input:
+          index  = INDEX,
+          sample = "galore/{READS}_trimmed.fq.gz"
+      output:
+          "{READS}.bowtie2.bam"  
+      shell: 
+            "bowtie2 -x {input.index} -U {input.sample} -S | samtools view -S -b > {output}" 
+
+  
