@@ -23,4 +23,15 @@ rule run_subset:
 
     shell: "python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -s {input.smallset} -o {params.prefix}"
  
- 
+
+rule  shuffle: 
+    input: 
+        fp = "{SAMPLE}.bed",
+        genome ="yeast.fa"
+    params: 
+        prefix = "{SAMPLE}_{IDX}" 
+    output:
+        "{SAMPLE}_{IDX}" 
+      
+    shell: 
+        "python src/shuffle.py -t {input.genome} -b {input.fp} -o {params.prefix}"
