@@ -8,4 +8,19 @@ rule run:
     params:
         prefix="{SAMPLE1}_{SAMPLE2}"
 
-    shell: "python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -o {params.prefix}" 
+    shell: "python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -o {params.prefix}"
+
+rule run_subset:
+    input:
+        fp = "{SAMPLE1}.bed",
+        rna = "{SAMPLE2}.bed",
+	smallset ="{SUBSET}.txt",
+        genome = "yeast.fa"
+    output:
+         "{SAMPLE1}_{SAMPLE2}_{SUBSET}.regression.log"
+    params:
+        prefix="{SAMPLE1}_{SAMPLE2}_{SUBSET}"
+
+    shell: "python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -s {input.smallset} -o {params.prefix}"
+ 
+ 
