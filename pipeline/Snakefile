@@ -1,0 +1,11 @@
+rule run: 
+    input:
+        fp = "{SAMPLE1}.bed",
+	rna = "{SAMPLE2}.bed",
+	genome = "yeast.fa"
+    output: 
+         "{SAMPLE1}_{SAMPLE2}.regression.log"
+    params:
+        prefix="{SAMPLE1}_{SAMPLE2}"
+
+    shell: "python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -o {params.prefix}" 
