@@ -1,6 +1,6 @@
 GENOME = "yeast.fa"
 INDEX = "yeast"
-N = [1,2,3,4,5,6,7,8,9,10]
+N = range(1,1000)
 
 
 """
@@ -12,7 +12,7 @@ rule ribofilio:
     input:
         fp = "{SAMPLE1}.bed",
 	rna = "{SAMPLE2}.bed",
-        fake = expand("{{SAMPLE1}}_{IDX}.bed", IDX =[1,2,3] ),
+        fake = expand("{{SAMPLE1}}_{IDX}.bed", IDX =N ),
 	genome = GENOME 
     output: 
          "{SAMPLE1}_{SAMPLE2}.regression.log"
