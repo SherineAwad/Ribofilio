@@ -1,6 +1,6 @@
 GENOME = "yeast.fa"
 INDEX = "yeast"
-N = range(1,1000)
+N = range(1,2)
 
 
 """
