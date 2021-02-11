@@ -21,7 +21,11 @@ rule ribofilio:
     params:
         prefix="{SAMPLE1}_{SAMPLE2}"
 
-    shell: "python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -o {params.prefix} && python ../src/ribofilio.py -t {input.genome} -f {input.fake} -r {input.rna} -o {params.prefix} -p 0 "
+    shell:
+        """
+        python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -o {params.prefix} 
+        python ../src/ribofilio.py -t {input.genome} -f {input.fake} -r {input.rna} -o {params.prefix} -p 0
+        """ 
   
 rule run_subset:
     input:
@@ -34,8 +38,11 @@ rule run_subset:
          "{SAMPLE1}_{SAMPLE2}_{SUBSET}.regression.log"
     params:
         prefix="{SAMPLE1}_{SAMPLE2}_{SUBSET}"
-    shell: "python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -s {input.smallset} -o {params.prefix} && python ../src/ribofilio.py -t {input.genome} -f {input.fake} -r {input.rna} -s {input.smallset} -o {params.prefix} -p 0" 
-
+    shell: 
+        """
+        python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -s {input.smallset} -o {params.prefix}
+        python ../src/ribofilio.py -t {input.genome} -f {input.fake} -r {input.rna} -s {input.smallset} -o {params.prefix} -p 0 
+        """ 
 
 rule get_GO:
      output:
