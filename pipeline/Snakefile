@@ -1,6 +1,11 @@
 GENOME = "yeast.fa"
 INDEX = "yeast"
-rule run: 
+
+rule all:
+    input:
+	"sample.trimmed.fq.gz"
+
+rule ribofilio: 
     input:
         fp = "{SAMPLE1}.bed",
 	rna = "{SAMPLE2}.bed",
@@ -25,18 +30,18 @@ rule run_subset:
 
     shell: "python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -s {input.smallset} -o {params.prefix}"
  
-
 rule  shuffle: 
     input: 
         fp = "{SAMPLE}.bed",
+        index = "{IDX}",    
         genome = GENOME
     params: 
         prefix = "{SAMPLE}_{IDX}" 
     output:
-        "{SAMPLE}_{IDX}" 
+        "{SAMPLE}_{IDX}.bed" 
       
     shell: 
-        "python src/shuffle.py -t {input.genome} -b {input.fp} -o {params.prefix}"
+        "python src/shuffle.py -t {input.genome} -i {input.index} -b {input.fp} -o {params.prefix}"
 
 rule tobed: 
 	input: 
@@ -53,6 +58,7 @@ rule index:
         INDEX
      shell: 
          "bowtie2-build {input.genome} {output} && touch {output}"
+
 rule tobam:
       input:
           index  = INDEX,
@@ -62,4 +68,3 @@ rule tobam:
       shell: 
             "bowtie2 -x {input.index} -U {input.sample} -S | samtools view -S -b > {output}" 
 
-  
