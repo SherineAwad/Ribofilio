@@ -48,7 +48,19 @@ rule get_GO:
      shell:
         "Rscript ../src/getBiomart.R"
 
-
+rule cluster: 
+     output: 
+         "yeast02000.txt",
+         "yeast20004000.txt",
+         "yeast40006000.txt",
+         "yeast6000100000.txt"
+     shell: 
+          """
+          python src/gcluster.py yeast.fa yeast02000.txt --max 2000 --min 0
+          python src/gcluster.py yeast.fa yeast20004000.txt --max 4000 --min 2000
+          python src/gcluster.py yeast.fa yeast40006000.txt --max 6000 --min 4000
+          python src/gcluster.py yeast.fa yeast6000100000.txt --max 100000 --min 6000
+          """ 
 rule  shuffle: 
     input: 
         fp = "{SAMPLE}.bed",
