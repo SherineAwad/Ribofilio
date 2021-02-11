@@ -1,6 +1,6 @@
 GENOME = "yeast.fa"
 INDEX = "yeast"
-N = range(1,1000)
+N = range(1,50)
 
 
 """
@@ -24,6 +24,7 @@ rule ribofilio:
 rule run_subset:
     input:
         fp = "{SAMPLE1}.bed",
+        fake = expand("{{SAMPLE1}}_{IDX}.bed", IDX =N ),
         rna = "{SAMPLE2}.bed",
 	smallset ="{SUBSET}.txt",
         genome = GENOME
@@ -31,9 +32,8 @@ rule run_subset:
          "{SAMPLE1}_{SAMPLE2}_{SUBSET}.regression.log"
     params:
         prefix="{SAMPLE1}_{SAMPLE2}_{SUBSET}"
+    shell: "python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -s {input.smallset} -o {params.prefix} && python ../src/ribofilio.py -t {input.genome} -f {input.fake} -r {input.rna} -s {input.smallset} -o {params.prefix} -p 0" 
 
-    shell: "python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -s {input.smallset} -o {params.prefix}"
- 
 rule  shuffle: 
     input: 
         fp = "{SAMPLE}.bed",
