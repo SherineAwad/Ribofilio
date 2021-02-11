@@ -1,6 +1,6 @@
 GENOME = "yeast.fa"
 INDEX = "yeast"
-N = range(1,50)
+N = range(1,1000)
 
 
 """
@@ -8,6 +8,8 @@ rule all:
     input:
 	"sample.trimmed.fq.gz"
 """
+
+
 rule ribofilio: 
     input:
         fp = "{SAMPLE1}.bed",
@@ -33,6 +35,19 @@ rule run_subset:
     params:
         prefix="{SAMPLE1}_{SAMPLE2}_{SUBSET}"
     shell: "python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -s {input.smallset} -o {params.prefix} && python ../src/ribofilio.py -t {input.genome} -f {input.fake} -r {input.rna} -s {input.smallset} -o {params.prefix} -p 0" 
+
+
+rule get_GO:
+     output:
+        "GO0006119.txt",
+        "GO0006406.txt",
+        "GO0006412.txt",
+        "GO0006950.txt",
+        "GO0007049.txt",
+        "GO0009651.txt"
+     shell:
+        "Rscript ../src/getBiomart.R"
+
 
 rule  shuffle: 
     input: 
