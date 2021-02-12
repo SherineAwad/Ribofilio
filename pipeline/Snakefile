@@ -14,7 +14,7 @@ rule ribofilio:
     input:
         fp = "{SAMPLE1}.bed",
 	rna = "{SAMPLE2}.bed",
-        fake = expand("{{SAMPLE1}}_{IDX}.bed", IDX =N ),
+        fake = lambda wildcards: expand("{{SAMPLE1}}_{IDX}.bed", IDX =N ),
 	genome = GENOME 
     output: 
          "{SAMPLE1}_{SAMPLE2}.regression.log"
@@ -30,7 +30,7 @@ rule ribofilio:
 rule run_subset:
     input:
         fp = "{SAMPLE1}.bed",
-        fake = expand("{{SAMPLE1}}_{IDX}.bed", IDX =N ),
+        fake = lambda wildcards: expand("{{SAMPLE1}}_{IDX}.bed", IDX =N ),
         rna = "{SAMPLE2}.bed",
 	smallset ="{SUBSET}.txt",
         genome = GENOME
@@ -68,6 +68,7 @@ rule cluster:
           python src/gcluster.py yeast.fa yeast40006000.txt --max 6000 --min 4000
           python src/gcluster.py yeast.fa yeast6000100000.txt --max 100000 --min 6000
           """ 
+
 rule  shuffle: 
     input: 
         fp = "{SAMPLE}.bed",
