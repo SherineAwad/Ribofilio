@@ -1,6 +1,6 @@
 GENOME = "yeast.fa"
 INDEX = "yeast"
-N = range(1,2)
+N = range(1,3)
 
 
 """
@@ -14,35 +14,67 @@ rule ribofilio:
     input:
         fp = "{SAMPLE1}.bed",
 	rna = "{SAMPLE2}.bed",
-        fake = lambda wildcards: expand("{{SAMPLE1}}_{IDX}.bed", IDX =N ),
 	genome = GENOME 
     output: 
          "{SAMPLE1}_{SAMPLE2}.regression.log"
     params:
         prefix="{SAMPLE1}_{SAMPLE2}"
-
     shell:
-        """
-        python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -o {params.prefix} 
-        python ../src/ribofilio.py -t {input.genome} -f {input.fake} -r {input.rna} -o {params.prefix} -p 0
-        """ 
-  
-rule run_subset:
+        "python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -o {params.prefix} "
+
+rule  shuffle: 
+    input: 
+        fp = "{SAMPLE}.bed",
+        genome = GENOME
+    params: 
+        prefix = "{IDX}" 
+    output:
+        "{SAMPLE}.{IDX}.bed" 
+    shell: 
+        "python src/shuffle.py -t {input.genome} -b {input.fp} -o {output}"
+
+
+rule ribo_all: 
+    input:
+       fp = "{FP}_{RNA}.regression.log",
+       dummies = expand("{{FP}}.{IDX}_{{RNA}}.regression.log", IDX= N)
+    params:
+       all = "{FP}_{RNA}.all" 
+    output:
+       "{FP}_{RNA}.slopes.png"
+    shell: 
+       """
+       cat {input.fp} {input.dummies} > {params.all}
+       python src/stats.py {params.all}
+       """    
+       
+
+rule subset:
     input:
         fp = "{SAMPLE1}.bed",
-        fake = lambda wildcards: expand("{{SAMPLE1}}_{IDX}.bed", IDX =N ),
         rna = "{SAMPLE2}.bed",
 	smallset ="{SUBSET}.txt",
         genome = GENOME
     output:
-         "{SAMPLE1}_{SAMPLE2}_{SUBSET}.regression.log"
+        "{SAMPLE1}_{SAMPLE2}-{SUBSET}.regression.log"
     params:
-        prefix="{SAMPLE1}_{SAMPLE2}_{SUBSET}"
+        prefix="{SAMPLE1}_{SAMPLE2}-{SUBSET}"
     shell: 
-        """
-        python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -s {input.smallset} -o {params.prefix}
-        python ../src/ribofilio.py -t {input.genome} -f {input.fake} -r {input.rna} -s {input.smallset} -o {params.prefix} -p 0 
-        """ 
+        "python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -s {input.smallset} -o {params.prefix}"
+
+rule subset_all: 
+    input:
+       fp = "{FP}_{RNA}-{SUBSET}.regression.log",
+       dummies = expand("{{FP}}.{IDX}_{{RNA}}-{{SUBSET}}.regression.log", IDX= N)
+    params:
+       all = "{FP}_{RNA}.{SUBSET}.all"
+    output:
+       "{FP}_{RNA}.{SUBSET}.slopes.png"
+    shell:
+       """
+       cat {input.fp} {input.dummies} > {params.all}
+       python src/stats.py {params.all}
+       """
 
 rule get_GO:
      output:
@@ -69,18 +101,6 @@ rule cluster:
           python src/gcluster.py yeast.fa yeast6000100000.txt --max 100000 --min 6000
           """ 
 
-rule  shuffle: 
-    input: 
-        fp = "{SAMPLE}.bed",
-        genome = GENOME
-    params: 
-        prefix = "{IDX}" 
-    output:
-        "{SAMPLE}_{IDX}.bed" 
-    shell: 
-        "python src/shuffle.py -t {input.genome} -i {params.prefix} -b {input.fp} > {output}"
-
-          
 rule tobed: 
 	input: 
              "{SAMPLE}.bowtie2.bam" 
@@ -95,7 +115,7 @@ rule index:
      output: 
         INDEX
      shell: 
-         "bowtie2-build {input.genome} {output} && touch {output}"
+        "bowtie2-build {input.genome} {output} && touch {output}"
 
 rule tobam:
       input:
@@ -104,5 +124,5 @@ rule tobam:
       output:
           "{READS}.bowtie2.bam"  
       shell: 
-            "bowtie2 -x {input.index} -U {input.sample} -S | samtools view -S -b > {output}" 
+          "bowtie2 -x {input.index} -U {input.sample} -S | samtools view -S -b > {output}" 
 

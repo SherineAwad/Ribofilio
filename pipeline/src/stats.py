@@ -11,12 +11,14 @@ from pylab import *
 import os.path
 from scipy import stats
 
-def getstats(infile, sample):
+def getstats(infile):
     slope = [] 
     intercept = [] 
     RMSE = [] 
     r2 = []
-    row = 0 
+    row = 0
+    sample =infile.split(".all")[0]
+    print(sample)
     for line in open(infile):
             x = line.rstrip().split(' ')
             s1 = round(float(x[0]), 4)  
@@ -37,19 +39,18 @@ def getstats(infile, sample):
          histtype='bar',
          facecolor='teal',
          alpha=0.5)
-    plt.title('Histogram of Slopes of Shuffled Footprints of Sample '+sample, fontsize=10)
+    plt.title('Histogram of Slopes of Shuffled Footprints of Sample '+str(sample), fontsize=10)
     xtext = 'Real slope = '+ str(round(realslope,4)) +' Count ='+str(count)+' No. of slopes = ' +str(len(slope)) +' PValue = '+str(count/len(slope)) 
     plt.xlabel(str(xtext), fontsize=8)
     
-    plt.savefig(sample+"_shSlopes.png", format='png')
+    plt.savefig(str(sample)+".slopes.png", format='png')
     plt.clf()
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-n', '--name', dest='sample_name', default =False) 
-    parser.add_argument('-i', '--infile',dest='infile', default=False) 
+    parser.add_argument('infile', default=False) 
     args = parser.parse_args()
-    getstats(args.infile,args.sample_name) 
+    getstats(args.infile) 
 if __name__ == '__main__':
     main()
 
