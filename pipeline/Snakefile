@@ -4,64 +4,51 @@ N = range(1,1001)
 ADAPTERS = "CTGTAGGCACCATCAAT"
 
 
-samples_url = {"SRR5090934":"https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090934/SRR5090934.1",
-               "SRR5090935":"https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090935/SRR5090935.1",
-               "SRR5090936":"https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090936/SRR5090936.1",
-               "SRR5090937":"https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090937/SRR5090937.1",
-               "SRR9670817":"https://sra-download.ncbi.nlm.nih.gov/traces/sra53/SRR/009444/SRR9670817",
-               "SRR9670821":"https://sra-download.ncbi.nlm.nih.gov/traces/sra59/SRR/009444/SRR9670821",
-               "SRR9670822":"https://sra-download.ncbi.nlm.nih.gov/traces/sra67/SRR/009444/SRR9670822",
-               "SRR9670814":"https://sra-download.ncbi.nlm.nih.gov/traces/sra25/SRR/009444/SRR9670814",
-               "SRR9670819":"https://sra-download.ncbi.nlm.nih.gov/traces/sra59/SRR/009444/SRR9670819",
-               "SRR9670820":"https://sra-download.ncbi.nlm.nih.gov/traces/sra50/SRR/009444/SRR9670820",
-               "SRR9670818":"https://sra-download.ncbi.nlm.nih.gov/traces/sra53/SRR/009444/SRR9670818",
-               "SRR9670815":"https://sra-download.ncbi.nlm.nih.gov/traces/sra2/SRR/009444/SRR9670815",
-               "SRR9670823":"https://sra-download.ncbi.nlm.nih.gov/traces/sra2/SRR/009444/SRR9670823",
-               "SRR9670816":"https://sra-download.ncbi.nlm.nih.gov/traces/sra19/SRR/009444/SRR9670816"}
-
-
-FP_RNA = {"SRR9670822":"SRR9670821",
-          "SRR9670823":"SRR9670820",
-          "SRR5090937":"SRR5090935",
-          "SRR5090936":"SRR5090934"}
-
-
-"""
 rule all:
-    output:
-         FP_RNA["SRR9670822"]_FP_RNA["SRR9670822"].value().slopes.png
-"""
+    input:
+        "SRR5090936_SRR5090934.slopes.png",
+        "SRR5090936_SRR5090934-GO0006119.slopes.png",
+	"SRR5090936_SRR5090934-yeast02000.slopes.png"
+rule download: 
+     output: 
+          "SRR5090936.fastq",
+          "SRR5090934.fastq", 
+          "SRR5090937.fastq", 
+          "SRR5090935.fastq",
+          "SRR9670820.fastq",
+          "SRR9670821.fastq", 
+          "SRR9670822.fastq",
+          "SRR9670823.fastq"
 
-rule download:
-    output: "{sample}.fastq" 
-    params:
-        download = lambda wildcards: samples_url[wildcards.sample]
-    shell: """
-        wget {params.download} 
-        fastq-dump --split-files SRR5090934.1
-	fastq-dump --split-files SRR5090935.1
-	fastq-dump --split-files SRR5090936.1
-	fastq-dump --split-files SRR5090937.1
-	mv SRR5090934.1_1.fastq  SRR5090934.fastq
-	mv SRR5090935.1_1.fastq  SRR5090935.fastq
-	mv SRR5090936.1_1.fastq  SRR5090936.fastq
-	mv SRR5090937.1_1.fastq  SRR5090937.fastq
-        fastq-dump --split-files SRR9670817
-	fastq-dump --split-files SRR9670821
-	fastq-dump --split-files SRR9670822
-	fastq-dump --split-files SRR9670820
-	fastq-dump --split-files SRR9670818
-	fastq-dump --split-files SRR9670815
-	fastq-dump --split-files SRR9670823
-	fastq-dump --split-files SRR9670816
-        """
+     shell: 
+         """
+         wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090934/SRR5090934.1 
+	 wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090935/SRR5090935.2
+         wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090937/SRR5090937.1
+         wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090936/SRR5090936.1
+         fastq-dump --split-files SRR5090935.1
+         fastq-dump --split-files SRR5090936.1
+         fastq-dump --split-files SRR5090937.1
+         mv SRR5090934.1_1.fastq  SRR5090934.fastq
+         mv SRR5090935.1_1.fastq  SRR5090935.fastq
+         mv SRR5090936.1_1.fastq  SRR5090936.fastq
+         mv SRR5090937.1_1.fastq  SRR5090937.fastq
+         wget https://sra-download.ncbi.nlm.nih.gov/traces/sra50/SRR/009444/SRR9670820
+         wget https://sra-download.ncbi.nlm.nih.gov/traces/sra59/SRR/009444/SRR9670821
+         wget https://sra-download.ncbi.nlm.nih.gov/traces/sra67/SRR/009444/SRR9670822
+         wget https://sra-download.ncbi.nlm.nih.gov/traces/sra2/SRR/009444/SRR9670823
+         fastq-dump --split-files SRR9670820
+         fastq-dump --split-files SRR9670821
+         fastq-dump --split-files SRR9670822
+         fastq-dump --split-files SRR9670823
+         """ 
 
 
 rule ribofilio: 
     input:
-        fp = "{SAMPLE1}.bed",
-	rna = "{SAMPLE2}.bed",
-	genome = GENOME 
+         fp = "{SAMPLE1}.bed",
+	 rna = "{SAMPLE2}.bed",
+	 genome = GENOME 
     output: 
          "{SAMPLE1}_{SAMPLE2}.regression.log"
     params:
@@ -74,9 +61,11 @@ rule  shuffle:
         fp = "{SAMPLE}.bed",
         genome = GENOME
     params: 
-        prefix = "{IDX}" 
+        prefix = "{wildcards.IDX}" 
     output:
-        "{SAMPLE}.{IDX}.bed" 
+        "{SAMPLE}.{wildcards.IDX}.bed"
+    wildcard_constraints:
+        IDX="\d+" 
     shell: 
         "python src/shuffle.py -t {input.genome} -b {input.fp} -o {output}"
 
@@ -100,14 +89,14 @@ rule subset:
     input:
         fp = "{SAMPLE1}.bed",
         rna = "{SAMPLE2}.bed",
-	smallset ="{SUBSET}.txt",
+	subset = "{SUBSET}.txt",
         genome = GENOME
     output:
         "{SAMPLE1}_{SAMPLE2}-{SUBSET}.regression.log"
     params:
         prefix="{SAMPLE1}_{SAMPLE2}-{SUBSET}"
     shell: 
-        "python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -s {input.smallset} -o {params.prefix}"
+        "python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -s {input.subset} -o {params.prefix}"
 
 rule subset_all: 
     input:
@@ -148,9 +137,10 @@ rule cluster:
           python src/gcluster.py yeast.fa yeast6000100000.txt --max 100000 --min 6000
           """ 
 
+
 rule tobed: 
 	input: 
-             "{SAMPLE}.bam" 
+             "{SAMPLE}.bowtie2.bam" 
 	output: 
 	     "{SAMPLE}.bed"
 	shell: 
@@ -169,14 +159,13 @@ rule tobam:
           index  = INDEX,
           sample = "galore/{READS}_trimmed.fq.gz"
       output:
-          "{READS}.bowtie2.bam"  
+          "{READS}.bowtie2.bam"
       shell: 
-          "bowtie2 -x {input.index} -U {input.sample} -S | samtools view -S -b > {output}" 
-
+          "bowtie2 -x {input.index} -U {input.sample} -S | samtools view -S -b > {output[0]}" 	
 
 rule trim: 
     input:
-        sample = "SAMPLE}.fastq"
+        fp = "{SAMPLE}.fastq"
     output: 
         "galore/{SAMPLE}_trimmed.fq.gz"
     params: 
@@ -185,5 +174,5 @@ rule trim:
         """
         mkdir galore
         mkdir fastqc
-        trim_galore --gzip --retain_unpaired --trim1 -a {params.adapter} --fastqc --fastqc_args "--outdir fastqc" -o galore {output}  
+        trim_galore --gzip --retain_unpaired --trim1 -a {params.adapter} --fastqc --fastqc_args "--outdir fastqc" -o galore {output} {input.fp}  
         """
