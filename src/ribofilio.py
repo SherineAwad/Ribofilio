@@ -118,7 +118,7 @@ def binning(
                 break
             position_sum = float(normalized_positions[i])
             gene_bins[index] += position_sum
-        gene_bins[index] = float(c + (gene_bins[index] / binsize))
+        gene_bins[index] = float( gene_bins[index] /(c + binsize))
         index += 1
         a = b + 1
         b = b + binsize
@@ -154,7 +154,7 @@ def regression(
     i = 0
     for i in range(1, num_bins):
         log_gene_bins.append(np.log(i))
-    label = "Bins  Binsize = " + str(binsize) + " Max gene Length =" 
+    label = "Bins" 
 
     # Weighted Linear Regression
     # ------------------
@@ -193,8 +193,8 @@ def regression(
         plt.ylabel("y")
         # predicted values
         plt.plot(x, y_predicted, color="r")
-        plt.title(output + " Linear Regression", fontsize=12)
-        plt.savefig(output + "_" + str(binsize) + ".Log.WLR.png", format="png")
+        plt.title(output + " Weighted Linear Regression", fontsize=12)
+        plt.savefig(output + ".Log.WLR.png", format="png")
         plt.clf()
         #WLR in linear plot 
         plt.figure(figsize=(15, 10))
@@ -212,9 +212,11 @@ def regression(
         plt.ylabel("y")
         # predicted values
         plt.plot(x, y_predicted, color="r")
-        plt.title(output + " Linear Regression", fontsize=12)
-        plt.savefig(output + "_" + str(binsize) + ".Linear.WLR.png", format="png")
+        plt.title(output + " Weighted Linear Regression", fontsize=12)
+        plt.savefig(output + ".Linear.WLR.png", format="png")
         print("Plotting is done") 
+
+
 # ---------------------------------------------------------------------------
 # Main function: gets input paramters and calls corresponding functions
 # ---------------------------------------------------------------------------
