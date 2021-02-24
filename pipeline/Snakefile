@@ -6,9 +6,10 @@ ADAPTERS = "CTGTAGGCACCATCAAT"
 
 rule all:
     input:
-        "SRR5090936_SRR5090934.slopes.png",
         "SRR5090936_SRR5090934-GO0006119.slopes.png",
 	"SRR5090936_SRR5090934-yeast02000.slopes.png"
+
+"""
 rule download: 
      output: 
           "SRR5090936.fastq",
@@ -21,7 +22,6 @@ rule download:
           "SRR9670823.fastq"
 
      shell: 
-         """
          wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090934/SRR5090934.1 
 	 wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090935/SRR5090935.2
          wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090937/SRR5090937.1
@@ -41,8 +41,7 @@ rule download:
          fastq-dump --split-files SRR9670821
          fastq-dump --split-files SRR9670822
          fastq-dump --split-files SRR9670823
-         """ 
-
+"""
 
 rule ribofilio: 
     input:
@@ -55,20 +54,6 @@ rule ribofilio:
         prefix="{SAMPLE1}_{SAMPLE2}"
     shell:
         "python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -o {params.prefix} "
-
-rule  shuffle: 
-    input: 
-        fp = "{SAMPLE}.bed",
-        genome = GENOME
-    params: 
-        prefix = "{wildcards.IDX}" 
-    output:
-        "{SAMPLE}.{wildcards.IDX}.bed"
-    wildcard_constraints:
-        IDX="\d+" 
-    shell: 
-        "python src/shuffle.py -t {input.genome} -b {input.fp} -o {output}"
-
 
 rule ribo_all: 
     input:
@@ -84,7 +69,6 @@ rule ribo_all:
        python src/stats.py {params.all}
        """    
        
-
 rule subset:
     input:
         fp = "{SAMPLE1}.bed",
@@ -138,13 +122,17 @@ rule cluster:
           """ 
 
 
-rule tobed: 
-	input: 
-             "{SAMPLE}.bowtie2.bam" 
-	output: 
-	     "{SAMPLE}.bed"
-	shell: 
-            "bedtools bamtobed -i {input} > {output}"
+rule  shuffle:
+    input:
+        fp = "{SAMPLE}.bed",
+        genome = GENOME
+    output:
+        expand("{{SAMPLE}}.{IDX}.bed", IDX= N) 
+    run:
+        """
+        for i in N:
+              shell(python src/shuffle.py -t {input.genome} -b {input.fp} -o {SAMPLE}.i.bed" 
+        """
 
 rule index: 
      input: 
@@ -153,6 +141,22 @@ rule index:
         INDEX
      shell: 
         "bowtie2-build {input.genome} {output} && touch {output}"
+
+	
+rule trim: 
+    input:
+        sample = "{SAMPLE}.fastq",
+	index = INDEX
+    output:
+        "galore/{SAMPLE}_trimmed.fq.gz", 
+    params: 
+       adapter =ADAPTERS
+    shell:
+        """
+        mkdir galore
+        mkdir fastqc
+        trim_galore --gzip --retain_unpaired --trim1 -a {params.adapter} --fastqc --fastqc_args "--outdir fastqc" -o galore {output[0]} {input.sample}  
+        """
 
 rule tobam:
       input:
@@ -163,16 +167,11 @@ rule tobam:
       shell: 
           "bowtie2 -x {input.index} -U {input.sample} -S | samtools view -S -b > {output[0]}" 	
 
-rule trim: 
-    input:
-        fp = "{SAMPLE}.fastq"
-    output: 
-        "galore/{SAMPLE}_trimmed.fq.gz"
-    params: 
-       adapter =ADAPTERS
-    shell:
-        """
-        mkdir galore
-        mkdir fastqc
-        trim_galore --gzip --retain_unpaired --trim1 -a {params.adapter} --fastqc --fastqc_args "--outdir fastqc" -o galore {output} {input.fp}  
-        """
+rule tobed: 
+	input: 
+             "{SAMPLE}.bowtie2.bam" 
+	output: 
+	     "{SAMPLE}.bed"
+	shell: 
+            "bedtools bamtobed -i {input} > {output}"
+

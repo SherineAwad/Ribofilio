@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from pylab import *
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
+import statsmodels.api as sm
 
 # -----------------------------------------------
 # Read and parse input files
@@ -118,7 +119,7 @@ def binning(
                 break
             position_sum = float(normalized_positions[i])
             gene_bins[index] += position_sum
-        gene_bins[index] = float( gene_bins[index] /(c + binsize))
+        gene_bins[index] = c +float( gene_bins[index] / binsize)
         index += 1
         a = b + 1
         b = b + binsize
@@ -151,72 +152,91 @@ def regression(
         bins.append(i)
         gene_bins.append(all_bins[i])
     log_gene_bins.append(0)
-    i = 0
     for i in range(1, num_bins):
         log_gene_bins.append(np.log(i))
-    label = "Bins" 
+    label = "Bin Number" 
 
     # Weighted Linear Regression
     # ------------------
     x = np.array(bins).reshape(-1, 1)
-    y = np.array(np.log(gene_bins)).reshape(-1, 1)
+    y_in_log = np.array(np.log(gene_bins)).reshape(-1, 1)
+    y_in_linear = np.array(gene_bins).reshape(-1, 1)
     regression_model = LinearRegression()
-    W = binsize
-    weight = bins
+    weight = [0] * num_bins  
+    norm_weight = [0] * num_bins
     for i in range(0, len(weight)):
         weight[i] = gene_coverage_at_bin[i]
+        norm_weight[i] = cbrt(weight[i])
     # Fit the data(train the model)
-    regression_model.fit(x, y, sample_weight = weight)
+    regression_model.fit(x, y_in_log, sample_weight = norm_weight)
     # Predict
-    y_predicted = regression_model.predict(x)
+    y_in_log_predicted = regression_model.predict(x)
 
     # model evaluation
-
-    rmse = mean_squared_error(y, y_predicted, sample_weight =weight)
-    r2 = r2_score(y, y_predicted, sample_weight =weight)
+    rmse_in_log = mean_squared_error(y_in_log, y_in_log_predicted, sample_weight =weight)
+    r2_in_log = r2_score(y_in_log, y_in_log_predicted, sample_weight =weight)
+    
     regfp = open(str(output)+".regression.log", "a+")
-    print(str(regression_model.coef_[0][0]),str(regression_model.intercept_[0]),str(rmse),str(r2), file=regfp)
+    sumYminusYbar = 0
+    
+    for i in range (0, num_bins):
+        sumYminusYbar  = (np.square(y_in_log[i] - y_in_log_predicted[i]))
+    SEE_log = sqrt(sumYminusYbar / (num_bins-2) )
+    print(str(regression_model.coef_[0][0]),str(regression_model.intercept_[0]),str(rmse_in_log),str(r2_in_log), str(SEE_log),file=regfp)
     # printing values
     print("----------------------------------------")
     print("Dropoff Rate:", regression_model.coef_)
-    print("Root mean squared error: ", rmse)
-    print("R2 score: ", r2)
+    print("Standard Error is ", SEE_log)
+    print("Root mean squared error: ", rmse_in_log)
+    print("R2 score: ", r2_in_log)
     print("----------------------------------------")
-    print("Regression is done") 
     if plot ==1 : 
 
-        plt.figure(figsize=(15, 10))
+        plt.figure(figsize=(10, 10))
         plt.ylim(ylogmin, ylogmax)
-        plt.scatter(x, y, s=10)
-        xtext = (" Slope: "+str(regression_model.coef_)+ " RMSE: "+ str(rmse)+ " R2 score :"+ str(r2) )
-        plt.xlabel(str(label) + "\n" + str(xtext), fontsize=10)
-        plt.ylabel("y")
+        plt.scatter(x, y_in_log, s=norm_weight)
+        xtext = (" Slope: "+str(regression_model.coef_)+ " RMSE: "+ str(rmse_in_log)+ " R2 score: "+ str(r2_in_log) +" SEE: " +str(SEE_log) )
+        plt.xlabel(str(label) + "\n" + str(xtext), fontsize=12)
+        plt.ylabel("Bin Value", fontsize=12)
         # predicted values
-        plt.plot(x, y_predicted, color="r")
+        plt.plot(x, y_in_log_predicted, color="r")
         plt.title(output + " Weighted Linear Regression", fontsize=12)
         plt.savefig(output + ".Log.WLR.png", format="png")
         plt.clf()
-        #WLR in linear plot 
-        plt.figure(figsize=(15, 10))
-        plt.ylim(ymin, ymax)
-        plt.scatter(x, y, s=10)
-        xtext = (
-        " Slope: "
-        + str(regression_model.coef_)
-        + " RMSE: "
-        + str(rmse)
-        + " R2 score :"
-        + str(r2)
-        )
-        plt.xlabel(str(label) + "\n" + str(xtext), fontsize=10)
-        plt.ylabel("y")
+
+    #WLR in linear mode 
+    regression_model.fit(x, y_in_linear, sample_weight = weight)
+    # Predict
+    y_in_linear_predicted = regression_model.predict(x)
+
+    # model evaluation
+    rmse_in_linear = mean_squared_error(y_in_linear, y_in_linear_predicted, sample_weight =weight)
+    r2_in_linear = r2_score(y_in_linear, y_in_linear_predicted, sample_weight =weight)
+    sumYminusYbar = 0
+    for i in range (0, num_bins):
+        sumYminusYbar  = (np.square(y_in_linear[i] - y_in_linear_predicted[i]))
+    SEE_linear = sqrt(sumYminusYbar / (num_bins-2) )
+    print('Regression in linear mode') 
+    print("----------------------------------------")
+    print("Dropoff Rate:", regression_model.coef_)
+    print("Standard Error is ", SEE_linear)
+    print("Root mean squared error: ", rmse_in_linear)
+    print("R2 score: ", r2_in_linear)
+    print("----------------------------------------")
+    if plot ==1 :
+
+        plt.figure(figsize=(10, 10))
+        plt.ylim(ylogmin, ylogmax)
+        plt.scatter(x, y_in_linear, s=norm_weight)
+        xtext = (" Slope: "+str(regression_model.coef_)+ " RMSE: "+ str(rmse_in_linear)+ " R2 score: "+ str(r2_in_linear)+ " SEE: "+str(SEE_linear) )
+        plt.xlabel(str(label) + "\n" + str(xtext), fontsize=12)
+        plt.ylabel("Bin Value", fontsize=12)
         # predicted values
-        plt.plot(x, y_predicted, color="r")
+        plt.plot(x, y_in_linear_predicted, color="r")
         plt.title(output + " Weighted Linear Regression", fontsize=12)
         plt.savefig(output + ".Linear.WLR.png", format="png")
-        print("Plotting is done") 
-
-
+        plt.clf()
+    
 # ---------------------------------------------------------------------------
 # Main function: gets input paramters and calls corresponding functions
 # ---------------------------------------------------------------------------
@@ -236,10 +256,10 @@ def main():
     optional.add_argument("-b", "--binsize", dest="binsize", type=int, default=50, help="Bin size default is 50")
     optional.add_argument("-o", "--out", dest="output", default="", help="Output file name")
     optional.add_argument("-p", "--plot", dest="plot",type=int, default=1, help="Plotting mode is on by default, use --plot 0 to turn off plots")
-    optional.add_argument("--ymin", dest="ymin", type=int, default=-20,help="ymin for the y axis min position in linear plot")
-    optional.add_argument("--ymax", dest="ymax", type=int, default=20, help="ymax for the y axis max position in linear plot")
-    optional.add_argument("--ylogmin", type=int, default=-15, help="ylogmin for y axis min posiiton in log plot")
-    optional.add_argument("--ylogmax", type=int, default=5, help="ylogmax for y axis max position in log plot")
+    optional.add_argument("--ymin", dest="ymin", type=int, default=-3,help="ymin for the y axis min position in linear plot")
+    optional.add_argument("--ymax", dest="ymax", type=int, default=2, help="ymax for the y axis max position in linear plot")
+    optional.add_argument("--ylogmin", type=int, default=-3, help="ylogmin for y axis min position in log plot")
+    optional.add_argument("--ylogmax", type=int, default=2, help="ylogmax for y axis max position in log plot")
     args = parser.parse_args()
     plot = args.plot 
     if plot ==1:
@@ -293,7 +313,7 @@ def main():
     fp_positions = fill_positions(fp_coverage, max_gene_length) 
     mRNA_positions = fill_positions(mRNA_coverage, max_gene_length) 
 
-    print("Started binning porcess") 
+    print("Started binning process") 
     ribosomes_gene_bins = binning(
         binsize,
         fp_positions,
