@@ -1,100 +1,36 @@
-GENOME = "yeast.fa"
-INDEX = "yeast"
-N = range(1,1001)
-ADAPTERS = "CTGTAGGCACCATCAAT"
-
-
-rule all:
-    input:
-        "SRR5090936_SRR5090934-GO0006119.slopes.png",
-	"SRR5090936_SRR5090934-yeast02000.slopes.png"
-
-"""
-rule download: 
-     output: 
-          "SRR5090936.fastq",
-          "SRR5090934.fastq", 
-          "SRR5090937.fastq", 
-          "SRR5090935.fastq",
-          "SRR9670820.fastq",
-          "SRR9670821.fastq", 
-          "SRR9670822.fastq",
-          "SRR9670823.fastq"
-
-     shell: 
-         wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090934/SRR5090934.1 
-	 wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090935/SRR5090935.2
-         wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090937/SRR5090937.1
-         wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090936/SRR5090936.1
-         fastq-dump --split-files SRR5090935.1
-         fastq-dump --split-files SRR5090936.1
-         fastq-dump --split-files SRR5090937.1
-         mv SRR5090934.1_1.fastq  SRR5090934.fastq
-         mv SRR5090935.1_1.fastq  SRR5090935.fastq
-         mv SRR5090936.1_1.fastq  SRR5090936.fastq
-         mv SRR5090937.1_1.fastq  SRR5090937.fastq
-         wget https://sra-download.ncbi.nlm.nih.gov/traces/sra50/SRR/009444/SRR9670820
-         wget https://sra-download.ncbi.nlm.nih.gov/traces/sra59/SRR/009444/SRR9670821
-         wget https://sra-download.ncbi.nlm.nih.gov/traces/sra67/SRR/009444/SRR9670822
-         wget https://sra-download.ncbi.nlm.nih.gov/traces/sra2/SRR/009444/SRR9670823
-         fastq-dump --split-files SRR9670820
-         fastq-dump --split-files SRR9670821
-         fastq-dump --split-files SRR9670822
-         fastq-dump --split-files SRR9670823
-"""
+configfile: "config.yaml"
 
 rule ribofilio: 
     input:
-         fp = "{SAMPLE1}.bed",
-	 rna = "{SAMPLE2}.bed",
-	 genome = GENOME 
+         "{fp}.bed",
+	 "{rna}.bed",
+	 genome = config['GENOME'] 
     output: 
-         "{SAMPLE1}_{SAMPLE2}.regression.log"
+         "{fp}_{rna}.regression.log"
     params:
-        prefix="{SAMPLE1}_{SAMPLE2}"
+        prefix="{fp}_{rna}"
     shell:
-        "python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -o {params.prefix} "
-
-rule ribo_all: 
+        """
+        python ../src/ribofilio.py -t {input[2]} -f {input[0]} -r {input[1]} -o {params.prefix}
+        for i in range (1, config['N']): 
+             python ../src/ribofilio.py -t {input[2]} -f {wildcards.fp}_$i.bed -r {input[1]} -o {params.prefix} 
+        """ 
+rule run_subset:
     input:
-       fp = "{FP}_{RNA}.regression.log",
-       dummies = expand("{{FP}}.{IDX}_{{RNA}}.regression.log", IDX= N)
-    params:
-       all = "{FP}_{RNA}.all" 
+       "{SUBSET}.txt",
+       "{fp}.bed",
+       "{rna}.bed",
+       config['GENOME']
     output:
-       "{FP}_{RNA}.slopes.png"
+        "{fp}_{rna}-{SUBSET}.regression.log"
+    params:
+        prefix="{fp}_{rna}-{SUBSET}"
     shell: 
-       """
-       cat {input.fp} {input.dummies} > {params.all}
-       python src/stats.py {params.all}
-       """    
-       
-rule subset:
-    input:
-        fp = "{SAMPLE1}.bed",
-        rna = "{SAMPLE2}.bed",
-	subset = "{SUBSET}.txt",
-        genome = GENOME
-    output:
-        "{SAMPLE1}_{SAMPLE2}-{SUBSET}.regression.log"
-    params:
-        prefix="{SAMPLE1}_{SAMPLE2}-{SUBSET}"
-    shell: 
-        "python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -s {input.subset} -o {params.prefix}"
-
-rule subset_all: 
-    input:
-       fp = "{FP}_{RNA}-{SUBSET}.regression.log",
-       dummies = expand("{{FP}}.{IDX}_{{RNA}}-{{SUBSET}}.regression.log", IDX= N)
-    params:
-       all = "{FP}_{RNA}.{SUBSET}.all"
-    output:
-       "{FP}_{RNA}.{SUBSET}.slopes.png"
-    shell:
-       """
-       cat {input.fp} {input.dummies} > {params.all}
-       python src/stats.py {params.all}
-       """
+        """
+        python ../src/ribofilio.py -t {input[3]} -f {input[0]} -r {input[1]} -s {input[0]} -o {params.prefix}
+        for i in range (1, config['N']):
+               python ../src/ribofilio.py -t {input[3]} -f {wildcards.fp}_$i.bed -r {input[1]} -s {input[0]} -o {params.prefix}
+        """ 
 
 rule get_GO:
      output:
@@ -121,57 +57,42 @@ rule cluster:
           python src/gcluster.py yeast.fa yeast6000100000.txt --max 100000 --min 6000
           """ 
 
-
-rule  shuffle:
-    input:
-        fp = "{SAMPLE}.bed",
-        genome = GENOME
-    output:
-        expand("{{SAMPLE}}.{IDX}.bed", IDX= N) 
-    run:
-        """
-        for i in N:
-              shell(python src/shuffle.py -t {input.genome} -b {input.fp} -o {SAMPLE}.i.bed" 
-        """
-
 rule index: 
      input: 
-        genome = GENOME
+        genome = config['GENOME']
      output: 
-        INDEX
+        genome_index = config['INDEX']
      shell: 
         "bowtie2-build {input.genome} {output} && touch {output}"
 
-	
 rule trim: 
     input:
-        sample = "{SAMPLE}.fastq",
-	index = INDEX
+       sample = "{sample}.fastq",
+       index = config['INDEX']
     output:
-        "galore/{SAMPLE}_trimmed.fq.gz", 
+        "galore/{sample}_trimmed.fq.gz", 
     params: 
-       adapter =ADAPTERS
+       adapter = config['ADAPTERS']
     shell:
         """
-        mkdir galore
-        mkdir fastqc
-        trim_galore --gzip --retain_unpaired --trim1 -a {params.adapter} --fastqc --fastqc_args "--outdir fastqc" -o galore {output[0]} {input.sample}  
-        """
+        trim_galore --gzip --retain_unpaired --trim1 -a {params.adapter} --fastqc --fastqc_args "--outdir fastqc" -o galore {input.sample}
+        """ 
 
 rule tobam:
       input:
-          index  = INDEX,
-          sample = "galore/{READS}_trimmed.fq.gz"
+          "galore/{sample}_trimmed.fq.gz",
+          config['INDEX']
       output:
-          "{READS}.bowtie2.bam"
+          "{sample}.bowtie2.bam"
       shell: 
-          "bowtie2 -x {input.index} -U {input.sample} -S | samtools view -S -b > {output[0]}" 	
+          """
+          bowtie2 -x {input[1]} -U {input[0]} -S | samtools view -S -b > {output}
+          """ 
 
 rule tobed: 
 	input: 
-             "{SAMPLE}.bowtie2.bam" 
+            "{sample}.bam"
 	output: 
-	     "{SAMPLE}.bed"
+	    "{sample}.bed"
 	shell: 
             "bedtools bamtobed -i {input} > {output}"
-
