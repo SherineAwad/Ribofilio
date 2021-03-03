@@ -181,7 +181,7 @@ def regression(
     for i in range (0, num_bins):
         sumYminusYbar  = (np.square(y_in_log[i] - y_in_log_predicted[i]))
     SEE_log = sqrt(sumYminusYbar / (num_bins-2) )
-    print(str(regression_model.coef_[0][0]),str(regression_model.intercept_[0]),str(rmse_in_log),str(r2_in_log), str(SEE_log),file=regfp)
+    print(str(regression_model.coef_[0][0]),str(regression_model.intercept_[0]),str(rmse_in_log),str(r2_in_log), str(SEE_log[0]),file=regfp)
     # printing values
     print("----------------------------------------")
     print("Dropoff Rate:", regression_model.coef_)
@@ -194,12 +194,12 @@ def regression(
         plt.figure(figsize=(10, 10))
         plt.ylim(ylogmin, ylogmax)
         plt.scatter(x, y_in_log, s=norm_weight)
-        xtext = (" Slope: "+str(regression_model.coef_)+ " RMSE: "+ str(rmse_in_log)+ " R2 score: "+ str(r2_in_log) +" SEE: " +str(SEE_log) )
-        plt.xlabel(str(label) + "\n" + str(xtext), fontsize=12)
-        plt.ylabel("Bin Value", fontsize=12)
+        xtext = (" Slope: "+str(regression_model.coef_[0][0])+ " RMSE: "+ str(rmse_in_log)+ " SEE: " +str(SEE_log[0]) )
+        plt.xlabel(str(label) + "\n" + str(xtext), fontsize=10)
+        plt.ylabel("Bin Value", fontsize=10)
         # predicted values
         plt.plot(x, y_in_log_predicted, color="r")
-        plt.title(output + " Weighted Linear Regression", fontsize=12)
+        plt.title(output + " Weighted Linear Regression", fontsize=10)
         plt.savefig(output + ".Log.WLR.png", format="png")
         plt.clf()
 
@@ -227,12 +227,12 @@ def regression(
         plt.figure(figsize=(10, 10))
         plt.ylim(ylogmin, ylogmax)
         plt.scatter(x, y_in_linear, s=norm_weight)
-        xtext = (" Slope: "+str(regression_model.coef_)+ " RMSE: "+ str(rmse_in_linear)+ " R2 score: "+ str(r2_in_linear)+ " SEE: "+str(SEE_linear) )
-        plt.xlabel(str(label) + "\n" + str(xtext), fontsize=12)
-        plt.ylabel("Bin Value", fontsize=12)
+        xtext = (" Slope: "+str(regression_model.coef_[0][0])+ " RMSE: "+ str(rmse_in_linear)+ " SEE: "+str(SEE_linear[0]) )
+        plt.xlabel(str(label) + "\n" + str(xtext), fontsize=10)
+        plt.ylabel("Bin Value", fontsize=10)
         # predicted values
         plt.plot(x, y_in_linear_predicted, color="r")
-        plt.title(output + " Weighted Linear Regression", fontsize=12)
+        plt.title(output + " Weighted Linear Regression", fontsize=10)
         plt.savefig(output + ".Linear.WLR.png", format="png")
         plt.clf()
     
