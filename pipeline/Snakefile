@@ -103,7 +103,7 @@ rule get_GO:
         "GO0007049.txt",
         "GO0009651.txt"
      shell:
-        "Rscript ../src/getBiomart.R"
+        "Rscript src/getGO.R"
 
 rule cluster: 
      output: 
