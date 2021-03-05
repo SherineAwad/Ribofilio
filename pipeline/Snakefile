@@ -1,12 +1,9 @@
-GENOME = "yeast.fa"
-INDEX = "yeast"
-N = range(1,1001)
-ADAPTERS = "CTGTAGGCACCATCAAT"
-
+configfile: "config.yaml"
+N =  range(1,1001)
 
 rule all:
     input:
-        "SRR5090936_SRR5090934-GO0006412.slopes.png"
+        expand("{FP}_{RNA}.{group}.slopes.png",FP = config['FP'], RNA = config['RNA'], group=config['subsets'])     
 """
 rule download: 
      output: 
@@ -45,7 +42,7 @@ rule ribofilio:
     input:
          fp = "{SAMPLE1}.bed",
 	 rna = "{SAMPLE2}.bed",
-	 genome = GENOME 
+	 genome = config['GENOME'] 
     output: 
          "{SAMPLE1}_{SAMPLE2}.regression.log"
     params:
@@ -72,7 +69,7 @@ rule subset:
         fp = "{SAMPLE1}.bed",
         rna = "{SAMPLE2}.bed",
 	subset = "{SUBSET}.txt",
-        genome = GENOME
+        genome = config['GENOME']
     output:
         "{SAMPLE1}_{SAMPLE2}-{SUBSET}.regression.log"
     params:
@@ -123,42 +120,41 @@ rule cluster:
 rule  shuffle:
     input:
         fp = "{SAMPLE}.bed",
-        genome = GENOME
+        genome = config['GENOME']
     output:
         expand("{{SAMPLE}}.{IDX}.bed", IDX= N) 
     run:
         """
         for i in N:
-              shell(python src/shuffle.py -t {input.genome} -b {input.fp} -o {SAMPLE}.i.bed" 
+              shell(python src/shuffle.py -t {input.genome} -b {input.fp} -o {SAMPLE}.i.bed) 
         """
 
 rule index: 
      input: 
-        genome = GENOME
+        genome = config['GENOME']
      output: 
-        INDEX
+        config['INDEX']
      shell: 
         "bowtie2-build {input.genome} {output} && touch {output}"
 
-	
 rule trim: 
     input:
         sample = "{SAMPLE}.fastq",
-	index = INDEX
+	index = config['INDEX']
     output:
         "galore/{SAMPLE}_trimmed.fq.gz", 
     params: 
-       adapter =ADAPTERS
+       adapter =config['ADAPTERS']
     shell:
         """
         mkdir galore
         mkdir fastqc
         trim_galore --gzip --retain_unpaired --trim1 -a {params.adapter} --fastqc --fastqc_args "--outdir fastqc" -o galore {output[0]}   
-        """
+        """ 
 
 rule tobam:
       input:
-          index  = INDEX,
+          index  = config['INDEX'],
           sample = "galore/{READS}_trimmed.fq.gz"
       output:
           "{READS}.bowtie2.bam"
@@ -172,4 +168,3 @@ rule tobed:
 	     "{SAMPLE}.bed"
 	shell: 
             "bedtools bamtobed -i {input} > {output}"
-

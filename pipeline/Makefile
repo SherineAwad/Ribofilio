@@ -3,7 +3,8 @@ BBMAP = /home/sa941/software/bbmap
 YEAST = /rds/project/yhbl2/rds-yhbl2-genehunter/SM/annotations/Saccharomyces_cerevisiae/Ensembl/R64-1-1
 
 DATASETS = /rds/project/yhbl2/rds-yhbl2-genehunter/SM/RibosomalProfiling/ribofilio/datasets
-SRC = /rds/project/yhbl2/rds-yhbl2-genehunter/SM/RibosomalProfiling/ribofilio/src
+SRC = /home/ec2-user/ribofilio/pipeline/src
+
 CURRENT  =  /rds/project/yhbl2/rds-yhbl2-genehunter/SM/RibosomalProfiling/ribofilio/pipeline
 
 subset1 := $(shell seq 1 500)
@@ -84,11 +85,11 @@ SRR5090937.bed:
 #--------------
 
 SRR5090937_1000.bed:     
-	$(foreach i, $(subset1), python ${SRC}/shuffle.py -t yeast.fa -b SRR5090937.bed  -o SRR5090937_$(i).bed;) 
-	$(foreach i, $(subset2), python ${SRC}/shuffle.py -t yeast.fa -b SRR5090937.bed  -o SRR5090937_$(i).bed;) 
+	$(foreach i, $(subset1), python ${SRC}/shuffle.py -t yeast.fa -b SRR5090937.bed  -o SRR5090937.$(i).bed;) 
+	$(foreach i, $(subset2), python ${SRC}/shuffle.py -t yeast.fa -b SRR5090937.bed  -o SRR5090937.$(i).bed;) 
 SRR5090936_1000.bed: 
-	$(foreach i, $(subset1), python ${SRC}/shuffle.py -t yeast.fa -b SRR5090936.bed  -o SRR5090936_$(i).bed;) 
-	$(foreach i, $(subset2), python ${SRC}/shuffle.py -t yeast.fa -b SRR5090936.bed  -o SRR5090936_$(i).bed;) 
+	$(foreach i, $(subset1), python ${SRC}/shuffle.py -t yeast.fa -b SRR5090936.bed  -o SRR5090936.$(i).bed;) 
+	$(foreach i, $(subset2), python ${SRC}/shuffle.py -t yeast.fa -b SRR5090936.bed  -o SRR5090936.$(i).bed;) 
 
 #----------------------------------
 #Main: SRR5090936 and SRR5090937
