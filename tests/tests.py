@@ -2,11 +2,13 @@ import pytest
 import screed
 import os
 import sys 
+import numpy as np 
 
 path = os.getcwd() 
 path  = os.path.join(path,"src") 
 sys.path.append(path)
 
+print(path)
 import ribofilio as rb  
 
 
@@ -59,5 +61,6 @@ def test_binning():
      gene_coverage_at_pos = [0,2,3,2]
      max_gene_length = 3 
      genes_bin  = rb.binning(2,positions, gene_coverage_at_pos, max_gene_length)
-     print(genes_bin)
-     assert genes_bin == [0.3333330277779907, 0.16666650000012495]
+     round_genes_bin  = np.round(genes_bin, 6)
+     print(round_genes_bin)
+     assert (round_genes_bin  == [0.333334, 0.166668]).all()

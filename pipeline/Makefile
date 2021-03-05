@@ -94,12 +94,12 @@ SRR5090936_1000.bed:
 #----------------------------------
 #Main: SRR5090936 and SRR5090937
 #----------------------------------
-SRR5090936_regfile.log:	
+SRR5090936_regression.log:	
 	python  ${SRC}/ribofilio.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed -o SRR5090936
 	$(foreach i, $(subset1), python  ${SRC}/ribofilio.py -t yeast.fa -f SRR5090936_$(i).bed -r SRR5090934.bed -o SRR5090936 -p 0;)
 	$(foreach i, $(subset2), python  ${SRC}/ribofilio.py -t yeast.fa -f SRR5090936_$(i).bed -r SRR5090934.bed -o SRR5090936 -p 0;)
 
-SRR5090937_regfile.log: 
+SRR5090937_regression.log: 
 	python  ${SRC}/ribofilio.py -t yeast.fa -f SRR5090937.bed -r SRR5090935.bed -o SRR5090937
 	$(foreach i, $(subset1), python  ${SRC}/ribofilio.py -t yeast.fa -f SRR5090937_$(i).bed -r SRR5090935.bed -o SRR5090937 -p 0;)
 	$(foreach i, $(subset2), python  ${SRC}/ribofilio.py -t yeast.fa -f SRR5090937_$(i).bed -r SRR5090935.bed -o SRR5090937 -p 0;)
@@ -108,11 +108,39 @@ SRR5090937_regfile.log:
 #-------------------------------------
 #Gene Length
 #-------------------------------------
-SRR5090936_yeast_0_2000_regfile.log:
+SRR5090936_yeast_4000_6000_regression.log:
 	python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed -o SRR5090936_yeast_4000_6000 -s yeast_4000_6000.txt  
+	$(foreach i, $(subset1), python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090936_$(i).bed -r SRR5090934.bed -o SRR5090936_yeast_4000_6000 -s yeast_4000_6000.txt -p 0;)
+	$(foreach i, $(subset2), python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090936_$(i).bed -r SRR5090934.bed -o SRR5090936_yeast_4000_6000 -s yeast_4000_6000.txt -p 0;)
+SRR5090936_yeast_6000_100000_regression.log:
 	python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed -o SRR5090936_yeast_6000_100000 -s yeast_6000_100000.txt 
+	$(foreach i, $(subset1), python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090936_$(i).bed -r SRR5090934.bed -o SRR5090936_yeast_6000_100000 -s yeast_6000_100000.txt -p 0;)
+	$(foreach i, $(subset2), python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090936_$(i).bed -r SRR5090934.bed -o SRR5090936_yeast_6000_100000 -s yeast_6000_100000.txt -p 0;)
+SRR5090936_yeast_2000_4000_regression.log:
 	python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed -o SRR5090936_yeast_2000_4000 -s yeast_2000_4000.txt  
+	$(foreach i, $(subset1), python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090936_$(i).bed -r SRR5090934.bed -o SRR5090936_yeast_2000_4000 -s yeast_2000_4000.txt -p 0;)
+	$(foreach i, $(subset2), python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090936_$(i).bed -r SRR5090934.bed -o SRR5090936_yeast_2000_4000 -s yeast_2000_4000.txt -p 0;)
+SRR5090936_yeast_0_2000_regression.log:
 	python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed -o SRR5090936_yeast_0_2000 -s yeast_0_2000.txt
+	$(foreach i, $(subset1), python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090936_$(i).bed -r SRR5090934.bed -o SRR5090936_yeast_0_2000 -s yeast_0_2000.txt -p 0;)
+	$(foreach i, $(subset2), python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090936_$(i).bed -r SRR5090934.bed -o SRR5090936_yeast_0_2000 -s yeast_0_2000.txt -p 0;)
+
+SRR5090937_yeast_4000_6000_regression.log:
+	python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090937.bed -r SRR5090935.bed -o SRR5090937_yeast_4000_6000 -s yeast_4000_6000.txt  
+	$(foreach i, $(subset1), python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090937_$(i).bed -r SRR5090935.bed -o SRR5090937_yeast_4000_6000 -s yeast_4000_6000.txt -p 0;)
+	$(foreach i, $(subset2), python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090937_$(i).bed -r SRR5090935.bed -o SRR5090937_yeast_4000_6000 -s yeast_4000_6000.txt -p 0;)
+SRR5090937_yeast_6000_100000_regression.log:
+	python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090937.bed -r SRR5090935.bed -o SRR5090937_yeast_6000_100000 -s yeast_6000_100000.txt 
+	$(foreach i, $(subset1), python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090937_$(i).bed -r SRR5090935.bed -o SRR5090937_yeast_6000_100000 -s yeast_6000_100000.txt -p 0;)
+	$(foreach i, $(subset2), python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090937_$(i).bed -r SRR5090935.bed -o SRR5090937_yeast_6000_100000 -s yeast_6000_100000.txt -p 0;)
+SRR5090937_yeast_2000_4000_regression.log:
+	python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090937.bed -r SRR5090935.bed -o SRR5090937_yeast_2000_4000 -s yeast_2000_4000.txt  
+	$(foreach i, $(subset1), python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090937_$(i).bed -r SRR5090935.bed -o SRR5090937_yeast_2000_4000 -s yeast_2000_4000.txt -p 0;)
+	$(foreach i, $(subset2), python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090937_$(i).bed -r SRR5090935.bed -o SRR5090937_yeast_2000_4000 -s yeast_2000_4000.txt -p 0;)
+SRR5090937_yeast_0_2000_regression.log:
+	python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090937.bed -r SRR5090935.bed -o SRR5090937_yeast_0_2000 -s yeast_0_2000.txt
+	$(foreach i, $(subset1), python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090937_$(i).bed -r SRR5090935.bed -o SRR5090937_yeast_0_2000 -s yeast_0_2000.txt -p 0;)
+	$(foreach i, $(subset2), python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090937_$(i).bed -r SRR5090935.bed -o SRR5090937_yeast_0_2000 -s yeast_0_2000.txt -p 0;)
 
 #---------------
 #Gene Ontology
@@ -139,14 +167,6 @@ SRR5090936_GO0006950_regfile.log:
 	$(foreach i, $(subset1), python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090936_$(i).bed -r SRR5090934.bed  -o SRR5090936_GO0006950_$(i) -s ${DATASETS}/GO_0006950.txt -p 0;)
 	$(foreach i, $(subset2), python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090936_$(i).bed -r SRR5090934.bed  -o SRR5090936_GO0006950_$(i) -s ${DATASETS}/GO_0006950.txt -p 0;)
 
-
-#Gene Length 
-#---------------
-SRR5090937_yeast_0_2000_regfile.log:
-	python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090937.bed -r SRR5090935.bed -o SRR5090937_yeast_4000_6000 -s yeast_4000_6000.txt 
-	python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090937.bed -r SRR5090935.bed -o SRR5090937_yeast_6000_100000 -s yeast_6000_100000.txt
-	python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090937.bed -r SRR5090935.bed -o SRR5090937_yeast_2000_4000 -s yeast_2000_4000.txt
-	python ${SRC}/ribofilio.py -t yeast.fa -f SRR5090937.bed -r SRR5090935.bed -o SRR5090937_yeast_0_2000 -s yeast_0_2000.txt
 
 
 #----
@@ -225,11 +245,12 @@ SRR9670822_1000.bed:
 	$(foreach i, $(subset1), python src/shuffle.py -t yeast.fa -b SRR9670822.bed  -o SRR9670822_$(i).bed;)
 	$(foreach i, $(subset2), python src/shuffle.py -t yeast.fa -b SRR9670822.bed  -o SRR9670822_$(i).bed;)
 
-
-SRR9670823_1000.bed:     
-	$(foreach i, $(subset1), python src/shuffle.py -t yeast.fa -b SRR9670823.bed  -o SRR9670823_$(i).bed;)
-	$(foreach i, $(subset2), python src/shuffle.py -t yeast.fa -b SRR9670823.bed  -o SRR9670823_$(i).bed;)
-
+tmp = $(shell seq 529 1000)
+SRR9670823_1000.bed:   
+	$(foreach i, $(tmp), python src/shuffle.py -t yeast.fa -b SRR9670823.bed  -o SRR9670823_$(i).bed;)	
+xx:
+	#$(foreach i, $(subset1), python src/shuffle.py -t yeast.fa -b SRR9670823.bed  -o SRR9670823_$(i).bed;)
+	#$(foreach i, $(subset2), python src/shuffle.py -t yeast.fa -b SRR9670823.bed  -o SRR9670823_$(i).bed;)
 
 #Main SRR9670822
 #------------------
@@ -286,3 +307,7 @@ SRR9670822_GO0009651_regfile.log:
 	$(foreach i, $(subset1), python ${SRC}/ribofilio.py -t yeast.fa -f SRR9670816_$(i).bed -r SRR9670820.bed  -o SRR9670822_GO0009651 -s ${DATASETS}/GO_0009651.txt -p 0;)
 	$(foreach i, $(subset2), python ${SRC}/ribofilio.py -t yeast.fa -f SRR9670816_$(i).bed -r SRR9670820.bed  -o SRR9670822_GO0009651 -s ${DATASETS}/GO_0009651.txt -p 0;)
 
+
+MV:
+	$(foreach i, $(subset1), mv -f SRR5090937_$(i).bed SRR5090937.$(i).bed;)
+	$(foreach i, $(subset2), mv -f SRR5090937_$(i).bed SRR5090937.$(i).bed;)
