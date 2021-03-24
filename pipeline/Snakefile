@@ -1,42 +1,10 @@
 configfile: "config.yaml"
-N =  range(1,1001)
+N =  range(1, config['N_Shuffled'])
 
 rule all:
     input:
-        expand("{FP}_{RNA}.{group}.slopes.png",FP = config['FP'], RNA = config['RNA'], group=config['subsets'])     
-"""
-rule download: 
-     output: 
-          "SRR5090936.fastq",
-          "SRR5090934.fastq", 
-          "SRR5090937.fastq", 
-          "SRR5090935.fastq",
-          "SRR9670820.fastq",
-          "SRR9670821.fastq", 
-          "SRR9670822.fastq",
-          "SRR9670823.fastq"
-
-     shell: 
-         wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090934/SRR5090934.1 
-	 wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090935/SRR5090935.2
-         wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090937/SRR5090937.1
-         wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090936/SRR5090936.1
-         fastq-dump --split-files SRR5090935.1
-         fastq-dump --split-files SRR5090936.1
-         fastq-dump --split-files SRR5090937.1
-         mv SRR5090934.1_1.fastq  SRR5090934.fastq
-         mv SRR5090935.1_1.fastq  SRR5090935.fastq
-         mv SRR5090936.1_1.fastq  SRR5090936.fastq
-         mv SRR5090937.1_1.fastq  SRR5090937.fastq
-         wget https://sra-download.ncbi.nlm.nih.gov/traces/sra50/SRR/009444/SRR9670820
-         wget https://sra-download.ncbi.nlm.nih.gov/traces/sra59/SRR/009444/SRR9670821
-         wget https://sra-download.ncbi.nlm.nih.gov/traces/sra67/SRR/009444/SRR9670822
-         wget https://sra-download.ncbi.nlm.nih.gov/traces/sra2/SRR/009444/SRR9670823
-         fastq-dump --split-files SRR9670820
-         fastq-dump --split-files SRR9670821
-         fastq-dump --split-files SRR9670822
-         fastq-dump --split-files SRR9670823
-"""
+        expand("{FP}_{RNA}.{group}.slopes.png",FP = config['FP'], RNA = config['RNA'], group=config['subsets']), 
+        expand("{FP}_{RNA}.slopes.png",FP = config['FP'], RNA = config['RNA']) 
 
 rule ribofilio: 
     input:
@@ -53,6 +21,7 @@ rule ribofilio:
 rule ribo_all: 
     input:
        fp = "{FP}_{RNA}.regression.log",
+       shuffled = expand("{{FP}}.{IDX}.bed", IDX=N),
        dummies = expand("{{FP}}.{IDX}_{{RNA}}.regression.log", IDX= N)
     params:
        all = "{FP}_{RNA}.all" 
@@ -80,6 +49,7 @@ rule subset:
 rule subset_all: 
     input:
        fp = "{FP}_{RNA}-{SUBSET}.regression.log",
+       shuffled =  expand("{{FP}}.{IDX}.bed", IDX=N),
        dummies = expand("{{FP}}.{IDX}_{{RNA}}-{{SUBSET}}.regression.log", IDX= N)
     params:
        all = "{FP}_{RNA}.{SUBSET}.all"
@@ -116,18 +86,18 @@ rule cluster:
           python src/gcluster.py yeast.fa yeast6000100000.txt --max 100000 --min 6000
           """ 
 
-
 rule  shuffle:
     input:
         fp = "{SAMPLE}.bed",
         genome = config['GENOME']
     output:
-        expand("{{SAMPLE}}.{IDX}.bed", IDX= N) 
-    run:
-        """
-        for i in N:
-              shell(python src/shuffle.py -t {input.genome} -b {input.fp} -o {SAMPLE}.i.bed) 
-        """
+        expand("{{SAMPLE}}.{IDX}.bed", IDX=N)
+    params: 
+        config['N_Shuffled']
+    shell:
+         """
+         python src/shuffle.py -t {input.genome} -b {input.fp} -o {wildcards.SAMPLE} -n {params}
+         """ 
 
 rule index: 
      input: 
@@ -147,9 +117,7 @@ rule trim:
        adapter =config['ADAPTERS']
     shell:
         """
-        mkdir galore
-        mkdir fastqc
-        trim_galore --gzip --retain_unpaired --trim1 -a {params.adapter} --fastqc --fastqc_args "--outdir fastqc" -o galore {output[0]}   
+        trim_galore --gzip --retain_unpaired --trim1 -a {params.adapter} --fastqc --fastqc_args "--outdir fastqc" -o galore {input.sample}   
         """ 
 
 rule tobam:
@@ -157,14 +125,21 @@ rule tobam:
           index  = config['INDEX'],
           sample = "galore/{READS}_trimmed.fq.gz"
       output:
+          "{READS}.sam",
           "{READS}.bowtie2.bam"
       shell: 
-          "bowtie2 -x {input.index} -U {input.sample} -S | samtools view -S -b > {output[0]}" 	
+          """ 
+           bowtie2 -x {input.index} -U {input.sample} -S {output[0]}
+           samtools view -S -b {output[0]} > {output[1]}
+          """ 	
 
 rule tobed: 
-	input: 
-             "{SAMPLE}.bowtie2.bam" 
-	output: 
-	     "{SAMPLE}.bed"
-	shell: 
-            "bedtools bamtobed -i {input} > {output}"
+        input: 
+             "{SAMPLE}.bowtie2.bam", 
+             genome = config['GENOME'] 
+        output: 
+	     "{SAMPLE}.bed" 
+	run: 
+            """
+            bedtools bamtobed -i {input} > {output}
+            """
