@@ -31,7 +31,8 @@ def get_subset_genes(transcripts, subset_file):
     print ('Maximum gene length is',max_gene_length)
     return max_gene_length, genes_length
 
-def get_genes(transcripts): 
+def get_genes(transcripts):
+    print(transcripts)
     max_gene_length = -100 
     genes_length = {} 
     itr = 0 
@@ -41,7 +42,7 @@ def get_genes(transcripts):
         if (itr % 1000) ==0: 
             print(".....................")
         if "mRNA" in gene_name:
-            gname=gname.split('_')[0]
+            gene_name=gene_name.split('_')[0]
         genes_length[str(gene_name)] = int(len(record.sequence))
         if genes_length[gene_name] > max_gene_length:
             max_gene_length = genes_length[gene_name]
@@ -265,6 +266,7 @@ def main():
         print("Plot mode is on, regression plots will be printed")
     else: 
         print("Plot mode is off, no plots will be printed") 
+    
     '''
      # Check required files exist
     if not os.path.exists(args.transcripts):
