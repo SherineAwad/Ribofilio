@@ -18,13 +18,13 @@ Ribofilio is a tool to measure ribosomal profiling drop rate that has been teste
 To run ribofilio:
 
 
-	python ribofilio.py --transcripts --footprint footprint_sample --rnaseq rnaseq_sample --binsize --output output 
+	python ribofilio.py --transcripts --footprint footprint.bed --rnaseq rnaseq.bed --binsize binsize --output output 
    
  
 or simply:
 
 
-	python ribofilio.py -t transcripts -f -r  -b -o 
+	python ribofilio.py -t transcripts -f footprint.bed -r rnaseq.bed  -b binsize -o output 
 
  
 Where: 
@@ -48,16 +48,16 @@ Where:
    ``--output or -o for output name`` 
 
 
-   ``--ymin is the minimum y axis for linear plots (default: -20)`` 
+   ``--ymin is the minimum y axis for linear plots (default: -3)`` 
 
 
-   ``--ymax is the maximum y axis for linear plots (default: 20)``
+   ``--ymax is the maximum y axis for linear plots (default: 2)``
 
 
-   ``--ylogmin is the minimum y axis for log plots (default: -15)``
+   ``--ylogmin is the minimum y axis for log plots (default: -3)``
 
 
-   ``--ylogmax is the maximum y axis for log plots (default: 5)``
+   ``--ylogmax is the maximum y axis for log plots (default: 2)``
 
 
 ### Example 
@@ -70,6 +70,7 @@ Running ribofilio on all gene:
 
 Where yeast.fa is the transcripts, SRR5945809.bed is the bed file of footprints of sample, SRR5945808.bed is the mRNA bed file
 
+here binsize used is 50 as no other binsize is passed. 
 
 To run ribofilio on a subset of genes:
  
