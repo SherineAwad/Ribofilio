@@ -3,7 +3,8 @@ N =  range(1, config['N_Shuffled'])
 
 rule all:
     input:
-        expand("{FP}_{RNA}.{group}.slopes.png",FP = config['FP'], RNA = config['RNA'], group=config['subsets']), 
+        expand("{FP}_{RNA}.{group}.slopes.png",FP = config['FP'], RNA = config['RNA'], group=config['GO']),
+        expand("{FP}_{RNA}.{group}.slopes.png",FP = config['FP'], RNA = config['RNA'], group=config['GL']),
         expand("{FP}_{RNA}.slopes.png",FP = config['FP'], RNA = config['RNA']) 
 
 rule ribofilio: 
@@ -49,6 +50,7 @@ rule subset:
 rule subset_all: 
     input:
        fp = "{FP}_{RNA}-{SUBSET}.regression.log",
+       go = expand("{GO}.txt", GO= config['GO']), 
        shuffled =  expand("{{FP}}.{IDX}.bed", IDX=N),
        dummies = expand("{{FP}}.{IDX}_{{RNA}}-{{SUBSET}}.regression.log", IDX= N)
     params:
@@ -63,14 +65,13 @@ rule subset_all:
 
 rule get_GO:
      output:
-        "GO0006119.txt",
-        "GO0006406.txt",
-        "GO0006412.txt",
-        "GO0006950.txt",
-        "GO0007049.txt",
-        "GO0009651.txt"
+        expand("{GO}.txt", GO=config['GO'])
+     params: 
+        go = expand("{GO}", GO=config['GO'] )
      shell:
-        "Rscript src/getGO.R"
+        """
+         Rscript src/getGO.R {params.go}
+        """
 
 rule cluster: 
      output: 
@@ -86,7 +87,7 @@ rule cluster:
           python src/gcluster.py yeast.fa yeast6000100000.txt --max 100000 --min 6000
           """ 
 
-rule  shuffle:
+rule shuffle:
     input:
         fp = "{SAMPLE}.bed",
         genome = config['GENOME']

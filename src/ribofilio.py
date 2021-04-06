@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from pylab import *
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
+from scipy import stats
 
 # -----------------------------------------------
 # Read and parse input files
@@ -155,6 +156,10 @@ def regression(
     for i in range(1, num_bins):
         log_gene_bins.append(np.log(i))
     label = "Bin Number" 
+    #Scipy Regression 
+    #-----------------
+    slope, intercept, r_value, p_value, std_err = stats.linregress(np.array(bins),np.log(gene_bins))
+    print("Slope: ", slope, " r_value: ", r_value, " pvalue: ", p_value, " std_err: ", std_err) 
 
     # Weighted Linear Regression
     # ------------------
@@ -171,22 +176,30 @@ def regression(
     regression_model.fit(x, y_in_log, sample_weight = norm_weight)
     # Predict
     y_in_log_predicted = regression_model.predict(x)
-
     # model evaluation
     rmse_in_log = mean_squared_error(y_in_log, y_in_log_predicted, sample_weight =weight)
     r2_in_log = r2_score(y_in_log, y_in_log_predicted, sample_weight =weight)
     
     regfp = open(str(output)+".regression.log", "a+")
-    sumYminusYbar = 0
     
+    ebsilon = 0 
+    mean = np.mean(np.array(bins))
+    for i in range(0, num_bins): 
+        ebsilon +=  np.square(i-mean) 
+    xmean = sqrt(ebsilon) 
+    ebsilon = 0
     for i in range (0, num_bins):
-        sumYminusYbar  = (np.square(y_in_log[i] - y_in_log_predicted[i]))
-    SEE_log = sqrt(sumYminusYbar / (num_bins-2) )
-    print(str(regression_model.coef_[0][0]),str(regression_model.intercept_[0]),str(rmse_in_log),str(r2_in_log), str(SEE_log[0]),file=regfp)
+        ebsilon  = ebsilon  + np.square(  y_in_log[i] -  y_in_log_predicted[i] ) 
+    SE_log = sqrt(  (ebsilon / (num_bins-2) ) ) / xmean 
+   
+    print (" SE_log:", SE_log)
+    margin_error = (2.63 *SE_log ) 
+    print("CI is:", r"+/-" , margin_error) 
+    print(str(regression_model.coef_[0][0]),str(regression_model.intercept_[0]),str(rmse_in_log),str(r2_in_log), str(SE_log[0]),file=regfp)
     # printing values
     print("----------------------------------------")
     print("Dropoff Rate:", regression_model.coef_)
-    print("Standard Error is ", SEE_log)
+    print("Standard Error is ", SE_log)
     print("Root mean squared error: ", rmse_in_log)
     print("R2 score: ", r2_in_log)
     print("----------------------------------------")
@@ -195,7 +208,7 @@ def regression(
         plt.figure(figsize=(10, 10))
         plt.ylim(ylogmin, ylogmax)
         plt.scatter(x, y_in_log, s=norm_weight)
-        xtext = (" Slope: "+str(regression_model.coef_[0][0])+ " RMSE: "+ str(rmse_in_log)+ " SEE: " +str(SEE_log[0]) )
+        xtext = (" Slope: "+str(regression_model.coef_[0][0])+ " RMSE: "+ str(rmse_in_log)+ " SE: " +str(SE_log[0]) )
         plt.xlabel(str(label) + "\n" + str(xtext), fontsize=10)
         plt.ylabel("Bin Value", fontsize=10)
         # predicted values
@@ -212,14 +225,19 @@ def regression(
     # model evaluation
     rmse_in_linear = mean_squared_error(y_in_linear, y_in_linear_predicted, sample_weight =weight)
     r2_in_linear = r2_score(y_in_linear, y_in_linear_predicted, sample_weight =weight)
-    sumYminusYbar = 0
+   
+    ebsilon = 0
     for i in range (0, num_bins):
-        sumYminusYbar  = (np.square(y_in_linear[i] - y_in_linear_predicted[i]))
-    SEE_linear = sqrt(sumYminusYbar / (num_bins-2) )
+        ebsilon  += np.square(  y_in_linear_predicted[i] - y_in_linear[i])      
+    SE_linear = sqrt(ebsilon / (num_bins-2) )   / xmean
+    print ("SE_linear:", SE_linear)
+    margin_error = (2.63 *SE_linear)
+    print("CI is:","+/-" , margin_error)
+
     print('Regression in linear mode') 
     print("----------------------------------------")
     print("Dropoff Rate:", regression_model.coef_)
-    print("Standard Error is ", SEE_linear)
+    print("Standard Error is ", SE_linear)
     print("Root mean squared error: ", rmse_in_linear)
     print("R2 score: ", r2_in_linear)
     print("----------------------------------------")
@@ -228,7 +246,7 @@ def regression(
         plt.figure(figsize=(10, 10))
         plt.ylim(ylogmin, ylogmax)
         plt.scatter(x, y_in_linear, s=norm_weight)
-        xtext = (" Slope: "+str(regression_model.coef_[0][0])+ " RMSE: "+ str(rmse_in_linear)+ " SEE: "+str(SEE_linear[0]) )
+        xtext = (" Slope: "+str(regression_model.coef_[0][0])+ " RMSE: "+ str(rmse_in_linear)+ " SE: "+str(SE_linear[0]) )
         plt.xlabel(str(label) + "\n" + str(xtext), fontsize=10)
         plt.ylabel("Bin Value", fontsize=10)
         # predicted values
