@@ -3,12 +3,11 @@ import argparse
 import screed
 import math
 import numpy as np
+import os
 import matplotlib.pyplot as plt
 from pylab import *
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
-from scipy import stats
-
 # -----------------------------------------------
 # Read and parse input files
 # -----------------------------------------------
@@ -156,10 +155,6 @@ def regression(
     for i in range(1, num_bins):
         log_gene_bins.append(np.log(i))
     label = "Bin Number" 
-    #Scipy Regression 
-    #-----------------
-    slope, intercept, r_value, p_value, std_err = stats.linregress(np.array(bins),np.log(gene_bins))
-    print("Slope: ", slope, " r_value: ", r_value, " pvalue: ", p_value, " std_err: ", std_err) 
 
     # Weighted Linear Regression
     # ------------------
@@ -191,17 +186,15 @@ def regression(
     for i in range (0, num_bins):
         ebsilon  = ebsilon  + np.square(  y_in_log[i] -  y_in_log_predicted[i] ) 
     SE_log = sqrt(  (ebsilon / (num_bins-2) ) ) / xmean 
-   
-    print (" SE_log:", SE_log)
     margin_error = (2.63 *SE_log ) 
-    print("CI is:", r"+/-" , margin_error) 
     print(str(regression_model.coef_[0][0]),str(regression_model.intercept_[0]),str(rmse_in_log),str(r2_in_log), str(SE_log[0]),file=regfp)
     # printing values
     print("----------------------------------------")
-    print("Dropoff Rate:", regression_model.coef_)
-    print("Standard Error is ", SE_log)
-    print("Root mean squared error: ", rmse_in_log)
-    print("R2 score: ", r2_in_log)
+    print("Dropoff Rate :", regression_model.coef_)
+    print("Standard Error is (SE):", SE_log)
+    print("Confidence Interval is: [",SE_log, "+/-" , margin_error,"]")
+    print("Root Mean Squared Error (RMSE): ", rmse_in_log)
+    print("R2 Score: ", r2_in_log)
     print("----------------------------------------")
     if plot ==1 : 
 
@@ -230,14 +223,13 @@ def regression(
     for i in range (0, num_bins):
         ebsilon  += np.square(  y_in_linear_predicted[i] - y_in_linear[i])      
     SE_linear = sqrt(ebsilon / (num_bins-2) )   / xmean
-    print ("SE_linear:", SE_linear)
     margin_error = (2.63 *SE_linear)
-    print("CI is:","+/-" , margin_error)
 
     print('Regression in linear mode') 
     print("----------------------------------------")
     print("Dropoff Rate:", regression_model.coef_)
     print("Standard Error is ", SE_linear)
+    print("Confidence Interval is: [",SE_linear, "+/-" , margin_error,"]") 
     print("Root mean squared error: ", rmse_in_linear)
     print("R2 score: ", r2_in_linear)
     print("----------------------------------------")
@@ -263,30 +255,20 @@ def regression(
 def main():
     print("Initializing and reading arguments")
     parser = argparse.ArgumentParser()
-    parser._action_groups.pop()
-    required = parser.add_argument_group('required arguments')
-    optional = parser.add_argument_group('optional arguments')
-    required.add_argument('-t','--transcripts', required=True, help="Transcripts file")
-    optional.add_argument('--optional_arg')
-    required.add_argument('-f','--footprint', default=False, help="Ribosomes bed file")
-    optional.add_argument("-r", "--rnaseq", dest="rnaseq", default="NULL",help="mRNA bed file, if mRNA bed is not provided, ribosomes dropoff won't be normalized with mRNA")
-    optional.add_argument("-s", "--subset", dest="subset", default="NULL",help="subset of genes to run the analysis on")
-    optional.add_argument("-b", "--binsize", dest="binsize", type=int, default=50, help="Bin size default is 50")
-    optional.add_argument("-o", "--out", dest="output", default="", help="Output file name")
-    optional.add_argument("-p", "--plot", dest="plot",type=int, default=1, help="Plotting mode is on by default, use --plot 0 to turn off plots")
-    optional.add_argument("--ymin", dest="ymin", type=int, default=-3,help="ymin for the y axis min position in linear plot")
-    optional.add_argument("--ymax", dest="ymax", type=int, default=2, help="ymax for the y axis max position in linear plot")
-    optional.add_argument("--ylogmin", type=int, default=-3, help="ylogmin for y axis min position in log plot")
-    optional.add_argument("--ylogmax", type=int, default=2, help="ylogmax for y axis max position in log plot")
+    parser.add_argument('-t','--transcripts', required=True, help="Transcripts file")
+    parser.add_argument('-f','--footprint', required=True, help="Ribosomes bed file")
+    parser.add_argument("-r", "--rnaseq", dest="rnaseq", default="NULL",help="mRNA bed file, if mRNA bed is not provided, ribosomes dropoff won't be normalized with mRNA")
+    parser.add_argument("-s", "--subset", dest="subset", default="NULL",help="subset of genes to run the analysis on")
+    parser.add_argument("-b", "--binsize", dest="binsize", type=int, default=50, help="Bin size default is 50")
+    parser.add_argument("-o", "--out", dest="output", default="", help="Output file name")
+    parser.add_argument("-p", "--plot", dest="plot",type=int, default=1, help="Plotting mode is on by default, use --plot 0 to turn off plots")
+    parser.add_argument("--ymin", dest="ymin", type=int, default=-3,help="ymin for the y axis min position in linear plot")
+    parser.add_argument("--ymax", dest="ymax", type=int, default=2, help="ymax for the y axis max position in linear plot")
+    parser.add_argument("--ylogmin", type=int, default=-3, help="ylogmin for y axis min position in log plot")
+    parser.add_argument("--ylogmax", type=int, default=2, help="ylogmax for y axis max position in log plot")
     args = parser.parse_args()
-    plot = args.plot 
-    if plot ==1:
-        print("Plot mode is on, regression plots will be printed")
-    else: 
-        print("Plot mode is off, no plots will be printed") 
     
-    '''
-     # Check required files exist
+    # Check required files exist
     if not os.path.exists(args.transcripts):
         sys.exit("transcripts file is required and does not exist, exiting !")
     if not os.path.exists(args.footprint):
@@ -296,13 +278,18 @@ def main():
             sys.exit(
                 "rna  file does not exist: either run with footprint only option or enter a valid rna file, exiting !"
             )
-   ''' 
+    
     sample = str(args.footprint).split(".")[0]
     if args.rnaseq != "NULL":
         sample += "_" + str(args.rnaseq).split(".")[0]
-    
+   
+    # Check plot mode 
     plot = args.plot
-
+    if plot ==1:
+        print("Plot mode is on, regression plots will be printed")
+    else:
+        print("Plot mode is off, no plots will be printed")
+    
     output = args.output
     if output == "":
         output = sample
@@ -321,37 +308,35 @@ def main():
     gene_coverage_at_bin = get_gene_coverage_at_bin(max_gene_length, binsize, genes_length)
     print("Reading ribosome footprint", args.footprint)
     fp_coverage = get_reads(args.footprint, genes_length) 
-    print("Reading mRNA",args.rnaseq) 
-    mRNA_coverage  = get_reads(args.rnaseq, genes_length) 
     print("Filling coverage matrix") 
     fp_gene_coverage_at_pos = get_gene_coverage_at_pos(max_gene_length, fp_coverage, genes_length) 
-    mRNA_gene_coverage_at_pos = get_gene_coverage_at_pos(max_gene_length, mRNA_coverage, genes_length)
-   
     print("Filling positions matrix")
-
     fp_positions = fill_positions(fp_coverage, max_gene_length) 
-    mRNA_positions = fill_positions(mRNA_coverage, max_gene_length) 
-
-    print("Started binning process") 
+    print("Started binning process")
     ribosomes_gene_bins = binning(
         binsize,
         fp_positions,
         fp_gene_coverage_at_pos,
         max_gene_length
     )
-    
-    mRNA_gene_bins = binning(
+
+    if args.rnaseq != "NULL":
+         print("Reading mRNA",args.rnaseq)
+         mRNA_coverage  = get_reads(args.rnaseq, genes_length)  
+         print("Filling coverage matrix")
+         mRNA_gene_coverage_at_pos = get_gene_coverage_at_pos(max_gene_length, mRNA_coverage, genes_length)
+         mRNA_positions = fill_positions(mRNA_coverage, max_gene_length)
+         mRNA_gene_bins = binning(
         binsize,
         mRNA_positions,
         mRNA_gene_coverage_at_pos,
-        max_gene_length 
+        max_gene_length
     )
-    
 
     print("No. of bins:", len(ribosomes_gene_bins))
-
     num_bins = int(max_gene_length / binsize) + 1
     gene_bins = ribosomes_gene_bins
+    
     if args.rnaseq != "NULL":
         for i in range(0, num_bins):
             gene_bins[i] = float(ribosomes_gene_bins[i] / mRNA_gene_bins[i])
