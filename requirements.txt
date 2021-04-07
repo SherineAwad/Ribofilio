@@ -4,3 +4,4 @@ screed
 numpy
 matplotlib
 sklearn
+os
