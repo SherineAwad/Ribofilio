@@ -22,3 +22,5 @@ jobs:
           pip install -r requirements.txt
       - name: Test with pytest
         run: pytest tests/tests.py
+      - name: lint
+        run: flake8 src/ribofilio.py  
