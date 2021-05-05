@@ -3,10 +3,14 @@ N =  range(1, config['N_Shuffled'])
 
 rule all:
     input:
-        expand("{FP}_{RNA}.{group}.slopes.png",FP = config['FP'], RNA = config['RNA'], group=config['GO']),
-        expand("{FP}_{RNA}.{group}.slopes.png",FP = config['FP'], RNA = config['RNA'], group=config['GL']),
-        expand("{FP}_{RNA}.slopes.png",FP = config['FP'], RNA = config['RNA']) 
+        expand("{FP}_{RNA}.regression.log", FP = config['FP'], RNA = config['RNA']),
+        expand("{FP}.{IDX}.bed", FP = config['FP'], IDX=N),
+        expand("{FP}_{RNA}.slopes.png",FP = config['FP'], RNA = config['RNA']),
+        expand("{FP}_{RNA}-{group}.slopes.png",FP = config['FP'], RNA = config['RNA'], group=config['GO'])
 
+"""
+        expand("{FP}_{RNA}.{group}.slopes.png",FP = config['FP'], RNA = config['RNA'], group=config['GL'])
+"""
 rule ribofilio: 
     input:
          fp = "{SAMPLE1}.bed",
@@ -17,13 +21,25 @@ rule ribofilio:
     params:
         prefix="{SAMPLE1}_{SAMPLE2}"
     shell:
-        "python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -o {params.prefix} "
+        "python ../../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -o {params.prefix} "
 
+rule ribo_shuffle: 
+    input: 
+       fp = "{SAMPLE1}.{idx}.bed",
+       genome = config['GENOME']
+    output:
+        "{SAMPLE1}.{idx}.regression.log"
+    params: 
+        "{SAMPLE1}.{idx}"
+    shell: 
+       """
+           python ../../src/ribofilio.py -t {input.genome} -f {input.fp} -o {params}
+       """ 
+   
 rule ribo_all: 
     input:
        fp = "{FP}_{RNA}.regression.log",
-       shuffled = expand("{{FP}}.{IDX}.bed", IDX=N),
-       dummies = expand("{{FP}}.{IDX}_{{RNA}}.regression.log", IDX= N)
+       dummies = expand("{{FP}}.{IDX}.regression.log", IDX =N)
     params:
        all = "{FP}_{RNA}.all" 
     output:
@@ -31,7 +47,7 @@ rule ribo_all:
     shell: 
        """
        cat {input.fp} {input.dummies} > {params.all}
-       python src/stats.py {params.all}
+       python ../src/stats.py {params.all}
        """    
        
 rule subset:
@@ -45,22 +61,34 @@ rule subset:
     params:
         prefix="{SAMPLE1}_{SAMPLE2}-{SUBSET}"
     shell: 
-        "python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -s {input.subset} -o {params.prefix}"
+        "python ../../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -s {input.subset} -o {params.prefix}"
+
+rule subset_suffled: 
+    input:
+       fp = "{SAMPLE1}.{idx}.bed",
+       genome = config['GENOME'], 
+       SUBSET = "{subset}"
+    output:
+        "{SAMPLE1}.{idx}-{subset}.regression.log"
+    params:
+        "{SAMPLE1}.{idx}-{subset}"
+    shell:
+       """
+           python ../../src/ribofilio.py -t {input.genome} -f {input.fp} -s {input.SUBSET} -o {params}
+       """
 
 rule subset_all: 
     input:
        fp = "{FP}_{RNA}-{SUBSET}.regression.log",
-       go = expand("{GO}.txt", GO= config['GO']), 
-       shuffled =  expand("{{FP}}.{IDX}.bed", IDX=N),
-       dummies = expand("{{FP}}.{IDX}_{{RNA}}-{{SUBSET}}.regression.log", IDX= N)
+       dummies = expand("{{FP}}.{IDX}-{{SUBSET}}.regression.log", IDX= N)
     params:
-       all = "{FP}_{RNA}.{SUBSET}.all"
+       all = "{FP}_{RNA}-{SUBSET}.all"
     output:
-       "{FP}_{RNA}.{SUBSET}.slopes.png"
+       "{FP}_{RNA}-{SUBSET}.slopes.png"
     shell:
        """
        cat {input.fp} {input.dummies} > {params.all}
-       python src/stats.py {params.all}
+       python ../src/stats.py {params.all}
        """
 
 rule get_GO:
@@ -70,7 +98,7 @@ rule get_GO:
         go = expand("{GO}", GO=config['GO'] )
      shell:
         """
-         Rscript src/getGO.R {params.go}
+         Rscript ../src/getGO.R {params.go}
         """
 
 rule cluster: 
@@ -81,10 +109,10 @@ rule cluster:
          "yeast6000100000.txt"
      shell: 
           """
-          python src/gcluster.py yeast.fa yeast02000.txt --max 2000 --min 0
-          python src/gcluster.py yeast.fa yeast20004000.txt --max 4000 --min 2000
-          python src/gcluster.py yeast.fa yeast40006000.txt --max 6000 --min 4000
-          python src/gcluster.py yeast.fa yeast6000100000.txt --max 100000 --min 6000
+          python ../src/gcluster.py yeast.fa yeast02000.txt --max 2000 --min 0
+          python ../src/gcluster.py yeast.fa yeast20004000.txt --max 4000 --min 2000
+          python ../src/gcluster.py yeast.fa yeast40006000.txt --max 6000 --min 4000
+          python ../src/gcluster.py yeast.fa yeast6000100000.txt --max 100000 --min 6000
           """ 
 
 rule shuffle:
@@ -97,7 +125,7 @@ rule shuffle:
         config['N_Shuffled']
     shell:
          """
-         python src/shuffle.py -t {input.genome} -b {input.fp} -o {wildcards.SAMPLE} -n {params}
+         python ../src/shuffle_all.py -t {input.genome} -b {input.fp} -o {wildcards.SAMPLE} -n {params}
          """ 
 
 rule index: 
