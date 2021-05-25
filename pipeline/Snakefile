@@ -125,7 +125,7 @@ rule shuffle:
         config['N_Shuffled']
     shell:
          """
-         python ../src/shuffle_all.py -t {input.genome} -b {input.fp} -o {wildcards.SAMPLE} -n {params}
+         python ../src/shuffle.py -t {input.genome} -b {input.fp} -o {wildcards.SAMPLE} -n {params}
          """ 
 
 rule index: 
