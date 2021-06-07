@@ -1,5 +1,4 @@
 configfile: "config.yaml"
-N =  range(1, config['N_Shuffled'])
 
 rule all:
     input:
