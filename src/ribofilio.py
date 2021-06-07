@@ -8,9 +8,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
-from scipy import stats
-import statsmodels.api as sm
-from scipy.optimize import curve_fit
 from scipy.stats import t
 
 def get_subset_genes(transcripts, subset_file):
@@ -235,35 +232,6 @@ def regression(output, num_bins, all_bins,
 
     regfp.close()
     
-    print("----------------------------------------")
-    print("SCIPY Linear Regression No Weights") 
-    print("----------------------------------------")
-    slope, intercept, r, p, se  = stats.linregress(bins, gene_bins)
-    print("slope,r, pvalue, and SE:", slope,r, p, se)
-   
-    print("----------------------------------------")
-    print("Stat models ordinary Least Square") 
-    print("----------------------------------------")
-    X = bins 
-    Y = gene_bins 
-    X = sm.add_constant(X)
-    ols_model = sm.OLS(Y,X)
-    results = ols_model.fit(df_model=df)
-    print("Slope:", results.params[1])
-    print("r2, tvalues, pvalues:",results.rsquared, results.tvalues,results.pvalues)
-    print("results.t_test[1,0]",results.t_test([1, 0]))
-    
-    print("Stat models Weighted Least Square")
-    print("----------------------------------------")
-    X = bins
-    Y = gene_bins
-    X = sm.add_constant(X)
-    wls_model = sm.WLS(Y,X, weights=weight)
-    results = wls_model.fit(df_model=df)
-    print("Slope:", results.params[1])
-    print("r2, tvalues, pvalues:",results.rsquared, results.tvalues,results.pvalues)
-    print("results.t_test[1,0]",results.t_test([1, 0]))
-
 # ---------------------------------------------------------------------------
 # Main function: gets input paramters and calls corresponding functions
 # ---------------------------------------------------------------------------
