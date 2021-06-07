@@ -8,7 +8,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
-
+from scipy import stats
+import statsmodels.api as sm
+from scipy.optimize import curve_fit
+from scipy.stats import t
 
 def get_subset_genes(transcripts, subset_file):
     subset = []
@@ -21,8 +24,6 @@ def get_subset_genes(transcripts, subset_file):
         subset.append(gene_name)
     for record in screed.open(transcripts):
         gene_name = record.name.split(' ')[0]
-        if "mRNA" in gene_name:
-            gene_name = gene_name.split('_')[0]
         if gene_name in subset:
             genes_length[str(gene_name)] = int(len(record.sequence))
             if genes_length[gene_name] > max_gene_length:
@@ -160,45 +161,64 @@ def regression(output, num_bins, all_bins,
         weight[i] = gene_coverage_at_bin[i]
         norm_weight[i] = np.cbrt(weight[i])
     # Fit the data(train the model)
-    regression_model.fit(x_axis, y_axis, sample_weight=norm_weight)
+    regression_model.fit(x_axis, y_axis)#, sample_weight=weight)
     # Predict
-    y_predicted = regression_model.predict(x_axis)
+    y_predicted = regression_model.predict(y_axis)
     # model evaluation
-    rmse = mean_squared_error(y_axis, y_predicted, sample_weight=weight)
-    rsquare = r2_score(y_axis, y_predicted, sample_weight=weight)
+    rmse = mean_squared_error(y_axis, y_predicted)#, sample_weight=weight)
+    rsquare = r2_score(y_axis, y_predicted)#, sample_weight=weight)
+    
     regfp = open(str(output)+".regression.log", "a+")
     # dropoff_codon is dropoff rate per codon
     dropoff_codon = 1 - pow((1 - regression_model.coef_), (1/codons_bin))
+    dropoff_rate = regression_model.coef_[0][0] #np.round(regression_model.coef_[0][0], decimals=4)
+    
     ebsilon = 0
+    df = 2 
+   
     mean = np.mean(np.array(bins))
     std = np.std(np.array(bins))
-    for i in range(0, num_bins):
+    
+    for i in bins:
         ebsilon += np.square(i-mean)
     xmean = np.sqrt(ebsilon)
-    ebsilon = 0
+    
+    sumy_ypredicted = 0
     for i in range(0, num_bins):
-        ebsilon = ebsilon + np.square(y_axis[i] - y_predicted[i])
-    stand_error = np.sqrt((ebsilon / (num_bins-2))) / xmean
-    margin_error = (2.63 * stand_error)
-    dropoff_rate = np.round(regression_model.coef_[0][0], decimals=4)
+        sumy_ypredicted = sumy_ypredicted + np.square(y_axis[i] - y_predicted[i])
+    stand_error = np.sqrt((sumy_ypredicted / (num_bins - df) )) / xmean
+    margin_error = (4.303 * stand_error)
+
     stand_error = np.round(stand_error, decimals=4)
     margin_error = np.round(margin_error, decimals=4)
     rsquare = np.round(rsquare, decimals=4)
     rmse = np.round(rmse, decimals=4)
     dropoff_codon = np.round(dropoff_codon, decimals=4)
-    print(str(regression_model.coef_[0][0]), str(dropoff_codon),
-          str(rmse), str(rsquare), str(stand_error),
-          str(margin_error), str(mean), str(std),
-          str(len(gene_bins)), file=regfp)
+    
+    tscore = regression_model.coef_[0][0] / stand_error
+    pvalue =  (t.sf(abs(tscore),df= df))
+    pvalue = np.round(pvalue, decimals=4)
+    
+
+    dropoff_rate = np.round(regression_model.coef_[0][0], decimals=4)
+    print("Dropoff\tDropoff per codon \tRMSE\tRsquare\tSE\tMargin Error\ttscore\tpvalue",file=regfp)     
+    print(str(dropoff_rate)+"\t"+str(dropoff_codon[0][0])+"\t"+str(rmse)+"\t"+str(rsquare)+"\t"+str(stand_error[0])+"\t"+str(margin_error[0])
+            +"\t"+str(tscore[0])+"\t"+str(pvalue[0]),  file=regfp)
+    
+
     # printing values
     print("----------------------------------------")
+    print("SKLEARN Weighted Linear Regression") 
+    print("----------------------------------------") 
     print("Dropoff Rate :", dropoff_rate)
     print("Dropoff per codon:", dropoff_codon)
     print("Standard Error is (SE):", stand_error)
     print("Confidence Interval is: [", dropoff_rate, "+/-", margin_error, "]")
     print("Root Mean Squared Error (RMSE): ", rmse)
     print("R2 Score: ", rsquare)
-    print("----------------------------------------")
+    print("T-test score: ", tscore)
+    print("Pvalue:", pvalue)
+    
     if plot == 1:
         plt.figure(figsize=(10, 10))
         plt.ylim(ylogmin, ylogmax)
@@ -214,6 +234,35 @@ def regression(output, num_bins, all_bins,
         plt.clf()
 
     regfp.close()
+    
+    print("----------------------------------------")
+    print("SCIPY Linear Regression No Weights") 
+    print("----------------------------------------")
+    slope, intercept, r, p, se  = stats.linregress(bins, gene_bins)
+    print("slope,r, pvalue, and SE:", slope,r, p, se)
+   
+    print("----------------------------------------")
+    print("Stat models ordinary Least Square") 
+    print("----------------------------------------")
+    X = bins 
+    Y = gene_bins 
+    X = sm.add_constant(X)
+    ols_model = sm.OLS(Y,X)
+    results = ols_model.fit(df_model=df)
+    print("Slope:", results.params[1])
+    print("r2, tvalues, pvalues:",results.rsquared, results.tvalues,results.pvalues)
+    print("results.t_test[1,0]",results.t_test([1, 0]))
+    
+    print("Stat models Weighted Least Square")
+    print("----------------------------------------")
+    X = bins
+    Y = gene_bins
+    X = sm.add_constant(X)
+    wls_model = sm.WLS(Y,X, weights=weight)
+    results = wls_model.fit(df_model=df)
+    print("Slope:", results.params[1])
+    print("r2, tvalues, pvalues:",results.rsquared, results.tvalues,results.pvalues)
+    print("results.t_test[1,0]",results.t_test([1, 0]))
 
 # ---------------------------------------------------------------------------
 # Main function: gets input paramters and calls corresponding functions
