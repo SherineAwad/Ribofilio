@@ -8,8 +8,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
-
 from scipy.stats import t
+
 
 def get_subset_genes(transcripts, subset_file):
     subset = []
@@ -158,58 +158,55 @@ def regression(output, num_bins, all_bins,
     for i in range(0, len(weight)):
         weight[i] = gene_coverage_at_bin[i]
         norm_weight[i] = np.cbrt(weight[i])
-    # Fit the data(train the model)
-    regression_model.fit(x_axis, y_axis)#, sample_weight=weight)
-    # Predict
+    #  Fit the data(train the model)
+    regression_model.fit(x_axis, y_axis, sample_weight=weight)
+    #  Predict
     y_predicted = regression_model.predict(y_axis)
-    # model evaluation
-    rmse = mean_squared_error(y_axis, y_predicted)#, sample_weight=weight)
-    rsquare = r2_score(y_axis, y_predicted)#, sample_weight=weight)
-    
+    #  model evaluation
+    rmse = mean_squared_error(y_axis, y_predicted, sample_weight=weight)
+    rsquare = r2_score(y_axis, y_predicted, sample_weight=weight)
     regfp = open(str(output)+".regression.log", "a+")
     # dropoff_codon is dropoff rate per codon
     dropoff_codon = 1 - pow((1 - regression_model.coef_), (1/codons_bin))
-    dropoff_rate = regression_model.coef_[0][0] #np.round(regression_model.coef_[0][0], decimals=4)
-    
+    dropoff_rate = regression_model.coef_[0][0]
     ebsilon = 0
-    df = 2 
-    alpha = α = 1 - (95 / 100)
-    critical_p = 1 - (alpha/2)  
-    critical_p = t.ppf(critical_p, (num_bins-df) )  
+    df = 2
+    alpha = 1 - (95 / 100)
+    critical_p = 1 - (alpha/2)
+    critical_p = t.ppf(critical_p, (num_bins-df))
     mean = np.mean(np.array(bins))
-    std = np.std(np.array(bins))
-    
     for i in bins:
         ebsilon += np.square(i-mean)
     xmean = np.sqrt(ebsilon)
-    
     sumy_ypredicted = 0
     for i in range(0, num_bins):
-        sumy_ypredicted = sumy_ypredicted + np.square(y_axis[i] - y_predicted[i])
-    stand_error = np.sqrt((sumy_ypredicted / (num_bins - df) )) / xmean
+        sumy_ypredicted = (sumy_ypredicted
+                           + np.square(y_axis[i] - y_predicted[i]))
+    stand_error = np.sqrt((sumy_ypredicted / (num_bins - df))) / xmean
     margin_error = (critical_p * stand_error)
-
     stand_error = np.round(stand_error, decimals=4)
     margin_error = np.round(margin_error, decimals=4)
     rsquare = np.round(rsquare, decimals=4)
     rmse = np.round(rmse, decimals=4)
     dropoff_codon = np.round(dropoff_codon, decimals=4)
-    
-    tscore = regression_model.coef_[0][0] / stand_error
-    pvalue =  (t.sf(abs(tscore), df= df))
+    tscore = regression_model.coef_[0][0]/stand_error
+    pvalue = t.sf(abs(tscore), df=df)
     pvalue = np.round(pvalue, decimals=4)
-    
-
     dropoff_rate = np.round(regression_model.coef_[0][0], decimals=4)
-    print("Dropoff\tDropoff per codon \tRMSE\tRsquare\tSE\tMargin Error\ttscore\tpvalue\tNo.of Bins",file=regfp)     
-    print(str(dropoff_rate)+"\t"+str(dropoff_codon[0][0])+"\t"+str(rmse)+"\t"+str(rsquare)+"\t"+str(stand_error[0])+"\t"+str(margin_error[0])
-            +"\t"+str(tscore[0])+"\t"+str(pvalue[0])+"\t"+str(num_bins),  file=regfp)
-    
-
+    print("Dropoff\tDropoff per codon \tRMSE\tRsquare\tSE" +
+          "\tMargin Error\ttscore\tpvalue\tNo.of Bins", file=regfp)
+    print(str(dropoff_rate) + "\t" + str(dropoff_codon[0][0]) +
+                              "\t" + str(rmse) +
+                              "\t" + str(rsquare) +
+                              "\t" + str(stand_error[0]) +
+                              "\t" + str(margin_error[0]) +
+                              "\t" + str(tscore[0]) +
+                              "\t" + str(pvalue[0]) +
+                              "\t" + str(num_bins), file=regfp)
     # printing values
     print("----------------------------------------")
-    print("SKLEARN Weighted Linear Regression") 
-    print("----------------------------------------") 
+    print("Weighted Linear Regression")
+    print("----------------------------------------")
     print("Dropoff Rate :", dropoff_rate)
     print("Dropoff per codon:", dropoff_codon)
     print("Standard Error is (SE):", stand_error)
@@ -218,7 +215,6 @@ def regression(output, num_bins, all_bins,
     print("R2 Score: ", rsquare)
     print("T-test score: ", tscore)
     print("Pvalue:", pvalue)
-    
     if plot == 1:
         plt.figure(figsize=(10, 10))
         plt.ylim(ylogmin, ylogmax)
@@ -232,9 +228,8 @@ def regression(output, num_bins, all_bins,
         plt.title(output + " Weighted Linear Regression", fontsize=10)
         plt.savefig(output + ".Log.WLR.png", format="png")
         plt.clf()
-
     regfp.close()
-    
+
 # ---------------------------------------------------------------------------
 # Main function: gets input paramters and calls corresponding functions
 # ---------------------------------------------------------------------------
