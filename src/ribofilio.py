@@ -8,6 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
+
 from scipy.stats import t
 
 def get_subset_genes(transcripts, subset_file):
@@ -172,7 +173,9 @@ def regression(output, num_bins, all_bins,
     
     ebsilon = 0
     df = 2 
-   
+    alpha = α = 1 - (95 / 100)
+    critical_p = 1 - (alpha/2)  
+    critical_p = t.ppf(critical_p, (num_bins-df) )  
     mean = np.mean(np.array(bins))
     std = np.std(np.array(bins))
     
@@ -184,7 +187,7 @@ def regression(output, num_bins, all_bins,
     for i in range(0, num_bins):
         sumy_ypredicted = sumy_ypredicted + np.square(y_axis[i] - y_predicted[i])
     stand_error = np.sqrt((sumy_ypredicted / (num_bins - df) )) / xmean
-    margin_error = (4.303 * stand_error)
+    margin_error = (critical_p * stand_error)
 
     stand_error = np.round(stand_error, decimals=4)
     margin_error = np.round(margin_error, decimals=4)
@@ -193,14 +196,14 @@ def regression(output, num_bins, all_bins,
     dropoff_codon = np.round(dropoff_codon, decimals=4)
     
     tscore = regression_model.coef_[0][0] / stand_error
-    pvalue =  (t.sf(abs(tscore),df= df))
+    pvalue =  (t.sf(abs(tscore), df= df))
     pvalue = np.round(pvalue, decimals=4)
     
 
     dropoff_rate = np.round(regression_model.coef_[0][0], decimals=4)
-    print("Dropoff\tDropoff per codon \tRMSE\tRsquare\tSE\tMargin Error\ttscore\tpvalue",file=regfp)     
+    print("Dropoff\tDropoff per codon \tRMSE\tRsquare\tSE\tMargin Error\ttscore\tpvalue\tNo.of Bins",file=regfp)     
     print(str(dropoff_rate)+"\t"+str(dropoff_codon[0][0])+"\t"+str(rmse)+"\t"+str(rsquare)+"\t"+str(stand_error[0])+"\t"+str(margin_error[0])
-            +"\t"+str(tscore[0])+"\t"+str(pvalue[0]),  file=regfp)
+            +"\t"+str(tscore[0])+"\t"+str(pvalue[0])+"\t"+str(num_bins),  file=regfp)
     
 
     # printing values

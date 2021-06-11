@@ -1,19 +1,6 @@
-
-# Ribofilio: A tool to measure ribosomal profiling dropoff rate
-
-Ribofilio is a tool to measure ribosomal profiling drop rate that has been tested in ecoli and yeast so far.
-
-
-## Dependencies
-
-	screed
-
-	numpy
-	
-	matplotlib
-	
-	sklearn 
-
+======================================
+**Run Ribofilio**
+======================================
 
 To run ribofilio:
 
@@ -59,35 +46,44 @@ Where:
 Running ribofilio on all gene: 
 
    
-	python ribofilio.py -t yeast.fa -f SRR5945809.bed -r SRR5945808.bed 
+	python ribofilio.py -t yeast.fa -f SRR5945809.bed -r SRR5945808.bed -o dataset1  
 
 
 Where yeast.fa is the transcripts, SRR5945809.bed is the bed file of footprints of sample, SRR5945808.bed is the mRNA bed file
 
-here binsize used is 50 as no other binsize is passed. 
+here binsize used is 50 as no other binsize is passed.
 
-To run ribofilio on a subset of genes:
+
+To change the axis of the plots: 
+
+
+     python ribofilio.py -t yeast.fa -f SRR5945809.bed -r SRR5945808.bed -o dataset1 --ylogmin -5 --ylogmax 5
+
  
+To run ribofilio on a subset of genes: 
 
-	python ribofilio.py -t yeast.fa -f SRR5945809.bed -r SRR5945808.bed -s subsetofgenes.txt 
+
+    python ribofilio.py -t yeast.fa -f SRR5945809.bed -r SRR5945808.bed -o dataset1 -s mysubset.txt 
 
 
-Where subsetofgenes.txt is a list of genes: 
+
+where mysubset.txt should have line by line gene names: 
+
 
         YDL067C
-   
+
         YGL187C
-   
+
         YGL191W
-   
+
         YHR051W
-   
+
         YIL111W
-   
+
         YLR038C
-   
+
         YLR395C
-   
+
         YMR256C
-   
+
         YNL052W
