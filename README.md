@@ -13,10 +13,12 @@ Ribofilio is a tool to measure ribosomal profiling drop rate that has been teste
 	matplotlib
 	
 	sklearn 
+   
+        scipy
 
 ## Tutorial
 
-Take a look into [this tutorial](https://ribofilio.readthedocs.io/en/latest/protocol.html) for a complete Ribosomal profiling protocol usinf Ribofilio.
+Take a look into [this tutorial](https://ribofilio.readthedocs.io/en/latest/protocol.html) for a complete Ribosomal profiling protocol using Ribofilio.
 
 
 ## How to run Ribofilio
