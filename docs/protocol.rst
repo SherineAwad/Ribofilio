@@ -2,7 +2,7 @@
 **Ribosomal Profiling Protocol**
 ========================================================================================
 
-This is a ribosomal profiling protocol to estimate ribosomes dropoff rate using Ribofilio.
+This is a ribosomal profiling protocol to estimate ribosomes' dropoff rate using Ribofilio.
 
 Download Data
 ------------------
@@ -94,5 +94,12 @@ We can run Ribofilio on this subset only::
 
     python ribofilio.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed -s GO0016458.txt -b 100 -o SRR5090936_SRR5090934_subset 
 
+
+Run Ribofilio without mRNA normalization
+--------------------------------------------
+
+By default, Ribofilio normalize the dropoff rate of ribosomes' foot print using the corresponding mRNA reads. To estimate ribosomes' dropoff rate without mRNA normalization::
+
+   python ribofilio.py -t yeast.fa -f SRR5090936.bed -b 100 -o SRR5090936_SRR5090934 
 
 
