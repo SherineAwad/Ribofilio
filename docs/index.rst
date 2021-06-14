@@ -11,6 +11,7 @@ Welcome to Ribofilio's documentation!
    :caption: Contents:
 
    run.rst 
+   protocol.rst
 
 Indices and tables
 ==================

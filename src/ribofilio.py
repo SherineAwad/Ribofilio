@@ -135,9 +135,6 @@ def binning(binsize, positions, gene_coverage_at_pos, max_gene_length):
 def regression(output, num_bins, all_bins,
                binsize, ylogmin, ylogmax,
                gene_coverage_at_bin, plot):
-    print (num_bins) 
-    print(binsize) 
-    print(gene_coverage_at_bin)
     bins = []
     log_gene_bins = []
     gene_bins = []
@@ -171,7 +168,7 @@ def regression(output, num_bins, all_bins,
     # Calculate dropoff_codon is dropoff rate per codon
     dropoff_codon = 1 - pow((1 - regression_model.coef_), (1/codons_bin))
     dropoff_rate = regression_model.coef_[0][0]
-    # Calculate Standard error, margin error, and a confidence interval of 95% 
+    # Calculate Standard error, margin error, and a confidence interval of 95%
     ebsilon = 0
     df = 2
     alpha = 1 - (95 / 100)
@@ -187,10 +184,11 @@ def regression(output, num_bins, all_bins,
                            + np.square(y_axis[i] - y_predicted[i]))
     stand_error = np.sqrt((sumy_ypredicted / (num_bins - df))) / xmean
     margin_error = (critical_p * stand_error)
-    # Calculate tscore and pvalue of how different the slope is from a slope of zero 
+    # Calculate tscore and pvalue of
+    # how different the slope is from a slope of zero
     tscore = regression_model.coef_[0][0]/stand_error
     pvalue = t.sf(abs(tscore), df=(num_bins-df))
-    # Do some rounding and print to both file and screen 
+    # Do some rounding and print to both file and screen
     stand_error = np.round(stand_error, decimals=4)
     margin_error = np.round(margin_error, decimals=4)
     rsquare = np.round(rsquare, decimals=4)
@@ -233,8 +231,8 @@ def regression(output, num_bins, all_bins,
         plt.savefig(output + ".Log.WLR.png", format="png")
         plt.clf()
     regfp.close()
-    print (dropoff_rate, dropoff_codon, stand_error, margin_error, rmse, rsquare, tscore, pvalue)
-    return dropoff_rate, dropoff_codon, stand_error, margin_error, rmse, rsquare, tscore, pvalue
+    return (dropoff_rate, dropoff_codon, stand_error,
+            margin_error, rmse, rsquare, tscore, pvalue)
 # ---------------------------------------------------------------------------
 # Main function: gets input paramters and calls corresponding functions
 # ---------------------------------------------------------------------------
