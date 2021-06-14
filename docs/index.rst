@@ -10,7 +10,6 @@ Welcome to Ribofilio's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   run.rst 
    protocol.rst
 
 Indices and tables

@@ -66,8 +66,33 @@ Now, we need to convert our aligned bam to bed format::
 
 Run Ribofilio 
 -------------------
-Now, we are all set to run ribofilio::
+Now, we are all set to run ribofilio, we are here using the default parameters::
 
-    python ribofilio.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed  -b 50 -o SRR5090936_SRR5090934 
+    python ribofilio.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed  -o SRR5090936_SRR5090934 
 
- 
+
+Let's change the binsize from 50 (default) to 100:: 
+
+    python ribofilio.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed -b 100 -o SRR5090936_SRR5090934
+
+
+We can also change the default indeces::
+
+   python ribofilio.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed -b 100 --ylogmin -5 --ylogmax 5 -o SRR5090936_SRR5090934
+
+
+To run Ribofilio without plots:: 
+
+   python ribofilio.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed --plot 0 -o SRR5090936_SRR5090934 
+
+We can also run Ribofilio on a subset of genes. Let's say we have this file, GO0016458.txt which has two genes for this GO0016458:: 
+
+    YOR140W
+    YBL079W
+
+We can run Ribofilio on this subset only::
+
+    python ribofilio.py -t yeast.fa -f SRR5090936.bed -r SRR5090934.bed -s GO0016458.txt -b 100 -o SRR5090936_SRR5090934_subset 
+
+
+
