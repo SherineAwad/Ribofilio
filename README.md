@@ -16,8 +16,11 @@ Ribofilio is a tool to measure ribosomal profiling drop rate that has been teste
 
 ## Tutorial
 
-For a Ribosomal Profiling protocol using Ribofilio, take a look into [this tutorial](https://ribofilio.readthedocs.io/en/latest/protocol.html)
+Take a look into [this tutorial](https://ribofilio.readthedocs.io/en/latest/protocol.html) for a complete Ribosomal profiling protocol usinf Ribofilio.
 
+
+## How to run Ribofilio
+ 
 To run ribofilio:
 
 
