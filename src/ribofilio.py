@@ -135,6 +135,9 @@ def binning(binsize, positions, gene_coverage_at_pos, max_gene_length):
 def regression(output, num_bins, all_bins,
                binsize, ylogmin, ylogmax,
                gene_coverage_at_bin, plot):
+    print (num_bins) 
+    print(binsize) 
+    print(gene_coverage_at_bin)
     bins = []
     log_gene_bins = []
     gene_bins = []
@@ -162,13 +165,13 @@ def regression(output, num_bins, all_bins,
     regression_model.fit(x_axis, y_axis, sample_weight=weight)
     #  Predict
     y_predicted = regression_model.predict(y_axis)
-    #  model evaluation
+    #  Model evaluation
     rmse = mean_squared_error(y_axis, y_predicted, sample_weight=weight)
     rsquare = r2_score(y_axis, y_predicted, sample_weight=weight)
-    regfp = open(str(output)+".regression.log", "a+")
-    # dropoff_codon is dropoff rate per codon
+    # Calculate dropoff_codon is dropoff rate per codon
     dropoff_codon = 1 - pow((1 - regression_model.coef_), (1/codons_bin))
     dropoff_rate = regression_model.coef_[0][0]
+    # Calculate Standard error, margin error, and a confidence interval of 95% 
     ebsilon = 0
     df = 2
     alpha = 1 - (95 / 100)
@@ -184,15 +187,18 @@ def regression(output, num_bins, all_bins,
                            + np.square(y_axis[i] - y_predicted[i]))
     stand_error = np.sqrt((sumy_ypredicted / (num_bins - df))) / xmean
     margin_error = (critical_p * stand_error)
+    # Calculate tscore and pvalue of how different the slope is from a slope of zero 
+    tscore = regression_model.coef_[0][0]/stand_error
+    pvalue = t.sf(abs(tscore), df=(num_bins-df))
+    # Do some rounding and print to both file and screen 
     stand_error = np.round(stand_error, decimals=4)
     margin_error = np.round(margin_error, decimals=4)
     rsquare = np.round(rsquare, decimals=4)
     rmse = np.round(rmse, decimals=4)
-    dropoff_codon = np.round(dropoff_codon, decimals=4)
-    tscore = regression_model.coef_[0][0]/stand_error
-    pvalue = t.sf(abs(tscore), df=df)
-    pvalue = np.round(pvalue, decimals=4)
     dropoff_rate = np.round(regression_model.coef_[0][0], decimals=4)
+    dropoff_codon = np.round(dropoff_codon, decimals=4)
+    pvalue = np.round(pvalue, decimals=4)
+    regfp = open(str(output)+".regression.log", "a+")
     print("Dropoff\tDropoff per codon \tRMSE\tRsquare\tSE" +
           "\tMargin Error\ttscore\tpvalue\tNo.of Bins", file=regfp)
     print(str(dropoff_rate) + "\t" + str(dropoff_codon[0][0]) +
@@ -203,7 +209,6 @@ def regression(output, num_bins, all_bins,
                               "\t" + str(tscore[0]) +
                               "\t" + str(pvalue[0]) +
                               "\t" + str(num_bins), file=regfp)
-    # printing values
     print("----------------------------------------")
     print("Weighted Linear Regression")
     print("----------------------------------------")
@@ -223,13 +228,13 @@ def regression(output, num_bins, all_bins,
                  " RMSE: " + str(rmse) + " SE: " + str(stand_error[0]))
         plt.xlabel(str(label) + "\n" + str(xtext), fontsize=10)
         plt.ylabel("Bin Value", fontsize=10)
-        # predicted values
         plt.plot(x_axis, y_predicted, color="r")
         plt.title(output + " Weighted Linear Regression", fontsize=10)
         plt.savefig(output + ".Log.WLR.png", format="png")
         plt.clf()
     regfp.close()
-
+    print (dropoff_rate, dropoff_codon, stand_error, margin_error, rmse, rsquare, tscore, pvalue)
+    return dropoff_rate, dropoff_codon, stand_error, margin_error, rmse, rsquare, tscore, pvalue
 # ---------------------------------------------------------------------------
 # Main function: gets input paramters and calls corresponding functions
 # ---------------------------------------------------------------------------

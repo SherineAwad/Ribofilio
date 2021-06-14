@@ -64,3 +64,25 @@ def test_binning():
      round_genes_bin  = np.round(genes_bin, 6)
      print(round_genes_bin)
      assert (round_genes_bin  == [0.333334, 0.166668]).all()
+
+
+def test_regression(): 
+    output ="test"
+    num_bins = 18
+    all_bins = [6612, 6612, 6569, 6481, 6384, 6251, 6130, 5757, 5446, 5226, 5039, 4888, 4716, 4550, 4393, 4233, 4105, 3969]
+    binsize = 2
+    plot = 0 
+    gene_coverage_at_bin = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1] 
+    ylogmin =-2  
+    ylogmax=2
+    dropoff_rate, dropoff_codon, stand_error, margin_error, rmse, rsquare, tscore, pvalue = rb.regression(output, num_bins, all_bins,
+               binsize, ylogmin, ylogmax,
+               gene_coverage_at_bin, plot)
+    assert(dropoff_rate == -0.0334)
+    assert(dropoff_codon ==[[-0.0506]]) 
+    assert(stand_error == [0.0087]) 
+    assert(margin_error == [0.0185])
+    assert(rmse == 0.033) 
+    assert(rsquare == -0.0682)
+    assert(tscore[0] == -3.8231893210956795)
+    assert(pvalue == [0.0007])
