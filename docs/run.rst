@@ -5,13 +5,13 @@
 To run ribofilio:
 
 
-	python ribofilio.py --transcripts --footprint footprint.bed --rnaseq rnaseq.bed --binsize binsize --output output 
+    python ribofilio.py --transcripts --footprint footprint.bed --rnaseq rnaseq.bed --binsize binsize --output output 
    
  
 or simply:
 
-
-	python ribofilio.py -t transcripts -f footprint.bed -r rnaseq.bed  -b binsize -o output 
+    
+    python ribofilio.py -t transcripts -f footprint.bed -r rnaseq.bed  -b binsize -o output 
 
  
 Where: 
@@ -41,12 +41,13 @@ Where:
    ``--ylogmax is the maximum y axis for log plots (default: 2)``
 
 
-### Example 
+Example
+----------
 
 Running ribofilio on all gene: 
 
-   
-	python ribofilio.py -t yeast.fa -f SRR5945809.bed -r SRR5945808.bed -o dataset1  
+  
+    python ribofilio.py -t yeast.fa -f SRR5945809.bed -r SRR5945808.bed -o dataset1  
 
 
 Where yeast.fa is the transcripts, SRR5945809.bed is the bed file of footprints of sample, SRR5945808.bed is the mRNA bed file
@@ -57,7 +58,7 @@ here binsize used is 50 as no other binsize is passed.
 To change the axis of the plots: 
 
 
-     python ribofilio.py -t yeast.fa -f SRR5945809.bed -r SRR5945808.bed -o dataset1 --ylogmin -5 --ylogmax 5
+    python ribofilio.py -t yeast.fa -f SRR5945809.bed -r SRR5945808.bed -o dataset1 --ylogmin -5 --ylogmax 5
 
  
 To run ribofilio on a subset of genes: 
