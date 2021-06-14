@@ -84,5 +84,5 @@ def test_regression():
     assert(margin_error == [0.0185])
     assert(rmse == 0.033) 
     assert(rsquare == -0.0682)
-    assert(tscore[0] == -3.8231893210956795)
+    assert(np.round(tscore[0],4) == -3.8232)
     assert(pvalue == [0.0007])
