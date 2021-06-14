@@ -44,8 +44,7 @@ Where:
 Example
 ----------
 
-Running ribofilio on all gene: 
-
+Running ribofilio on all gene::
   
     python ribofilio.py -t yeast.fa -f SRR5945809.bed -r SRR5945808.bed -o dataset1  
 
@@ -55,21 +54,17 @@ Where yeast.fa is the transcripts, SRR5945809.bed is the bed file of footprints 
 here binsize used is 50 as no other binsize is passed.
 
 
-To change the axis of the plots: 
-
+To change the axis of the plots::
 
     python ribofilio.py -t yeast.fa -f SRR5945809.bed -r SRR5945808.bed -o dataset1 --ylogmin -5 --ylogmax 5
 
  
-To run ribofilio on a subset of genes: 
-
+To run ribofilio on a subset of genes:: 
 
     python ribofilio.py -t yeast.fa -f SRR5945809.bed -r SRR5945808.bed -o dataset1 -s mysubset.txt 
 
 
-
-where mysubset.txt should have line by line gene names: 
-
+where mysubset.txt should have line by line gene names::
 
         YDL067C
 
