@@ -132,19 +132,13 @@ def binning(binsize, positions, gene_coverage_at_pos, max_gene_length):
 # -------------------------------------------------------------------------------------------
 # Regression function, plot several figures for the ribosome profiling
 # -------------------------------------------------------------------------------------------
-def regression(output, num_bins, all_bins,
+def regression(output, num_bins, gene_bins,
                binsize, ylogmin, ylogmax,
                gene_coverage_at_bin, plot):
     bins = []
-    log_gene_bins = []
-    gene_bins = []
     # Take log of bins indeces for LOG/LOG plotting
     for i in range(0, num_bins):
         bins.append(i)
-        gene_bins.append(all_bins[i])
-    log_gene_bins.append(0)
-    for i in range(1, num_bins):
-        log_gene_bins.append(np.log(i))
     label = "Bin Number"
     codons_bin = 0.0   # codons_bin is number of codons per bin
     codons_bin = float(binsize / 3)
@@ -161,7 +155,7 @@ def regression(output, num_bins, all_bins,
     #  Fit the data(train the model)
     regression_model.fit(x_axis, y_axis, sample_weight=weight)
     #  Predict
-    y_predicted = regression_model.predict(y_axis)
+    y_predicted = regression_model.predict(x_axis)
     #  Model evaluation
     rmse = mean_squared_error(y_axis, y_predicted, sample_weight=weight)
     rsquare = r2_score(y_axis, y_predicted, sample_weight=weight)
