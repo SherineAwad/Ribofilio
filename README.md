@@ -58,7 +58,7 @@ Where:
    ``--ylogmax is the maximum y axis for log plots (default: 2)``
 
 
-### How to run Ribofilio 
+### Example 
 
 Running ribofilio on all gene: 
 
