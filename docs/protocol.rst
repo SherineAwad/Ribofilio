@@ -8,8 +8,8 @@ Download Data
 ------------------
 We will use a part of the GEO set  GSE102837::
 
-    wget `<https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090934/SRR5090934.1>`_
-    wget `<https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090936/SRR5090936.1>`_
+    curl -O https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090934/SRR5090934.1
+    curl -O https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos2/sra-pub-run-9/SRR5090936/SRR5090936.1
 
 Lets prepare our samples:: 
 
@@ -33,7 +33,7 @@ Prepare Reference
 
 We will need to align our samples, but we need to download and index our reference transcripts first:: 
 
-    wget `<http://igenomes.illumina.com.s3-website-us-east-1.amazonaws.com/Saccharomyces_cerevisiae/Ensembl/R64-1-1/Saccharomyces_cerevisiae_Ensembl_R64-1-1.tar.gz>`_
+    curl -O http://igenomes.illumina.com.s3-website-us-east-1.amazonaws.com/Saccharomyces_cerevisiae/Ensembl/R64-1-1/Saccharomyces_cerevisiae_Ensembl_R64-1-1.tar.gz
     gunzip Saccharomyces_cerevisiae.R64-1-1.cdna.all.fa.gz
     mv  Saccharomyces_cerevisiae.R64-1-1.cdna.all.fa yeast.fa
 
