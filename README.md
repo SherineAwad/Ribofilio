@@ -30,8 +30,10 @@ or simply:
 
 	python ribofilio.py -t transcripts -f footprint.bed -r rnaseq.bed  -b binsize -o output 
 
- 
-Where: 
+
+##### Parameters  
+
+: 
 
 
    ``--transcripts or -t for transcripts (required)`` 
@@ -97,7 +99,7 @@ Where subsetofgenes.txt is a list of genes:
         YNL052W
 
 
-### Bed file format 
+#### Bed file format 
 
 6 columns bed file format is required, a sample is as follows:
 
@@ -111,7 +113,7 @@ Where subsetofgenes.txt is a list of genes:
 Refer to [Ensemble Bed format](https://m.ensembl.org/info/website/upload/bed.html) for more details regarding bed file formats.
 
 
-### Documentation 
+## Documentation 
 
 Looking for a more detailed tutorial: Take a look into [this tutorial](https://ribofilio.readthedocs.io/en/latest/protocol.html) for a complete Ribosomal profiling protocol using Ribofilio.
 
