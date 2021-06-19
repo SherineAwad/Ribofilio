@@ -25,7 +25,7 @@ SRR5090937.fastq:
 
 #Dataset GSE134152
 SRR9670823.fastq:
-	#wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos3/sra-pub-run-21/SRR9670820/SRR9670820.1
+	wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos3/sra-pub-run-21/SRR9670820/SRR9670820.1
 	wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos3/sra-pub-run-19/SRR9670821/SRR9670821.1
 	wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos3/sra-pub-run-21/SRR9670822/SRR9670822.1
 	wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos3/sra-pub-run-21/SRR9670823/SRR9670823.1
