@@ -16,10 +16,6 @@ Ribofilio is a tool to measure ribosomal profiling drop rate that has been teste
         
 	scipy
 
-## Tutorial
-
-Take a look into [this tutorial](https://ribofilio.readthedocs.io/en/latest/protocol.html) for a complete Ribosomal profiling protocol using Ribofilio.
-
 
 ## How to run Ribofilio
  
@@ -62,7 +58,25 @@ Where:
    ``--ylogmax is the maximum y axis for log plots (default: 2)``
 
 
-### Example 
+### Bed file format 
+
+6 columns bed file format is required, a sample is as follows:
+
+YGL135W_mRNA    95      125     SRR5090936.1.1  1       +
+YKL009W_mRNA    70      98      SRR5090936.1.5  42      +
+YNL045W_mRNA    1664    1692    SRR5090936.1.11 40      +
+YNR050C_mRNA    32      62      SRR5090936.1.18 42      +
+YLR159C-A_mRNA  26      54      SRR5090936.1.20 0       -
+YHR133C_mRNA    443     473     SRR5090936.1.23 42      +
+YGL008C_mRNA    2462    2491    SRR5090936.1.24 42      +
+YHR174W_mRNA    608     639     SRR5090936.1.26 1       +
+YML073C_mRNA    184     216     SRR5090936.1.27 40      +
+YLR154W-A_mRNA  19      52      SRR5090936.1.28 40      -
+
+Refer to [Ensemble Bed format](https://m.ensembl.org/info/website/upload/bed.html) for more details regarding bed file formats. 
+
+ 
+### How to run Ribofilio 
 
 Running ribofilio on all gene: 
 
@@ -99,5 +113,9 @@ Where subsetofgenes.txt is a list of genes:
         YMR256C
    
         YNL052W
+
+### Documentation 
+
+Looking for a more detailed tutorial. Take a look into [this tutorial](https://ribofilio.readthedocs.io/en/latest/protocol.html) for a complete Ribosomal profiling protocol using Ribofilio.
 
 
