@@ -19,7 +19,7 @@ def test_get_genes():
     assert (max_gene_length == 60 ) 
     assert (gene_length ==  {"YBR024W":16, "YDL245C":60,"YBR021W":8}) 
 
-def test_get_subsets(): 
+def test_get_subset_genes(): 
     path = os.getcwd ()
     file1 =  os.path.join(path, "tests/test-data","transcripts_sample.fa")
     file2 = os.path.join(path, "tests/test-data","subset.txt")
@@ -80,9 +80,9 @@ def test_regression():
                gene_coverage_at_bin, plot)
     assert(dropoff_rate == -0.0334)
     assert(dropoff_codon ==[[-0.0506]]) 
-    assert(stand_error == [0.0087]) 
-    assert(margin_error == [0.0185])
-    assert(rmse == 0.033) 
-    assert(rsquare == -0.0682)
-    assert(np.round(tscore[0],4) == -3.8232)
-    assert(pvalue == [0.0007])
+    assert(stand_error == [0.0013]) 
+    assert(margin_error == [0.0028])
+    assert(rmse == 0.0007) 
+    assert(rsquare == 0.9759)
+    assert(np.round(tscore[0],4) == -25.4522)
+    assert(pvalue == [0.])
