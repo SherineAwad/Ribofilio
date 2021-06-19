@@ -3,18 +3,16 @@ configfile: "config.yaml"
 rule all:
     input:
         expand("{GO}.txt", GO=config['GO'] ),     
-        expand("{FP}_{RNA}.regression.log", FP = "SRR5090936", RNA = "SRR5090934"),
-        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = "SRR5090936", RNA = "SRR5090934", SUBSET=config['GO']),
-        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = "SRR5090936", RNA = "SRR5090934", SUBSET=config['GL']),
-        expand("{FP}_{RNA}.regression.log", FP = "SRR5090937", RNA = "SRR5090935"),
-        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = "SRR5090937", RNA = "SRR5090935", SUBSET=config['GO']),
-        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = "SRR5090937", RNA = "SRR5090935", SUBSET=config['GL']),
-        expand("{FP}_{RNA}.regression.log", FP = "SRR9670822", RNA = "SRR9670820"),
-        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = "SRR9670822", RNA = "SRR9670820", SUBSET=config['GO']),
-        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = "SRR9670822", RNA = "SRR9670820", SUBSET=config['GL']),
-        expand("{FP}_{RNA}.regression.log", FP = "SRR9670823", RNA = "SRR9670821"),
-        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = "SRR9670823", RNA = "SRR9670821", SUBSET=config['GO']),
-        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = "SRR9670823", RNA = "SRR9670821", SUBSET=config['GL'])
+        expand("{FP}_{RNA}.regression.log", FP = config['D1_FP'], RNA = config['D1_RNA']),
+        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D1_FP'], RNA = config['D1_RNA'], SUBSET=config['GL']), 
+        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D1_FP'], RNA = config['D1_RNA'], SUBSET=config['GO']),
+        expand("{FP}_{RNA}.regression.log", FP = config['D2_FP'], RNA = config['D2_RNA']),
+        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D2_FP'], RNA = config['D2_RNA'], SUBSET=config['GL']),
+        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D2_FP'], RNA = config['D2_RNA'], SUBSET=config['GO']),
+        expand("{FP}_{RNA}.regression.log", FP = config['D3_FP'], RNA = config['D3_RNA']),
+        expand("{FP}_{RNA}.regression.log", FP = config['D4_FP'], RNA = config['D4_RNA']),
+
+        
 
 rule ribofilio: 
     input:
@@ -24,9 +22,10 @@ rule ribofilio:
     output: 
          "{SAMPLE1}_{SAMPLE2}.regression.log"
     params:
-        prefix="{SAMPLE1}_{SAMPLE2}"
+        prefix="{SAMPLE1}_{SAMPLE2}", 
+        binsize = config['BINSIZE']
     shell:
-        "python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -o {params.prefix} "
+        "python {config[src]}/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -b {params.binsize} -o {params.prefix} "
 
        
 rule subset:
@@ -38,9 +37,10 @@ rule subset:
     output:
         "{SAMPLE1}_{SAMPLE2}-{SUBSET}.regression.log"
     params:
-        prefix="{SAMPLE1}_{SAMPLE2}-{SUBSET}"
+        prefix="{SAMPLE1}_{SAMPLE2}-{SUBSET}",
+        binsize = config['BINSIZE']
     shell: 
-        "python ../src/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -s {input.subset} -o {params.prefix}"
+        "python {config[src]}/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -s {input.subset} -b {params.binsize} -o {params.prefix}"
 
 
 rule get_GO:
@@ -50,7 +50,7 @@ rule get_GO:
         go = expand("{GO}", GO=config['GO'] )
      shell:
          """
-         Rscript scripts/getGO.R {params.go}
+         Rscript {config['scripts']}/getGO.R {params.go}
          """
 
 rule cluster: 
@@ -58,10 +58,14 @@ rule cluster:
         expand("{GL}.txt", GL=config['GL'])     
      shell: 
           """
-          python scripts/gcluster.py yeast.fa yeast02000.txt --max 2000 --min 0
-          python scripts/gcluster.py yeast.fa yeast20004000.txt --max 4000 --min 2000
-          python scripts/gcluster.py yeast.fa yeast40006000.txt --max 6000 --min 4000
-          python scripts/gcluster.py yeast.fa yeast6000100000.txt --max 100000 --min 6000
+          python {config[scripts]}/gcluster.py yeast.fa yeast0500.txt -n 0 -x 500
+	  python {config[scripts]}/gcluster.py yeast.fa yeast5001000.txt -n 500 -x 1000
+          python {config[scripts]}/gcluster.py yeast.fa yeast01000.txt -n 0 -x 1000
+	  python {config[scripts]}/gcluster.py yeast.fa yeast10002000.txt -n 1000 -x 2000
+	  python {config[scripts]}/gcluster.py yeast.fa yeast20003000.txt -n 2000 -x 3000
+	  python {config[scripts]}/gcluster.py yeast.fa yeast30004000.txt -n 3000 -x 4000
+	  python {config[scripts]}/gcluster.py yeast.fa yeast40005000.txt -n 4000 -x 5000
+	  python {config[scripts]}/gcluster.py yeast.fa yeastg5000.txt -n 5000
           """ 
 
 
