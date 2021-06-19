@@ -2,3 +2,5 @@ Dropoff	Dropoff per codon 	RMSE	Rsquare	SE	Margin Error	tscore	pvalue	No.of Bins
 -0.0136	-0.0008	0.3201	-0.427	0.0028	0.0055	-4.870276356909027	0.0198	107
 Dropoff	Dropoff per codon 	RMSE	Rsquare	SE	Margin Error	tscore	pvalue	No.of Bins
 -0.0136	-0.0008	0.3201	-0.427	0.0028	0.0055	-4.949488941504887	0.0	107
+Dropoff	Dropoff per codon 	RMSE	Rsquare	SE	Margin Error	tscore	pvalue	No.of Bins
+-0.0136	-0.0008	0.1568	0.301	0.0016	0.0031	-8.728854277241156	0.0	107
