@@ -33,7 +33,6 @@ or simply:
 
 ##### Parameters  
 
-: 
 
 
    ``--transcripts or -t for transcripts (required)`` 
