@@ -125,7 +125,7 @@ A sample of output.regression.log:
 
 and output.Log.WLR.png:
 
-![output.Log.WLR.png](https://github.com/SherineAwad/ribofilio/blob/master/notebooks/D1_GO0000462.Log.WLR.png?raw=true)
+![output.Log.WLR.png](https://github.com/SherineAwad/ribofilio/blob/master/notebooks/D1.Log.WLR.png?raw=true)
 
 
 ## Documentation 
