@@ -114,6 +114,9 @@ Where subsetofgenes.txt is a list of genes:
 
 Refer to [Ensemble Bed format](https://m.ensembl.org/info/website/upload/bed.html) for more details regarding bed file formats.
 
+#### Output 
+
+Dropoff rate, dropoff rate per codon along with standard error, 95% confidence interval, root mean squared error (RMSE), R2 error, and a t-test score of comparing the slope to a slope of zero and the corresponding pvalue will be print to both screen and output.regression.log file. If the plot mode is on, a weighted linear regression plot will be saved into output.Log.WLR.png. 
 
 ## Documentation 
 
