@@ -118,10 +118,14 @@ Refer to [Ensemble Bed format](https://m.ensembl.org/info/website/upload/bed.htm
 
 Dropoff rate, dropoff rate per codon along with standard error, 95% confidence interval, root mean squared error (RMSE), R2 error, a t-test score of comparing the slope to a slope of zero and the corresponding pvalue will be print to both screen and output.regression.log file, and number of bins. If the plot mode is on, a weighted linear regression plot will be saved into output.Log.WLR.png. 
 
-output.regression.log:
+A sample of output.regression.log:
 
        Dropoff Dropoff per codon       RMSE    Rsquare SE      Margin Error    tscore  pvalue  No.of Bins
        -0.0051 -0.0003 0.0143  0.4907  0.0006  0.0011  -9.089848129268738      0.0     295
+
+and output.Log.WLR.png:
+
+![output.Log.WLR.png](https://github.com/SherineAwad/ribofilio/blob/master/D1_GO0000462.Log.WLR.png?raw=true)
 
 
 ## Documentation 
