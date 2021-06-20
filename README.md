@@ -38,7 +38,7 @@ To run ribofilio:
 or simply:
 
 
-	python ribofilio.py -t transcripts -f footprint.bed -r rnaseq.bed  -b binsize -o output 
+	python ribofilio.py -t transcripts.bed -f footprint.bed -r rnaseq.bed  -b binsize -o output 
 
 
 ##### Parameters  
