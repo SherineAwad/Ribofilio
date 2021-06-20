@@ -1,8 +1,9 @@
+[![Snakemake](https://img.shields.io/badge/snakemake-≥6.0.0-brightgreen.svg)](https://snakemake.github.io)
+[![Documentation Status](https://readthedocs.org/projects/ribofilio/badge/)](http://dammit.readthedocs.io/en/latest)
 
 # Ribofilio: A tool to measure ribosomal profiling dropoff rate
 
-Ribofilio is a tool to measure ribosomal profiling drop rate that has been tested in ecoli and yeast so far.
-
+Ribofilio is a tool to measure ribosomal profiling drop rate that has been tested in ecoli and yeast so far. 
 
 ## Dependencies
 
