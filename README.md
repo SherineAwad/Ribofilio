@@ -7,6 +7,13 @@
 
 Ribofilio is a tool to measure ribosomal profiling drop rate that has been tested in ecoli and yeast so far. 
 
+## Installation 
+
+#### Manual Installation 
+
+      git clone https://github.com/SherineAwad/ribofilio.git
+      cd src 
+      
 ## Dependencies
 
 	screed
