@@ -62,7 +62,8 @@ rule get_GO:
 
 rule cluster: 
      output: 
-        expand("{GL}.txt", GL=config['GL'])     
+        expand("{GL}.txt", GL=config['GL'])
+     conda: 'env/env-cluster.yaml'   
      shell: 
           """
           python {config[scripts]}/gcluster.py yeast.fa yeast0500.txt -n 0 -x 500

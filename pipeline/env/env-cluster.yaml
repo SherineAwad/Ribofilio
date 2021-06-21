@@ -1,0 +1,10 @@
+# conda environment configuration for snakemake --use-conda
+channels:
+    - conda-forge
+    - bioconda
+    - defaults
+dependencies:
+    - python>=3.7,<3.8
+    - screed=1.0.5
+    - numpy=1.20.2
+    - matplotlib=3.4.2
