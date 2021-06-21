@@ -1,5 +1,5 @@
 
-Saccharomyces_cerevisiae.R64-1-1.cdna.all.fa:
+yeast.fa:
 	curl -O ftp://ftp.ensembl.org/pub/release-98/fasta/saccharomyces_cerevisiae/cdna/Saccharomyces_cerevisiae.R64-1-1.cdna.all.fa.gz
 	gunzip Saccharomyces_cerevisiae.R64-1-1.cdna.all.fa.gz
 	mv  Saccharomyces_cerevisiae.R64-1-1.cdna.all.fa yeast.fa

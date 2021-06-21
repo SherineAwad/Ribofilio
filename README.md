@@ -141,10 +141,18 @@ Looking for a more detailed tutorial: Take a look into [this tutorial](https://r
 
 ## Pipeline 
 
-For the sake of repoducibility of our results, to run our pipeline on our data in data directory use:
+For the sake of repoducibility of our results, to run our pipeline on our data in the data directory use:
 
      snakemake --cores --use-conda 
 
 This require snakemake and conda installed in your system. 
+
+#### Data
+ 
+The data used to test our tool and used in the pipeline can be downloaded using a Makefile in the data directory
+
+     make yeast.fa
+     make SRR5090937.fastq
+     make SRR9670823.fastq
 
 
