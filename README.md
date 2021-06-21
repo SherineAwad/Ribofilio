@@ -141,7 +141,10 @@ Looking for a more detailed tutorial: Take a look into [this tutorial](https://r
 
 ## Pipeline 
 
-To run our pipeline on either our data in data directory or your own data, use:
+For the sake of repoducibility of our results, to run our pipeline on our data in data directory use:
 
      snakemake --cores --use-conda 
+
+This require snakemake and conda installed in your system. 
+
 
