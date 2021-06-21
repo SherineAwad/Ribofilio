@@ -140,3 +140,9 @@ and output.Log.WLR.png:
 Looking for a more detailed tutorial: Take a look into [this tutorial](https://ribofilio.readthedocs.io/en/latest/protocol.html) for a complete Ribosomal profiling protocol using Ribofilio.
 
 
+## Pipeline 
+
+To run our pipeline on either our data in Datasets or your own data, use:
+
+     snakemake --cores --use-conda 
+
