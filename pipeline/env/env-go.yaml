@@ -1,8 +1,6 @@
 # conda environment configuration for snakemake --use-conda
+
 channels:
-    - conda-forge
-    - bioconda
-    - defaults
+ - r
 dependencies:
-    - r-base=3.2.2
-    - bioconductor-biomart=2.28.0 
+ - r=3.2.2
