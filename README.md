@@ -141,7 +141,7 @@ Looking for a more detailed tutorial: Take a look into [this tutorial](https://r
 
 ## Pipeline 
 
-To run our pipeline on either our data in Datasets or your own data, use:
+To run our pipeline on either our data in data directory or your own data, use:
 
      snakemake --cores --use-conda 
 
