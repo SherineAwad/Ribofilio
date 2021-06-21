@@ -1,5 +1,9 @@
 configfile: "config.yaml"
 
+#
+# run with --use-conda 
+#
+
 rule all:
     input:
         expand("{GO}.txt", GO=config['GO'] ),     
@@ -24,6 +28,7 @@ rule ribofilio:
     params:
         prefix="{SAMPLE1}_{SAMPLE2}", 
         binsize = config['BINSIZE']
+    conda: 'env/env-ribo.yaml'
     shell:
         "python {config[src]}/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -b {params.binsize} -o {params.prefix} "
 
@@ -39,6 +44,7 @@ rule subset:
     params:
         prefix="{SAMPLE1}_{SAMPLE2}-{SUBSET}",
         binsize = config['BINSIZE']
+    conda: 'env/env-ribo.yaml'
     shell: 
         "python {config[src]}/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -s {input.subset} -b {params.binsize} -o {params.prefix}"
 
@@ -48,6 +54,7 @@ rule get_GO:
         expand("{GO}.txt", GO=config['GO'])
      params: 
         go = expand("{GO}", GO=config['GO'] )
+     conda: 'env/env-go.yaml'
      shell:
          """
          Rscript {config['scripts']}/getGO.R {params.go}
@@ -74,6 +81,7 @@ rule index:
         genome = config['GENOME']
      output: 
         config['INDEX']
+     conda: 'env/env-index.yaml'
      shell: 
         "bowtie2-build {input.genome} {output} && touch {output}"
 
@@ -85,6 +93,7 @@ rule trim:
         "galore/{SAMPLE}_trimmed.fq.gz", 
     params: 
        adapter =config['ADAPTERS']
+    conda: 'env/env-trim.yaml'
     shell:
         """
         trim_galore --gzip --retain_unpaired --trim1 -a {params.adapter} --fastqc --fastqc_args "--outdir fastqc" -o galore {input.sample}   
@@ -97,6 +106,7 @@ rule tobam:
       output:
           "{READS}.sam",
           "{READS}.bowtie2.bam"
+      conda: 'env/env-align.yaml'
       shell: 
           """ 
            bowtie2 -x {input.index} -U {input.sample} -S {output[0]}
@@ -108,8 +118,9 @@ rule tobed:
              "{SAMPLE}.bowtie2.bam", 
              genome = config['GENOME'] 
         output: 
-	     "{SAMPLE}.bed" 
-	run: 
+	     "{SAMPLE}.bed"
+        conda: 'env/env-format.yaml' 
+	shell: 
             """
             bedtools bamtobed -i {input} > {output}
             """
