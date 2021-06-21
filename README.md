@@ -132,7 +132,9 @@ A sample of output.regression.log:
 
 and output.Log.WLR.png:
 
-![output.Log.WLR.png](https://github.com/SherineAwad/ribofilio/blob/master/notebooks/D1.Log.WLR.png?raw=true){:height="50%" width="50%"}
+<img src="https://github.com/SherineAwad/ribofilio/blob/master/notebooks/D1.Log.WLR.png" alt="output.Log.WLR.png" width="15" height="15">
+
+
 
 ## Documentation 
 
