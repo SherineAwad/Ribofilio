@@ -3,9 +3,9 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
-# Ribofilio: A tool to measure ribosomal profiling dropoff rate
+# Ribofilio: A tool to estimate ribosomal profiling dropoff rate
 
-Ribofilio is a tool to measure ribosomal profiling drop rate that has been tested in ecoli and yeast so far. 
+Ribofilio is a tool to estimate ribosomal profiling drop rate that has been tested in ecoli and yeast so far. 
 
 ## Installation 
 
