@@ -144,8 +144,8 @@ def regression(output, num_bins, gene_bins,
     codons_bin = float(binsize / 3)
     # Weighted Linear Regression
     # ------------------
-    x_axis = np.array(bins).reshape(-1, 1)
-    y_axis = np.array(np.log(gene_bins)).reshape(-1, 1)
+    x_value = np.array(bins).reshape(-1, 1)
+    y_value = np.array(np.log(gene_bins)).reshape(-1, 1)
     regression_model = LinearRegression()
     weight = [0] * num_bins
     norm_weight = [0] * num_bins
@@ -153,12 +153,12 @@ def regression(output, num_bins, gene_bins,
         weight[i] = gene_coverage_at_bin[i]
         norm_weight[i] = np.cbrt(weight[i])
     #  Fit the data(train the model)
-    regression_model.fit(x_axis, y_axis, sample_weight=weight)
+    regression_model.fit(x_value, y_value, sample_weight=weight)
     #  Predict
-    y_predicted = regression_model.predict(x_axis)
+    y_predicted = regression_model.predict(x_value)
     #  Model evaluation
-    rmse = mean_squared_error(y_axis, y_predicted, sample_weight=weight)
-    rsquare = r2_score(y_axis, y_predicted, sample_weight=weight)
+    rmse = mean_squared_error(y_value, y_predicted, sample_weight=weight)
+    rsquare = r2_score(y_value, y_predicted, sample_weight=weight)
     # Calculate dropoff_codon is dropoff rate per codon
     dropoff_codon = 1 - pow((1 - regression_model.coef_), (1/codons_bin))
     dropoff_rate = regression_model.coef_[0][0]
@@ -175,7 +175,7 @@ def regression(output, num_bins, gene_bins,
     sumy_ypredicted = 0
     for i in range(0, num_bins):
         sumy_ypredicted = (sumy_ypredicted
-                           + np.square(y_axis[i] - y_predicted[i]))
+                           + np.square(y_value[i] - y_predicted[i]))
     stand_error = np.sqrt((sumy_ypredicted / (num_bins - df))) / xmean
     margin_error = (critical_p * stand_error)
     # Calculate tscore and pvalue of
@@ -212,21 +212,31 @@ def regression(output, num_bins, gene_bins,
     print("R2 Score: ", rsquare)
     print("T-test score: ", tscore)
     print("Pvalue:", pvalue)
-    if plot == 1:
-        plt.figure(figsize=(10, 10))
-        plt.ylim(ylogmin, ylogmax)
-        plt.scatter(x_axis, y_axis, s=norm_weight)
-        xtext = (" Dropoff: " + str(dropoff_rate) +
-                 " RMSE: " + str(rmse) + " SE: " + str(stand_error[0]))
-        plt.xlabel(str(label) + "\n" + str(xtext), fontsize=10)
-        plt.ylabel("Bin Value", fontsize=10)
-        plt.plot(x_axis, y_predicted, color="r")
-        plt.title(output + " Weighted Linear Regression", fontsize=10)
-        plt.savefig(output + ".Log.WLR.png", format="png")
-        plt.clf()
     regfp.close()
+    if plot == 1:
+        plot_regression (x_value, y_value, y_predicted, norm_weight, str(dropoff_rate), str(rmse),str(stand_error[0]), output)
     return (dropoff_rate, dropoff_codon, stand_error,
             margin_error, rmse, rsquare, tscore, pvalue)
+#------------------------------------------
+#Plot Regression 
+#-----------------------------------------
+def plot_regression(x_value, y_value, y_predicted,  norm_weight, dropoff_rate, rmse, stand_error, output):
+      print("xvalue", x_value)
+      print("yvalue", y_value)
+      print("ypre", y_predicted)
+      label = "Bin Number"
+      fig = plt.figure(figsize=(10, 10))
+      #plt.ylim(ymin, ymax)
+      plt.scatter(x_value, y_value, s=norm_weight)
+      xtext = (" Dropoff: " + str(dropoff_rate) +
+                 " RMSE: " + str(rmse) + " SE: " + str(stand_error))
+      plt.xlabel(str(label) + "\n" + str(xtext), fontsize=10)
+      plt.ylabel("Bin Value", fontsize=10)
+      plt.plot(x_value, y_predicted, color="r")
+      plt.title(output + " Weighted Linear Regression", fontsize=10)
+      plt.savefig(output + ".Log.WLR.png", format="png")
+      #plt.clf()
+      return fig 
 # ---------------------------------------------------------------------------
 # Main function: gets input paramters and calls corresponding functions
 # ---------------------------------------------------------------------------
@@ -334,7 +344,6 @@ def main():
         gene_coverage_at_bin, plot
     )
     print("All is done")
-
 
 if __name__ == "__main__":
     main()
