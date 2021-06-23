@@ -5,6 +5,13 @@
 
 # Ribofilio: A tool to estimate ribosomal profiling dropoff rate
 
+      _ _            __ _ _ _       
+ _ __(_) |__   ___  / _(_) (_) ___  
+| '__| | '_ \ / _ \| |_| | | |/ _ \ 
+| |  | | |_) | (_) |  _| | | | (_) |
+|_|  |_|_.__/ \___/|_| |_|_|_|\___/
+
+
 Ribofilio is a tool to estimate ribosomal profiling drop rate that has been tested in ecoli and yeast so far. 
 
 ## Installation 
