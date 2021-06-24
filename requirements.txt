@@ -7,4 +7,4 @@ matplotlib
 sklearn
 scipy
 opencv-python
-scikit-image
+scikit-image==0.17.0

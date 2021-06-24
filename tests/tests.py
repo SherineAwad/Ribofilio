@@ -6,7 +6,7 @@ import numpy as np
 from unittest.mock import patch 
 import matplotlib.pyplot as plt
 import cv2
-from skimage import measure
+import skimage.measure as measure
 
 path = os.getcwd() 
 path  = os.path.join(path,"src") 
