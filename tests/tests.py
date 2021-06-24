@@ -91,7 +91,6 @@ def test_regression():
     assert(np.round(tscore[0],4) == -25.4522)
     assert(pvalue == [0.])
 
-#@pytest.mark.mpl_image_compare
 def test_plot_regression():
     x_value = np.array([1,2,3,4,5,6,7,8,9,10]).reshape(-1, 1)
     y_value = np.array(np.log([1,2,4,6,9,13,15,16,18,20])).reshape(-1, 1)
@@ -107,4 +106,5 @@ def test_plot_regression():
     grayA = cv2.cvtColor(imageA, cv2.COLOR_BGR2GRAY)
     grayB = cv2.cvtColor(imageB, cv2.COLOR_BGR2GRAY)
     (score, diff) = measure.compare_ssim(grayA, grayB, full=True)
-    assert(score ==1.0)
+    print (score, diff)
+    assert(score > 0.99)
