@@ -214,19 +214,19 @@ def regression(output, num_bins, gene_bins,
     print("Pvalue:", pvalue)
     regfp.close()
     if plot == 1:
-        plot_regression (x_value, y_value, y_predicted, norm_weight, str(dropoff_rate), str(rmse),str(stand_error[0]), output)
+        plot_regression (x_value, y_value, y_predicted, norm_weight, str(dropoff_rate), str(rmse),str(stand_error[0]), output, ylogmin, ylogmax)
     return (dropoff_rate, dropoff_codon, stand_error,
             margin_error, rmse, rsquare, tscore, pvalue)
 #------------------------------------------
 #Plot Regression 
 #-----------------------------------------
-def plot_regression(x_value, y_value, y_predicted,  norm_weight, dropoff_rate, rmse, stand_error, output):
+def plot_regression(x_value, y_value, y_predicted,  norm_weight, dropoff_rate, rmse, stand_error, output, ymin, ymax):
       print("xvalue", x_value)
       print("yvalue", y_value)
       print("ypre", y_predicted)
       label = "Bin Number"
       fig = plt.figure(figsize=(10, 10))
-      #plt.ylim(ymin, ymax)
+      plt.ylim(ymin, ymax)
       plt.scatter(x_value, y_value, s=norm_weight)
       xtext = (" Dropoff: " + str(dropoff_rate) +
                  " RMSE: " + str(rmse) + " SE: " + str(stand_error))

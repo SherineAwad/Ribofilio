@@ -5,7 +5,8 @@ import sys
 import numpy as np 
 from unittest.mock import patch 
 import matplotlib.pyplot as plt
-
+import cv2
+from skimage import measure
 
 path = os.getcwd() 
 path  = os.path.join(path,"src") 
@@ -89,7 +90,7 @@ def test_regression():
     assert(rsquare == 0.9759)
     assert(np.round(tscore[0],4) == -25.4522)
     assert(pvalue == [0.])
-""""
+
 #@pytest.mark.mpl_image_compare
 def test_plot_regression():
     x_value = np.array([1,2,3,4,5,6,7,8,9,10]).reshape(-1, 1)
@@ -100,6 +101,10 @@ def test_plot_regression():
     output ="test" 
     rmse =0.1
     norm_weight = [1,1,1,1,1,1,1,1,1,1]
-    rb.plot_regression(x_value, y_value, y_predicted,  norm_weight, dropoff_rate, rmse, stand_error, output)
-    assert(image_diff('test.Log.WLR.png', 'tests/test.png')) 
-"""
+    rb.plot_regression(x_value, y_value, y_predicted,  norm_weight, dropoff_rate, rmse, stand_error, output, -3, 2)
+    imageA = cv2.imread("test.Log.WLR.png") 
+    imageB = cv2.imread("tests/test-data/test.png")
+    grayA = cv2.cvtColor(imageA, cv2.COLOR_BGR2GRAY)
+    grayB = cv2.cvtColor(imageB, cv2.COLOR_BGR2GRAY)
+    (score, diff) = measure.compare_ssim(grayA, grayB, full=True)
+    assert(score ==1.0)
