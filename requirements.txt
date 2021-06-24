@@ -6,3 +6,5 @@ numpy
 matplotlib
 sklearn
 scipy
+cv2
+skimage

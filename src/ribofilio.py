@@ -139,7 +139,6 @@ def regression(output, num_bins, gene_bins,
     # Take log of bins indeces for LOG/LOG plotting
     for i in range(0, num_bins):
         bins.append(i)
-    label = "Bin Number"
     codons_bin = 0.0   # codons_bin is number of codons per bin
     codons_bin = float(binsize / 3)
     # Weighted Linear Regression
@@ -214,29 +213,35 @@ def regression(output, num_bins, gene_bins,
     print("Pvalue:", pvalue)
     regfp.close()
     if plot == 1:
-        plot_regression (x_value, y_value, y_predicted, norm_weight, str(dropoff_rate), str(rmse),str(stand_error[0]), output, ylogmin, ylogmax)
+        plot_regression(x_value, y_value, y_predicted, norm_weight,
+                        str(dropoff_rate), str(rmse), str(stand_error[0]),
+                        output, ylogmin, ylogmax)
     return (dropoff_rate, dropoff_codon, stand_error,
             margin_error, rmse, rsquare, tscore, pvalue)
-#------------------------------------------
-#Plot Regression 
-#-----------------------------------------
-def plot_regression(x_value, y_value, y_predicted,  norm_weight, dropoff_rate, rmse, stand_error, output, ymin, ymax):
-      print("xvalue", x_value)
-      print("yvalue", y_value)
-      print("ypre", y_predicted)
-      label = "Bin Number"
-      fig = plt.figure(figsize=(10, 10))
-      plt.ylim(ymin, ymax)
-      plt.scatter(x_value, y_value, s=norm_weight)
-      xtext = (" Dropoff: " + str(dropoff_rate) +
-                 " RMSE: " + str(rmse) + " SE: " + str(stand_error))
-      plt.xlabel(str(label) + "\n" + str(xtext), fontsize=10)
-      plt.ylabel("Bin Value", fontsize=10)
-      plt.plot(x_value, y_predicted, color="r")
-      plt.title(output + " Weighted Linear Regression", fontsize=10)
-      plt.savefig(output + ".Log.WLR.png", format="png")
-      #plt.clf()
-      return fig 
+# ------------------------------------------
+# Plot Regression
+# -----------------------------------------
+
+
+def plot_regression(x_value, y_value, y_predicted,
+                    norm_weight, dropoff_rate, rmse,
+                    stand_error, output, ymin, ymax):
+    print("xvalue", x_value)
+    print("yvalue", y_value)
+    print("ypre", y_predicted)
+    label = "Bin Number"
+    fig = plt.figure(figsize=(10, 10))
+    plt.ylim(ymin, ymax)
+    plt.scatter(x_value, y_value, s=norm_weight)
+    xtext = (" Dropoff: " + str(dropoff_rate) +
+             " RMSE: " + str(rmse) + " SE: " + str(stand_error))
+    plt.xlabel(str(label) + "\n" + str(xtext), fontsize=10)
+    plt.ylabel("Bin Value", fontsize=10)
+    plt.plot(x_value, y_predicted, color="r")
+    plt.title(output + " Weighted Linear Regression", fontsize=10)
+    plt.savefig(output + ".Log.WLR.png", format="png")
+    plt.clf()
+    return fig
 # ---------------------------------------------------------------------------
 # Main function: gets input paramters and calls corresponding functions
 # ---------------------------------------------------------------------------
@@ -344,6 +349,7 @@ def main():
         gene_coverage_at_bin, plot
     )
     print("All is done")
+
 
 if __name__ == "__main__":
     main()
