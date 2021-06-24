@@ -7,4 +7,4 @@ matplotlib
 sklearn
 scipy
 opencv-python
-skimage
+scikit-image
