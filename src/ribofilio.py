@@ -26,7 +26,6 @@ def get_subset_genes(transcripts, subset_file):
             genes_length[str(gene_name)] = int(len(record.sequence))
             if genes_length[gene_name] > max_gene_length:
                 max_gene_length = genes_length[gene_name]
-    print('Maximum gene length is', max_gene_length)
     return max_gene_length, genes_length
 
 
@@ -44,7 +43,6 @@ def get_genes(transcripts):
         genes_length[str(gene_name)] = int(len(record.sequence))
         if genes_length[gene_name] > max_gene_length:
             max_gene_length = genes_length[gene_name]
-    print('max_gene_length is', max_gene_length)
     return max_gene_length, genes_length
 
 

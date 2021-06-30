@@ -3,6 +3,7 @@
 [![Snakemake](https://img.shields.io/badge/snakemake-≥6.0.2-brightgreen.svg)](https://snakemake.github.io)
 [![Documentation Status](https://readthedocs.org/projects/ribofilio/badge/)](http://dammit.readthedocs.io/en/latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Test coverage][codecovbadge]](https://codecov.io/github/sherineawad/ribofilio)
 
 
 ```
@@ -16,7 +17,7 @@
 ```
 
 
-# Ribofilio: A tool to estimate ribosomal profiling dropoff rate
+# Ribofilio: A tool to estimate ribosomes drop-off rate
 
 Ribofilio is a tool to estimate ribosomal profiling drop rate that has been tested in ecoli and yeast so far. 
 
