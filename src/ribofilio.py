@@ -254,6 +254,23 @@ def call_mRNA(rnaseq, genes_length, max_gene_length, binsize):
         rna_gene_bins = binning(binsize, rna_positions,
                                 rna_gene_coverage_at_pos, max_gene_length)
     return rna_gene_bins
+
+# -------------------------------------------
+# Call footprint 
+# -------------------------------------------
+
+
+def call_footprints(footprint, genes_length, max_gene_length, binsize):
+    fp_coverage = get_reads(footprint, genes_length)
+    fp_gene_coverage_at_pos = (get_gene_coverage_at_pos
+                               (max_gene_length, fp_coverage, genes_length))
+    fp_positions = fill_positions(fp_coverage, max_gene_length)
+    ribosomes_gene_bins = binning(binsize, fp_positions,
+                                  fp_gene_coverage_at_pos,
+                                  max_gene_length)
+    return ribosomes_gene_bins
+
+
 # -----------------------------------------------
 # Normalize Footprint using mRNA
 # -----------------------------------------------
@@ -333,13 +350,7 @@ def main():
     gene_coverage_at_bin = (get_gene_coverage_at_bin(max_gene_length,
                             binsize, genes_length))
     print("Reading and binning footprints ...")
-    fp_coverage = get_reads(args.footprint, genes_length)
-    fp_gene_coverage_at_pos = (get_gene_coverage_at_pos
-                               (max_gene_length, fp_coverage, genes_length))
-    fp_positions = fill_positions(fp_coverage, max_gene_length)
-    ribosomes_gene_bins = binning(binsize, fp_positions,
-                                  fp_gene_coverage_at_pos,
-                                  max_gene_length)
+    ribosomes_gene_bins = call_footprints(args.footprint, genes_length, max_gene_length, binsize)
     if args.rnaseq != "NULL":
         rna_gene_bins = call_mRNA(args.rnaseq,
                                   genes_length,

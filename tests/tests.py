@@ -34,8 +34,8 @@ def test_get_subset_genes():
 def test_get_reads():
     path = os.getcwd()
     path = os.path.join(path, "tests/test-data", "sample.bed") 
-    coverage = rb.get_reads(path,  {"YKL152C":50}) 
-    assert (coverage == {"YKL152C":[93]})
+    coverage = rb.get_reads(path,  {"YBR024W":52,"YBR021W":45}) 
+    assert (coverage == {'YBR021W': [39,44], "YBR024W": [49, 52]})
 
 def test_get_gene_coverage_at_bin():
     path = os.getcwd()
@@ -65,7 +65,6 @@ def test_binning():
      max_gene_length = 3 
      genes_bin  = rb.binning(2,positions, gene_coverage_at_pos, max_gene_length)
      round_genes_bin  = np.round(genes_bin, 6)
-     print(round_genes_bin)
      assert (round_genes_bin  == [0.333334, 0.166668]).all()
 
 
@@ -122,10 +121,18 @@ def test_call_mRNA_1():
     rna_gene_bins = rb.call_mRNA("NULL", genes_length, max_gene_length, binsize)
     assert(rna_gene_bins ==[]) 
 
-def test_call_mRNA_2(): 
-    rna_gene_bins = []
+def test_call_mRNA_2():
     genes_length = {"YBR024W":52,"YBR021W":45}
     max_gene_length = 52
-    binsize = 5 
+    binsize = 70
     rna_gene_bins = rb.call_mRNA("tests/test-data/sample.bed", genes_length, max_gene_length, binsize)
-    assert(rna_gene_bins !=[]) 
+    assert(np.round(rna_gene_bins, 4) == [0.0429])
+
+
+def test_call_footprints():
+    genes_length = {"YBR024W":52,"YBR021W":45}
+    max_gene_length = 52
+    binsize = 70
+    fp_gene_bins = rb.call_footprints("tests/test-data/sample.bed", genes_length, max_gene_length, binsize)
+    assert(np.round(fp_gene_bins, 4) == [0.0429])
+
