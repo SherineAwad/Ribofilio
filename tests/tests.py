@@ -111,8 +111,21 @@ def test_plot_regression():
 def test_normalize():
     ribosomes = [6,6,6,6,6] 
     mRNA = [2,2,2,2,2]
-    max_gene_length = 24
-    binsize = 6
-    gene_bins, num_bins = rb.normalize( ribosomes, mRNA, max_gene_length, binsize) 
+    gene_bins = rb.normalize( ribosomes, mRNA, 5) 
     assert(gene_bins ==[3,3,3,3,3]) 
-    assert (num_bins == 5) 
+
+def test_call_mRNA_1(): 
+    rna_gene_bins = [] 
+    genes_length = {"YBR024W":52,"YBR021W":45}
+    max_gene_length = 52
+    binsize = 5 
+    rna_gene_bins = rb.call_mRNA("NULL", genes_length, max_gene_length, binsize)
+    assert(rna_gene_bins ==[]) 
+
+def test_call_mRNA_2(): 
+    rna_gene_bins = []
+    genes_length = {"YBR024W":52,"YBR021W":45}
+    max_gene_length = 52
+    binsize = 5 
+    rna_gene_bins = rb.call_mRNA("tests/test-data/sample.bed", genes_length, max_gene_length, binsize)
+    assert(rna_gene_bins !=[]) 

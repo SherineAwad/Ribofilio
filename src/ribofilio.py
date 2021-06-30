@@ -211,7 +211,7 @@ def regression(output, num_bins, gene_bins,
     regfp.close()
     if plot == 1:
         plot_regression(x_value, y_value, y_predicted, norm_weight,
-                        str(dropoff_rate), str(rmse), str(stand_error[0]),
+                        str(dropoff_rate), str(rsquare), str(stand_error[0]),
                         output, ylogmin, ylogmax)
     return (dropoff_rate, dropoff_codon, stand_error,
             margin_error, rmse, rsquare, tscore, pvalue)
@@ -221,14 +221,14 @@ def regression(output, num_bins, gene_bins,
 
 
 def plot_regression(x_value, y_value, y_predicted,
-                    norm_weight, dropoff_rate, rmse,
+                    norm_weight, dropoff_rate, rsquare,
                     stand_error, output, ymin, ymax):
     label = "Bin Number"
     fig = plt.figure(figsize=(10, 10))
     plt.ylim(ymin, ymax)
     plt.scatter(x_value, y_value, s=norm_weight)
     xtext = (" Dropoff: " + str(dropoff_rate) +
-             " RMSE: " + str(rmse) + " SE: " + str(stand_error))
+             " RSquare: " + str(rsquare) + " SE: " + str(stand_error))
     plt.xlabel(str(label) + "\n" + str(xtext), fontsize=10)
     plt.ylabel("Bin Value", fontsize=10)
     plt.plot(x_value, y_predicted, color="r")
@@ -237,16 +237,30 @@ def plot_regression(x_value, y_value, y_predicted,
     plt.clf()
     return fig
 
+# --------------------------------------------
+# Call mRNA
+# --------------------------------------------
 
+def call_mRNA(rnaseq, genes_length, max_gene_length, binsize):
+    rna_gene_bins = []
+    if rnaseq != "NULL":
+        print("Reading and binning mRNA ...")
+        rna_coverage = get_reads(rnaseq, genes_length)
+        rna_gene_coverage_at_pos = (get_gene_coverage_at_pos(
+                                    max_gene_length, rna_coverage,
+                                    genes_length))
+        rna_positions = fill_positions(rna_coverage, max_gene_length)
+        rna_gene_bins = binning(binsize, rna_positions,
+                                rna_gene_coverage_at_pos, max_gene_length)
+    return rna_gene_bins
 # -----------------------------------------------
 # Normalize Footprint using mRNA
 # -----------------------------------------------
-def normalize(ribosomes_gene_bins, rna_gene_bins, max_gene_length, binsize):
+def normalize(ribosomes_gene_bins, rna_gene_bins, num_bins):
     gene_bins = ribosomes_gene_bins
-    num_bins = int(max_gene_length / binsize) + 1
     for i in range(0, num_bins):
         gene_bins[i] = float(ribosomes_gene_bins[i] / rna_gene_bins[i])
-    return gene_bins, num_bins
+    return gene_bins
 
 # ---------------------------------------------
 # Parse arguments
@@ -315,6 +329,7 @@ def main():
                                          (args.transcripts, args.subset))
     gene_coverage_at_bin = (get_gene_coverage_at_bin(max_gene_length,
                             binsize, genes_length))
+    print("Reading and binning footprints ...")
     fp_coverage = get_reads(args.footprint, genes_length)
     fp_gene_coverage_at_pos = (get_gene_coverage_at_pos
                                (max_gene_length, fp_coverage, genes_length))
@@ -323,18 +338,14 @@ def main():
                                   fp_gene_coverage_at_pos,
                                   max_gene_length)
     if args.rnaseq != "NULL":
-        rna_coverage = get_reads(args.rnaseq, genes_length)
-        rna_gene_coverage_at_pos = (get_gene_coverage_at_pos(
-                                    max_gene_length, rna_coverage,
-                                    genes_length))
-        rna_positions = fill_positions(rna_coverage, max_gene_length)
-        rna_gene_bins = binning(binsize, rna_positions,
-                                rna_gene_coverage_at_pos, max_gene_length)
+        rna_gene_bins = call_mRNA(args.rnaseq, genes_length, max_gene_length, binsize)
+    gene_bins = ribosomes_gene_bins
     # Normalize footprint with mRNA
+    num_bins = int(max_gene_length / binsize) + 1
     if args.rnaseq != "NULL":
-        gene_bins, num_bins = normalize(
+        gene_bins  = normalize(
                               ribosomes_gene_bins,
-                              rna_gene_bins, max_gene_length, binsize)
+                              rna_gene_bins, num_bins)
     # -----------------------------------------
     # Plotting and summarizing
     # -----------------------------------------
