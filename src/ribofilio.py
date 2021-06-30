@@ -241,6 +241,7 @@ def plot_regression(x_value, y_value, y_predicted,
 # Call mRNA
 # --------------------------------------------
 
+
 def call_mRNA(rnaseq, genes_length, max_gene_length, binsize):
     rna_gene_bins = []
     if rnaseq != "NULL":
@@ -256,6 +257,8 @@ def call_mRNA(rnaseq, genes_length, max_gene_length, binsize):
 # -----------------------------------------------
 # Normalize Footprint using mRNA
 # -----------------------------------------------
+
+
 def normalize(ribosomes_gene_bins, rna_gene_bins, num_bins):
     gene_bins = ribosomes_gene_bins
     for i in range(0, num_bins):
@@ -338,12 +341,14 @@ def main():
                                   fp_gene_coverage_at_pos,
                                   max_gene_length)
     if args.rnaseq != "NULL":
-        rna_gene_bins = call_mRNA(args.rnaseq, genes_length, max_gene_length, binsize)
+        rna_gene_bins = call_mRNA(args.rnaseq,
+                                  genes_length,
+                                  max_gene_length, binsize)
     gene_bins = ribosomes_gene_bins
     # Normalize footprint with mRNA
     num_bins = int(max_gene_length / binsize) + 1
     if args.rnaseq != "NULL":
-        gene_bins  = normalize(
+        gene_bins = normalize(
                               ribosomes_gene_bins,
                               rna_gene_bins, num_bins)
     # -----------------------------------------
