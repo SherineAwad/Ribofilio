@@ -31,7 +31,6 @@ def get_subset_genes(transcripts, subset_file):
 
 
 def get_genes(transcripts):
-    print(transcripts)
     max_gene_length = -100
     genes_length = {}
     itr = 0
@@ -239,12 +238,23 @@ def plot_regression(x_value, y_value, y_predicted,
     plt.savefig(output + ".Log.WLR.png", format="png")
     plt.clf()
     return fig
-# ---------------------------------------------------------------------------
-# Main function: gets input paramters and calls corresponding functions
-# ---------------------------------------------------------------------------
 
 
-def main():
+# -----------------------------------------------
+# Normalize Footprint using mRNA
+# -----------------------------------------------
+
+def normalize(ribosomes_gene_bins, rna_gene_bins, max_gene_length, binsize): 
+    gene_bins = ribosomes_gene_bins
+    num_bins = int(max_gene_length / binsize) + 1
+    for i in range(0, num_bins):
+            gene_bins[i] = float(ribosomes_gene_bins[i] / rna_gene_bins[i])
+    return gene_bins, num_bins
+
+# ---------------------------------------------
+# Parse arguments
+# ---------------------------------------------
+def get_arguments():
     print("Initializing and reading arguments")
     parser = argparse.ArgumentParser()
     parser.add_argument('-t', '--transcripts',
@@ -268,6 +278,14 @@ def main():
                         help="ylogmin for y axis min position in log plot")
     parser.add_argument("--ylogmax", type=int, default=2,
                         help="ylogmax for y axis max position in log plot")
+    return parser 
+# ---------------------------------------------------------------------------
+# Main function: gets input paramters and calls corresponding functions
+# ---------------------------------------------------------------------------
+
+
+def main():
+    parser = get_arguments()
     args = parser.parse_args()
     # Check required files exist
     if not os.path.exists(args.transcripts):
@@ -284,10 +302,6 @@ def main():
         sample += "_" + str(args.rnaseq).split(".")[0]
     # Check plot mode
     plot = args.plot
-    if plot == 1:
-        print("Plot mode is on, regression plots will be printed")
-    else:
-        print("Plot mode is off, no plots will be printed")
     output = args.output
     if output == "":
         output = sample
@@ -295,30 +309,22 @@ def main():
             subset_name = args.subset.split(".")[0]
             output += "." + subset_name
     binsize = int(args.binsize)
-    print("Reading transcripts")
     if args.subset == "NULL":
         max_gene_length, genes_length = get_genes(args.transcripts)
     else:
         max_gene_length, genes_length = (get_subset_genes
                                          (args.transcripts, args.subset))
-    print("Done reading transcripts")
     gene_coverage_at_bin = (get_gene_coverage_at_bin(max_gene_length,
                             binsize, genes_length))
-    print("Reading ribosome footprint", args.footprint)
     fp_coverage = get_reads(args.footprint, genes_length)
-    print("Filling coverage matrix")
     fp_gene_coverage_at_pos = (get_gene_coverage_at_pos
                                (max_gene_length, fp_coverage, genes_length))
-    print("Filling positions matrix")
     fp_positions = fill_positions(fp_coverage, max_gene_length)
-    print("Started binning process")
     ribosomes_gene_bins = binning(binsize, fp_positions,
                                   fp_gene_coverage_at_pos,
                                   max_gene_length)
     if args.rnaseq != "NULL":
-        print("Reading mRNA", args.rnaseq)
         rna_coverage = get_reads(args.rnaseq, genes_length)
-        print("Filling coverage matrix")
         rna_gene_coverage_at_pos = (get_gene_coverage_at_pos(
                                     max_gene_length, rna_coverage,
                                     genes_length))
@@ -326,13 +332,10 @@ def main():
         rna_gene_bins = binning(binsize, rna_positions,
                                 rna_gene_coverage_at_pos, max_gene_length)
 
-    print("No. of bins:", len(ribosomes_gene_bins))
-    num_bins = int(max_gene_length / binsize) + 1
-    gene_bins = ribosomes_gene_bins
+
+    # Normalize footprint with mRNA 
     if args.rnaseq != "NULL":
-        for i in range(0, num_bins):
-            gene_bins[i] = float(ribosomes_gene_bins[i] / rna_gene_bins[i])
-    print("Done binning, starting regression and plotting")
+        gene_bins, num_bins = normalize(ribosomes_gene_bins, rna_gene_bins, max_gene_length, binsize)
     # -----------------------------------------
     # Plotting and summarizing
     # -----------------------------------------

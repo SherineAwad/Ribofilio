@@ -3,7 +3,6 @@ import screed
 import os
 import sys 
 import numpy as np 
-from unittest.mock import patch 
 import matplotlib.pyplot as plt
 import cv2
 import skimage.measure as measure
@@ -108,3 +107,12 @@ def test_plot_regression():
     (score, diff) = measure.compare_ssim(grayA, grayB, full=True)
     print (score, diff)
     assert(score > 0.99)
+
+def test_normalize():
+    ribosomes = [6,6,6,6,6] 
+    mRNA = [2,2,2,2,2]
+    max_gene_length = 24
+    binsize = 6
+    gene_bins, num_bins = rb.normalize( ribosomes, mRNA, max_gene_length, binsize) 
+    assert(gene_bins ==[3,3,3,3,3]) 
+    assert (num_bins == 5) 
