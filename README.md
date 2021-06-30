@@ -1,6 +1,19 @@
+# Ribofilio 
+
 [![Snakemake](https://img.shields.io/badge/snakemake-≥6.0.2-brightgreen.svg)](https://snakemake.github.io)
 [![Documentation Status](https://readthedocs.org/projects/ribofilio/badge/)](http://dammit.readthedocs.io/en/latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+
+```
+ ____  _ _            __ _ _ _       
+|  _ \(_) |__   ___  / _(_) (_) ___  
+| |_) | | '_ \ / _ \| |_| | | |/ _ \ 
+|  _ <| | |_) | (_) |  _| | | | (_) |
+|_| \_\_|_.__/ \___/|_| |_|_|_|\___/ 
+                                     
+
+```
 
 
 # Ribofilio: A tool to estimate ribosomal profiling dropoff rate

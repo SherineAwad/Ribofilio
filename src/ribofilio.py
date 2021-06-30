@@ -243,17 +243,18 @@ def plot_regression(x_value, y_value, y_predicted,
 # -----------------------------------------------
 # Normalize Footprint using mRNA
 # -----------------------------------------------
-
-def normalize(ribosomes_gene_bins, rna_gene_bins, max_gene_length, binsize): 
+def normalize(ribosomes_gene_bins, rna_gene_bins, max_gene_length, binsize):
     gene_bins = ribosomes_gene_bins
     num_bins = int(max_gene_length / binsize) + 1
     for i in range(0, num_bins):
-            gene_bins[i] = float(ribosomes_gene_bins[i] / rna_gene_bins[i])
+        gene_bins[i] = float(ribosomes_gene_bins[i] / rna_gene_bins[i])
     return gene_bins, num_bins
 
 # ---------------------------------------------
 # Parse arguments
 # ---------------------------------------------
+
+
 def get_arguments():
     print("Initializing and reading arguments")
     parser = argparse.ArgumentParser()
@@ -278,7 +279,7 @@ def get_arguments():
                         help="ylogmin for y axis min position in log plot")
     parser.add_argument("--ylogmax", type=int, default=2,
                         help="ylogmax for y axis max position in log plot")
-    return parser 
+    return parser
 # ---------------------------------------------------------------------------
 # Main function: gets input paramters and calls corresponding functions
 # ---------------------------------------------------------------------------
@@ -331,11 +332,11 @@ def main():
         rna_positions = fill_positions(rna_coverage, max_gene_length)
         rna_gene_bins = binning(binsize, rna_positions,
                                 rna_gene_coverage_at_pos, max_gene_length)
-
-
-    # Normalize footprint with mRNA 
+    # Normalize footprint with mRNA
     if args.rnaseq != "NULL":
-        gene_bins, num_bins = normalize(ribosomes_gene_bins, rna_gene_bins, max_gene_length, binsize)
+        gene_bins, num_bins = normalize(
+                              ribosomes_gene_bins,
+                              rna_gene_bins, max_gene_length, binsize)
     # -----------------------------------------
     # Plotting and summarizing
     # -----------------------------------------
