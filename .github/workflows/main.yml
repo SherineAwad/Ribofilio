@@ -12,9 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
       - name: Set up Python 3.7
         uses: actions/setup-python@v1
         with:
@@ -26,4 +23,8 @@ jobs:
       - name: Test with pytest
         run:  coverage run -m pytest tests/tests.py
       - name: lint
-        run: flake8 src/ribofilio.py  
+        run: flake8 src/ribofilio.py 
+      - uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
