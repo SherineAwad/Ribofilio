@@ -256,7 +256,7 @@ def call_mRNA(rnaseq, genes_length, max_gene_length, binsize):
     return rna_gene_bins
 
 # -------------------------------------------
-# Call footprint 
+# Call footprint
 # -------------------------------------------
 
 
@@ -350,7 +350,9 @@ def main():
     gene_coverage_at_bin = (get_gene_coverage_at_bin(max_gene_length,
                             binsize, genes_length))
     print("Reading and binning footprints ...")
-    ribosomes_gene_bins = call_footprints(args.footprint, genes_length, max_gene_length, binsize)
+    ribosomes_gene_bins = call_footprints(args.footprint,
+                                          genes_length,
+                                          max_gene_length, binsize)
     if args.rnaseq != "NULL":
         rna_gene_bins = call_mRNA(args.rnaseq,
                                   genes_length,
