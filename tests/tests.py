@@ -94,11 +94,13 @@ def test_plot_regression():
     y_value = np.array(np.log([1,2,4,6,9,13,15,16,18,20])).reshape(-1, 1)
     y_predicted = np.array([1,2,4,6,10,12,14,16,18,20]).reshape(-1, 1)
     dropoff_rate= -0.0051
+    dropoff_codon = -0.0003
+    rsquare = 0.4907
     stand_error = 0.001
     output ="test" 
     rmse =0.1
     norm_weight = [1,1,1,1,1,1,1,1,1,1]
-    rb.plot_regression(x_value, y_value, y_predicted,  norm_weight, dropoff_rate, rmse, stand_error, output, -3, 2)
+    rb.plot_regression(x_value, y_value, y_predicted,  norm_weight, dropoff_rate, dropoff_codon, rmse, rsquare, stand_error, output, -3, 2)
     imageA = cv2.imread("test.Log.WLR.png") 
     imageB = cv2.imread("tests/test-data/test.png")
     grayA = cv2.cvtColor(imageA, cv2.COLOR_BGR2GRAY)
