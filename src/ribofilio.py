@@ -243,7 +243,7 @@ def plot_regression(x_value, y_value, y_predicted,
     plt.ylim(ymin, ymax)
     plt.scatter(x_value, y_value, s=norm_weight)
     xtext = (" Dropoff: " + str(dropoff_rate) +
-             " Dropoff per codon: " + str(dropoff_codon)+
+             " Dropoff per codon: " + str(dropoff_codon) +
              "\n RMSE: " + str(rmse) +
              " RSquare: " + str(rsquare) + " SE: " + str(stand_error))
     plt.xlabel(str(label) + "\n" + str(xtext), fontsize=10)
