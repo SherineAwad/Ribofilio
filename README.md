@@ -18,7 +18,7 @@
 
 # Ribofilio: A tool to estimate ribosomes drop-off rate
 
-Ribofilio is a tool to estimate ribosomal profiling drop rate that has been tested in ecoli and yeast so far. 
+Ribofilio is a tool to estimate ribosomes drop-off rate that has been tested in ecoli and yeast so far. 
 
 ## Installation 
 
