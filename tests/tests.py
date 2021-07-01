@@ -105,7 +105,7 @@ def test_plot_regression():
     grayB = cv2.cvtColor(imageB, cv2.COLOR_BGR2GRAY)
     (score, diff) = measure.compare_ssim(grayA, grayB, full=True)
     print (score, diff)
-    assert(score > 0.99)
+    assert(score > 0.995)
 
 def test_normalize():
     ribosomes = [6,6,6,6,6] 

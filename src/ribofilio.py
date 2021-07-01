@@ -10,6 +10,8 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 from scipy.stats import t
 
+# Read subsets of genes --subset option
+
 
 def get_subset_genes(transcripts, subset_file):
     subset = []
@@ -28,6 +30,8 @@ def get_subset_genes(transcripts, subset_file):
                 max_gene_length = genes_length[gene_name]
     return max_gene_length, genes_length
 
+# Read Transcripts
+
 
 def get_genes(transcripts):
     max_gene_length = -100
@@ -44,6 +48,8 @@ def get_genes(transcripts):
         if genes_length[gene_name] > max_gene_length:
             max_gene_length = genes_length[gene_name]
     return max_gene_length, genes_length
+
+# Read bed files to get reads and positions of alignment
 
 
 def get_reads(infile, genes_length):
@@ -63,6 +69,8 @@ def get_reads(infile, genes_length):
             coverage[str(gene_name)].append(int(record[2]))
     return coverage
 
+# Fill bins with genes coverage in each bin
+
 
 def get_gene_coverage_at_bin(max_gene_length, binsize, genes_length):
     num_bins = int(max_gene_length / binsize) + 1
@@ -74,6 +82,8 @@ def get_gene_coverage_at_bin(max_gene_length, binsize, genes_length):
             gene_coverage_at_bin[i] += 1
     return gene_coverage_at_bin
 
+# How many positions a gene can cover based on its length
+
 
 def get_gene_coverage_at_pos(max_gene_length, coverage, genes_length):
     gene_coverage_at_pos = [0] * (max_gene_length + 1)
@@ -81,6 +91,8 @@ def get_gene_coverage_at_pos(max_gene_length, coverage, genes_length):
         for i in range(1, genes_length[gene] + 1):
             gene_coverage_at_pos[i] += 1
     return gene_coverage_at_pos
+
+# Fill position matrix with genese' reads covering each position
 
 
 def fill_positions(coverage, max_gene_length):
@@ -94,6 +106,8 @@ def fill_positions(coverage, max_gene_length):
 # ------------------------------------------------------------------------
 # binning function: estimates the drop rate of ribosomes after binning
 # ------------------------------------------------------------------------
+
+
 def binning(binsize, positions, gene_coverage_at_pos, max_gene_length):
     gene_bins = []
     const_c = 0.000001
@@ -106,10 +120,8 @@ def binning(binsize, positions, gene_coverage_at_pos, max_gene_length):
         normalized_positions[int(i)] = (
              positions[int(i)] / (gene_coverage_at_pos[int(i)] + const_c))
         i += 1
-    """
-    Group reads into bins and normalize by binsize,
-    We stop at last_pos
-    """
+    # Group reads into bins and normalize by binsize,
+    # We stop at last_pos
     index = 0
     window_a = 1
     window_b = binsize
@@ -129,6 +141,8 @@ def binning(binsize, positions, gene_coverage_at_pos, max_gene_length):
 # -------------------------------------------------------------------------------------------
 # Regression function, plot several figures for the ribosome profiling
 # -------------------------------------------------------------------------------------------
+
+
 def regression(output, num_bins, gene_bins,
                binsize, ylogmin, ylogmax,
                gene_coverage_at_bin, plot):
@@ -139,7 +153,6 @@ def regression(output, num_bins, gene_bins,
     codons_bin = 0.0   # codons_bin is number of codons per bin
     codons_bin = float(binsize / 3)
     # Weighted Linear Regression
-    # ------------------
     x_value = np.array(bins).reshape(-1, 1)
     y_value = np.array(np.log(gene_bins)).reshape(-1, 1)
     regression_model = LinearRegression()
@@ -333,9 +346,9 @@ def main():
     sample = str(args.footprint).split(".")[0]
     if args.rnaseq != "NULL":
         sample += "_" + str(args.rnaseq).split(".")[0]
-    # Check plot mode
     plot = args.plot
     output = args.output
+    # Assign a default output name if none is input
     if output == "":
         output = sample
         if args.subset != "NULL":
@@ -349,10 +362,12 @@ def main():
                                          (args.transcripts, args.subset))
     gene_coverage_at_bin = (get_gene_coverage_at_bin(max_gene_length,
                             binsize, genes_length))
+    # Call footprint will do the counts and binning
     print("Reading and binning footprints ...")
     ribosomes_gene_bins = call_footprints(args.footprint,
                                           genes_length,
                                           max_gene_length, binsize)
+    # Call mRNA if exist will do the counts and binning
     if args.rnaseq != "NULL":
         rna_gene_bins = call_mRNA(args.rnaseq,
                                   genes_length,
@@ -364,9 +379,7 @@ def main():
         gene_bins = normalize(
                               ribosomes_gene_bins,
                               rna_gene_bins, num_bins)
-    # -----------------------------------------
     # Plotting and summarizing
-    # -----------------------------------------
     regression(
         output,
         num_bins,
