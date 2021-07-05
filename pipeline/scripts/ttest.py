@@ -29,7 +29,10 @@ def getstats(infile1, infile2):
     tscore = (float(slope1) - float(slope2)) / np.sqrt(np.square(float(SE1)) +np.square(float(SE2)) ) 
     pvalue =  (t.sf(abs(tscore),df= df))
     pvalue = np.round(pvalue, decimals=4)
-    print("tscore and pvalues are", tscore, pvalue)
+    print(infile1,'\t', infile2)
+    print("tscore",'\t', "pvalue")
+    print(tscore,'\t', pvalue)
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('infile1', default=False) 
