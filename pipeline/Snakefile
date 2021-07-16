@@ -6,20 +6,24 @@ configfile: "config.yaml"
 
 rule all:
     input:
-        expand("{GO}.txt", GO=config['GO'] ),     
-        expand("{FP}_{RNA}.regression.log", FP = config['D1_FP'], RNA = config['D1_RNA']),
-        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D1_FP'], RNA = config['D1_RNA'], SUBSET=config['GL']), 
-        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D1_FP'], RNA = config['D1_RNA'], SUBSET=config['GO']),
-        expand("{FP}_{RNA}.regression.log", FP = config['D2_FP'], RNA = config['D2_RNA']),
-        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D2_FP'], RNA = config['D2_RNA'], SUBSET=config['GL']),
-        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D2_FP'], RNA = config['D2_RNA'], SUBSET=config['GO']),
-        expand("{FP}_{RNA}.regression.log", FP = config['D3_FP'], RNA = config['D3_RNA']),
-        expand("{FP}_{RNA}.regression.log", FP = config['D4_FP'], RNA = config['D4_RNA']),
-        expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['D1_FP'], RNA = config['D1_RNA'], SUBSET=config['GO']),
-        expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['D1_FP'], RNA = config['D1_RNA'], SUBSET=config['GL']),
-        expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['D2_FP'], RNA = config['D2_RNA'], SUBSET=config['GO']),
-        expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['D2_FP'], RNA = config['D2_RNA'], SUBSET=config['GL']),
-        expand("{FP1}_{RNA1}.{FP2}.{RNA2}.ttest.log", FP1 = config['D1_FP'], RNA1 = config['D1_RNA'], FP2 = config['D2_FP'], RNA2 = config['D2_RNA']) 
+        #expand("{GO}.txt", GO=config['GO'] ),     
+        #expand("{FP}_{RNA}.regression.log", FP = config['D1_FP'], RNA = config['D1_RNA']),
+        #expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D1_FP'], RNA = config['D1_RNA'], SUBSET=config['GL']), 
+        #expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D1_FP'], RNA = config['D1_RNA'], SUBSET=config['GO']),
+        #expand("{FP}_{RNA}.regression.log", FP = config['D2_FP'], RNA = config['D2_RNA']),
+        #expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D2_FP'], RNA = config['D2_RNA'], SUBSET=config['GL']),
+        #expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D2_FP'], RNA = config['D2_RNA'], SUBSET=config['GO']),
+        #expand("{FP}_{RNA}.regression.log", FP = config['D3_FP'], RNA = config['D3_RNA']),
+        #expand("{FP}_{RNA}.regression.log", FP = config['D4_FP'], RNA = config['D4_RNA']),
+        #expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['D1_FP'], RNA = config['D1_RNA'], SUBSET=config['GO']),
+        #expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['D1_FP'], RNA = config['D1_RNA'], SUBSET=config['GL']),
+        #expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['D2_FP'], RNA = config['D2_RNA'], SUBSET=config['GO']),
+        #expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['D2_FP'], RNA = config['D2_RNA'], SUBSET=config['GL']),
+        #expand("{FP1}_{RNA1}.{FP2}.{RNA2}.ttest.log", FP1 = config['D1_FP'], RNA1 = config['D1_RNA'], FP2 = config['D2_FP'], RNA2 = config['D2_RNA']) 
+        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D1_FP'], RNA = config['D1_RNA'], SUBSET="msh2"), 
+        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D2_FP'], RNA = config['D2_RNA'], SUBSET="msh2"),
+        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D1_FP'], RNA = config['D1_RNA'], SUBSET="mlh1"),
+        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D2_FP'], RNA = config['D2_RNA'], SUBSET="mlh1")
 rule compare: 
    input: 
         "{SAMPLE1}_{SAMPLE2}.regression.log",
@@ -43,7 +47,7 @@ rule compare_subset:
        """
        python scripts/ttest.py {input[0]} {input[1]} > {output}
        """
-     
+    
 rule ribofilio: 
     input:
          fp = "{SAMPLE1}.bed",
