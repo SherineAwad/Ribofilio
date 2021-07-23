@@ -15,6 +15,7 @@ from scipy.stats import t
 
 def get_subset_genes(transcripts, subset_file):
     subset = []
+    found = 0
     max_gene_length = -100
     genes_length = {}
     for line in open(subset_file):
@@ -22,12 +23,18 @@ def get_subset_genes(transcripts, subset_file):
         if "mRNA" in gene_name:
             gene_name = gene_name.split('_')[0]
         subset.append(gene_name)
-    for record in screed.open(transcripts):
-        gene_name = record.name.split(' ')[0]
-        if gene_name in subset:
-            genes_length[str(gene_name)] = int(len(record.sequence))
-            if genes_length[gene_name] > max_gene_length:
-                max_gene_length = genes_length[gene_name]
+    try:
+        assert len(subset) > 0
+    except AssertionError:
+        print("All subset genes doesn't exist in transcripts file.")
+        sys.exit()
+    else:
+        for record in screed.open(transcripts):
+           gene_name = record.name.split(' ')[0]
+           if gene_name in subset:
+              genes_length[str(gene_name)] = int(len(record.sequence))
+              if genes_length[gene_name] > max_gene_length:
+                  max_gene_length = genes_length[gene_name]
     return max_gene_length, genes_length
 
 # Read Transcripts
@@ -338,15 +345,30 @@ def main():
     parser = get_arguments()
     args = parser.parse_args()
     # Check required files exist
-    if not os.path.exists(args.transcripts):
-        sys.exit("transcripts file is required and does not exist, exiting !")
-    if not os.path.exists(args.footprint):
-        sys.exit("footprint file is required and does not exist, exiting !")
-    if args.rnaseq != "NULL":
-        if not os.path.exists(args.rnaseq):
-            sys.exit("rna  file does not exist: " +
-                     "either run with footprint only option" +
-                     "or enter a valid rna file, exiting !")
+    try:
+        assert os.path.exists(args.transcripts)
+        assert os.path.getsize(args.transcripts) >0
+    except AssertionError: 
+         sys.exit("transcripts file does not exist or empty, exiting !")
+    try: 
+       assert os.path.exists(args.footprint)
+       assert os.path.getsize(args.footprint) >0 
+    except AssertionError: 
+         sys.exit("footprint file does not exist or empty, exiting !")
+    if args.rnaseq != "NULL": 
+       try: 
+          assert os.path.exists(args.rnaseq)
+          assert os.path.getsize(args.rnaseq) > 0 
+       except AssertionError:
+          sys.exit("mRNA  file does not exist or empty. " +
+                     "Either run with footprint only option" +
+                     " or enter a valid rna file, exiting !")
+    if args.subset != "NULL":
+            try:
+               assert os.path.exists(args.subset)
+               assert os.path.getsize(args.subset) >0
+            except AssertionError:
+               sys.exit("Subset file is empty or doesn't exist")
     sample = str(args.footprint).split(".")[0]
     if args.rnaseq != "NULL":
         sample += "_" + str(args.rnaseq).split(".")[0]
