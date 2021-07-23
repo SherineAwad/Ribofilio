@@ -11,8 +11,14 @@ D3_FP: ["SRR5090937"]
 D3_RNA: ["SRR5090935"]
 
 
-D4_FP: ['SRR9670823']
-D4_RNA: ['SRR9670821']
+D4_FP: ["SRR9670823"]
+D4_RNA: ["SRR9670821"]
+
+D5_FP: ["SRR967081617"]
+D5_RNA: ["SRR9670814"]
+
+D6_FP: ["SRR967081819"]
+D6_RNA: ["SRR9670815"]
 
 src: "/home/ec2-user/ribofilio/src"
 scripts: "/home/ec2-user/ribofilio/pipeline/scripts"
