@@ -1,45 +1,56 @@
-configfile: "config.yaml"
-
+#use --configfile to run 
 #
 # run with --use-conda 
 #
-#ruleorder: trim > tobam > tobed
   
 rule all:
     input:
-        expand("galore/{FP}_trimmed.fq.gz", FP = config['D5_FP']),
-        expand("galore/{RNA}_trimmed.fq.gz", RNA = config['D5_RNA']),
-        expand("galore/{FP}_trimmed.fq.gz", FP = config['D6_FP']),
-        expand("galore/{RNA}_trimmed.fq.gz", RNA = config['D6_RNA']),
-        expand("{FP}.sam", FP =config['D5_FP']),
-        expand("{FP}.bowtie2.bam", FP =config['D5_FP']),
-        expand("{RNA}.bowtie2.bam", RNA =config['D5_RNA']), 
-        expand("{FP}.bowtie2.bam", FP = config['D6_FP']),
-        expand("{RNA}.bowtie2.bam", RNA =config['D6_RNA']),
-        expand("{FP}.bed", FP = config['D5_FP']),
-        expand("{RNA}.bed", RNA = config['D5_RNA']),
-        expand("{FP}.bed", FP = config['D6_FP']),
-        expand("{RNA}.bed", RNA= config['D6_RNA']),
-        expand("{FP}_{RNA}.regression.log", FP = config['D5_FP'], RNA = config['D5_RNA']),
-        expand("{FP}_{RNA}.regression.log", FP = config['D6_FP'], RNA = config['D6_RNA'])
-        #expand("{GO}.txt", GO=config['GO'] ),     
-        #expand("{FP}_{RNA}.regression.log", FP = config['D1_FP'], RNA = config['D1_RNA']),
-        #expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D1_FP'], RNA = config['D1_RNA'], SUBSET=config['GL']), 
-        #expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D1_FP'], RNA = config['D1_RNA'], SUBSET=config['GO']),
-        #expand("{FP}_{RNA}.regression.log", FP = config['D2_FP'], RNA = config['D2_RNA']),
-        #expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D2_FP'], RNA = config['D2_RNA'], SUBSET=config['GL']),
-        #expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D2_FP'], RNA = config['D2_RNA'], SUBSET=config['GO']),
-        #expand("{FP}_{RNA}.regression.log", FP = config['D3_FP'], RNA = config['D3_RNA']),
-        #expand("{FP}_{RNA}.regression.log", FP = config['D4_FP'], RNA = config['D4_RNA']),
-        #expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['D1_FP'], RNA = config['D1_RNA'], SUBSET=config['GO']),
-        #expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['D1_FP'], RNA = config['D1_RNA'], SUBSET=config['GL']),
-        #expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['D2_FP'], RNA = config['D2_RNA'], SUBSET=config['GO']),
-        #expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['D2_FP'], RNA = config['D2_RNA'], SUBSET=config['GL']),
-        #expand("{FP1}_{RNA1}.{FP2}.{RNA2}.ttest.log", FP1 = config['D1_FP'], RNA1 = config['D1_RNA'], FP2 = config['D2_FP'], RNA2 = config['D2_RNA']) 
-        #expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D1_FP'], RNA = config['D1_RNA'], SUBSET="msh2"), 
-        #expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D2_FP'], RNA = config['D2_RNA'], SUBSET="msh2"),
-        #expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D1_FP'], RNA = config['D1_RNA'], SUBSET="mlh1"),
-        #expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['D2_FP'], RNA = config['D2_RNA'], SUBSET="mlh1")
+        #trim control 
+        expand("galore/{FP}_trimmed.fq.gz", FP = config['FP_1']),
+        expand("galore/{RNA}_trimmed.fq.gz", RNA = config['RNA_1']),
+        #align control 
+        expand("{FP}.sam", FP =config['FP_1']),
+        expand("{FP}.bowtie2.bam", FP =config['FP_1']),
+        expand("{RNA}.sam", RNA =config['RNA_1']), 
+        expand("{RNA}.bowtie2.bam", RNA = config['RNA_1']),
+        #trim treatment 
+        expand("galore/{FP}_trimmed.fq.gz", FP = config['FP_2']),
+        expand("galore/{RNA}_trimmed.fq.gz", RNA = config['RNA_2']),
+        #align treatment 
+        expand("{FP}.sam", FP =config['FP_2']),
+        expand("{FP}.bowtie2.bam", FP =config['FP_2']),
+        expand("{RNA}.sam", RNA =config['RNA_2']), 
+        expand("{RNA}.bowtie2.bam", RNA = config['RNA_2']),
+        #convert control bam to bed 
+        expand("{FP}.bed", FP = config['FP_1']),
+        expand("{RNA}.bed", RNA = config['RNA_1']),
+        #convert treatment bam to bed 
+        expand("{FP}.bed", FP = config['FP_2']),
+        expand("{RNA}.bed", RNA = config['RNA_2']), 
+        #dropoff rate of control and treatment 
+        expand("{FP}_{RNA}.regression.log", FP = config['FP_1'], RNA = config['RNA_1']),
+        expand("{FP}_{RNA}.regression.log", FP = config['FP_2'], RNA = config['RNA_2']),
+        #dropoff rate on subsest of GO for control
+        expand("{GO}.txt", GO=config['GO'] ),     
+        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['FP_1'], RNA = config['RNA_1'], SUBSET=config['GL']), 
+        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['FP_1'], RNA = config['RNA_1'], SUBSET=config['GO']),
+        #dropoff rate on subsest of GO for treatment 
+        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['FP_2'], RNA = config['RNA_2'], SUBSET=config['GL']),
+        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['FP_2'], RNA = config['RNA_2'], SUBSET=config['GO']),
+        #compare significance of GO subset to main dataset either control or treatment 
+        expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['FP_1'], RNA = config['RNA_1'], SUBSET=config['GL']),
+        expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['FP_1'], RNA = config['RNA_1'], SUBSET=config['GO']),
+        expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['FP_2'], RNA = config['RNA_2'], SUBSET=config['GL']),
+        expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['FP_2'], RNA = config['RNA_2'], SUBSET=config['GO']),
+        #compare significance of control vs treatment 
+        expand("{FP1}_{RNA1}.{FP2}.{RNA2}.ttest.log", FP1 = config['FP_1'], RNA1 = config['RNA_1'], FP2 = config['FP_2'], RNA2 = config['RNA_2']), 
+        #Case study of running on single genes for both control and treatment 
+        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['FP_1'], RNA = config['RNA_1'], SUBSET="msh2"), 
+        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['FP_1'], RNA = config['RNA_1'], SUBSET="mlh1"),
+        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['FP_2'], RNA = config['RNA_2'], SUBSET="msh2"),
+        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['FP_2'], RNA = config['RNA_2'], SUBSET="mlh1")
+
+  
 rule compare: 
    input: 
         "{SAMPLE1}_{SAMPLE2}.regression.log",
@@ -156,7 +167,7 @@ rule tosam:
       conda: 'env/env-align.yaml'
       shell: 
           """ 
-           bowtie2 -x {input.index} -U {input.sample} -S {output[0]} -p 4
+           bowtie2 -x {input.index} -U {input.sample} -S {output[0]} -p4  
           """ 	
 rule tobed: 
       input: 
