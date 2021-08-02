@@ -14,6 +14,7 @@ from scipy.stats import t
 
 
 def get_subset_genes(transcripts, subset_file):
+    print("Processing ", subset_file)
     subset = []
     found = 0
     max_gene_length = -100
@@ -23,18 +24,19 @@ def get_subset_genes(transcripts, subset_file):
         if "mRNA" in gene_name:
             gene_name = gene_name.split('_')[0]
         subset.append(gene_name)
+    for record in screed.open(transcripts):
+        gene_name = record.name.split(' ')[0]
+        if gene_name in subset:
+            found += 1
+            genes_length[str(gene_name)] = int(len(record.sequence))
+            if genes_length[gene_name] > max_gene_length:
+                max_gene_length = genes_length[gene_name]
     try:
-        assert len(subset) > 0
+        assert found > 0
     except AssertionError:
-        print("All subset genes doesn't exist in transcripts file.")
+        print("All genes in", subset_file,
+              "doesn't exist in transcripts file.")
         sys.exit()
-    else:
-        for record in screed.open(transcripts):
-           gene_name = record.name.split(' ')[0]
-           if gene_name in subset:
-              genes_length[str(gene_name)] = int(len(record.sequence))
-              if genes_length[gene_name] > max_gene_length:
-                  max_gene_length = genes_length[gene_name]
     return max_gene_length, genes_length
 
 # Read Transcripts
@@ -60,8 +62,10 @@ def get_genes(transcripts):
 
 
 def get_reads(infile, genes_length):
+    print("Processing ", infile)
     coverage = {}
     itr = 0
+    found = 0
     for gene in genes_length:
         coverage[gene] = []
     for line in open(infile):
@@ -74,6 +78,12 @@ def get_reads(infile, genes_length):
             gene_name = gene_name.split("_")[0]
         if gene_name in genes_length:
             coverage[str(gene_name)].append(int(record[2]))
+            found += 1
+    try:
+        assert found > 0
+    except AssertionError:
+        print("All genes in", infile, "doesn't exist in transcripts file.")
+        sys.exit()
     return coverage
 
 # Fill bins with genes coverage in each bin
@@ -347,28 +357,28 @@ def main():
     # Check required files exist
     try:
         assert os.path.exists(args.transcripts)
-        assert os.path.getsize(args.transcripts) >0
-    except AssertionError: 
-         sys.exit("transcripts file does not exist or empty, exiting !")
-    try: 
-       assert os.path.exists(args.footprint)
-       assert os.path.getsize(args.footprint) >0 
-    except AssertionError: 
-         sys.exit("footprint file does not exist or empty, exiting !")
-    if args.rnaseq != "NULL": 
-       try: 
-          assert os.path.exists(args.rnaseq)
-          assert os.path.getsize(args.rnaseq) > 0 
-       except AssertionError:
-          sys.exit("mRNA  file does not exist or empty. " +
+        assert os.path.getsize(args.transcripts) > 0
+    except AssertionError:
+        sys.exit("transcripts file does not exist or empty, exiting !")
+    try:
+        assert os.path.exists(args.footprint)
+        assert os.path.getsize(args.footprint) > 0
+    except AssertionError:
+        sys.exit("footprint file does not exist or empty, exiting !")
+    if args.rnaseq != "NULL":
+        try:
+            assert os.path.exists(args.rnaseq)
+            assert os.path.getsize(args.rnaseq) > 0
+        except AssertionError:
+            sys.exit("mRNA  file does not exist or empty. " +
                      "Either run with footprint only option" +
                      " or enter a valid rna file, exiting !")
     if args.subset != "NULL":
-            try:
-               assert os.path.exists(args.subset)
-               assert os.path.getsize(args.subset) >0
-            except AssertionError:
-               sys.exit("Subset file is empty or doesn't exist")
+        try:
+            assert os.path.exists(args.subset)
+            assert os.path.getsize(args.subset) > 0
+        except AssertionError:
+            sys.exit("Subset file is empty or doesn't exist")
     sample = str(args.footprint).split(".")[0]
     if args.rnaseq != "NULL":
         sample += "_" + str(args.rnaseq).split(".")[0]

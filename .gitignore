@@ -1,1 +1,3 @@
 .coverage
+pipeline/*log 
+pipeline/*png
