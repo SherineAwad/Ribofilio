@@ -1,29 +1,24 @@
-# pyproject.toml
-[tool.pytest.ini_options]
-minversion = "6.1.1"
-addopts = "-ra -q"
-testpaths = [
-    "tests"
-]
-
-
 [tool.poetry]
 name = "ribofilio"
 version = "0.1.0"
-description = "A tool to estimate drop-off rate of ribosomes"
-authors = ["Sherine Awad, Davide Chiarugi, and Angelo Valleriani"]
+description = "A tool to estimate ribosomes' drop-off rate"
+authors = ["Sherine Awad"]
 license = "MIT"
 
 [tool.poetry.dependencies]
 python = "3.7"
-numpy = "^1.20.3"
-screed = "^1.0.5"
-matplotlib = "^3.4.2"
-sklearn = "^0.0"
+screed = "^1.0.4"
+scikit-learn = "^0.24.2"
+scipy = "^1.5.3"
+numpy = "^1.19.5"
+matplotlib = "^3.2.2"
 
 [tool.poetry.dev-dependencies]
-pytest = "^6.2.4"
-flake8 = "^3.9.2"
+coverage = "^5.3"
+flake8 = "^3.8.4"
+pytest = "^5.4.3"
+opencv-python = "^4.2.0"
+scikit-image = "^0.17.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

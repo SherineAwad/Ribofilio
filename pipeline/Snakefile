@@ -48,7 +48,10 @@ rule all:
         expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['FP_1'], RNA = config['RNA_1'], SUBSET="msh2"), 
         expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['FP_1'], RNA = config['RNA_1'], SUBSET="mlh1"),
         expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['FP_2'], RNA = config['RNA_2'], SUBSET="msh2"),
-        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['FP_2'], RNA = config['RNA_2'], SUBSET="mlh1")
+        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['FP_2'], RNA = config['RNA_2'], SUBSET="mlh1"),
+        #Compare Gene Length and GO
+        expand("{FP}_{RNA}-{SUBSET1}-{SUBSET2}.ttest.log", FP = config['FP_1'], RNA = config['RNA_1'], SUBSET1=config['GL'], SUBSET2=config['GO']),
+        expand("{FP}_{RNA}-{SUBSET1}-{SUBSET2}.ttest.log", FP = config['FP_2'], RNA = config['RNA_2'], SUBSET1=config['GL'], SUBSET2=config['GO'])
 
   
 rule compare: 
@@ -63,7 +66,7 @@ rule compare:
        python scripts/ttest.py {input[0]} {input[1]} > {output}
      """
 
-rule compare_subset:
+rule compare_to_subset:
    input: 
        "{SAMPLE1}_{SAMPLE2}.regression.log",
        "{SAMPLE1}_{SAMPLE2}-{SUBSET}.regression.log"
@@ -74,7 +77,19 @@ rule compare_subset:
        """
        python scripts/ttest.py {input[0]} {input[1]} > {output}
        """
-    
+
+rule compare_two_subsets:
+   input:
+       "{SAMPLE1}_{SAMPLE2}-{SUBSET1}.regression.log",
+       "{SAMPLE1}_{SAMPLE2}-{SUBSET2}.regression.log"
+   output:
+       "{SAMPLE1}_{SAMPLE2}-{SUBSET1}-{SUBSET2}.ttest.log"
+   conda: 'env/env-ttest.yaml'
+   shell:
+       """
+       python scripts/ttest.py {input[0]} {input[1]} > {output}
+       """
+
 rule ribofilio: 
     input:
          fp = "{SAMPLE1}.bed",
