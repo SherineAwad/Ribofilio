@@ -8,7 +8,7 @@ import cv2
 import skimage.measure as measure
 
 path = os.getcwd() 
-path  = os.path.join(path,"ribofilio") 
+path  = os.path.join(path,"src") 
 sys.path.append(path)
 
 print(path)

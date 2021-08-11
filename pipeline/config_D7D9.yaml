@@ -10,7 +10,7 @@ RNA_2: ['D9mRNA']
 
 
 
-src: "/rds/project/yhbl2/rds-yhbl2-genehunter/SM/ribofilio/ribofilio"
+src: "/rds/project/yhbl2/rds-yhbl2-genehunter/SM/ribofilio/src"
 scripts: "/rds/project/yhbl2/rds-yhbl2-genehunter/SM/ribofilio/pipeline/scripts"
 GENOME: "yeast.fa"
 INDEX: "yeast"
