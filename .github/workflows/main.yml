@@ -23,5 +23,5 @@ jobs:
       - name: Test with pytest
         run:  coverage run -m pytest tests/tests.py 
       - name: lint
-        run: flake8 ribofilio/ribofilio.py 
+        run: flake8 src/ribofilio.py 
       - uses: codecov/codecov-action@v1
