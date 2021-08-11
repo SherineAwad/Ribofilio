@@ -1,3 +1,10 @@
 .coverage
 pipeline/*log 
 pipeline/*png
+pipeline/*txt
+pipeline/*bam
+pipeline/*sam
+pipeline/*bed
+pipeline/yeast*
+pipeline/*fastq
+data/*
