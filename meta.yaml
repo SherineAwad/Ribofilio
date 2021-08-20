@@ -3,25 +3,21 @@ package:
   version: 0.0.0
 
 source:
-  git_rev: 
-  git_url: https://github.com/SherineAwad/ribofilio.git
-
+   git_url: https://github.com/SherineAwad/ribofilio.git
+   git_rev: 1.0.0-beta
 requirements:
   build:
     - python
     - setuptools
 
   run:
-    - python 3.7 
-    - screed 1.0.4 
-    - scipy 1.5.3 
-    - scikit-learn 0.24.2 
-    - matplotlib 3.2.2
-    - numpy 1.19.5
-    
-test:
-  imports:
-    -
+    - python >=3.7 
+    - screed >=1.0.4
+    - numpy >=1.19.5
+    - scipy >=1.5.3
+    - scikit-learn >=0.24.2
+    - matplotlib >=3.2.2
+   
 
 about:
   home: https://github.com/SherineAwad/ribofilio.git

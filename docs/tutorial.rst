@@ -1,5 +1,5 @@
 ========================================================================================
-**Ribosomal Profiling Protocol**
+**Tutorial**
 ========================================================================================
 
 This is a ribosomal profiling protocol to estimate ribosomes' dropoff rate using Ribofilio.

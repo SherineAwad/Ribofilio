@@ -5,12 +5,24 @@
 
 Welcome to Ribofilio's documentation!
 =====================================
+Ribofilio is a python tool to estimate ribosomes' drop-off rate. 
+Ribofilio is free and open source.
+
+Details
+-----------
+Authors: Sherine Awad
+Contact: sherine.awad@gmail.com 
+Github: https://github.com/SherineAwad/ribofilio.git
+License: MIT
+
+Topics
+---------
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   protocol.rst
+   tutorial.rst
 
 Indices and tables
 ==================

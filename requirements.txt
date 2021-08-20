@@ -4,7 +4,7 @@ pytest
 screed
 numpy
 matplotlib
-sklearn
+scikit-learn
 scipy
 opencv-python
 scikit-image==0.17.2
