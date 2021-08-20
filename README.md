@@ -149,7 +149,7 @@ and output.Log.WLR.png:
 
 ## Documentation 
 
-Looking for a more detailed tutorial: Take a look into [this tutorial](https://ribofilio.readthedocs.io/en/latest/protocol.html) for a complete Ribosomal profiling protocol using Ribofilio.
+Looking for a more detailed tutorial: Take a look into [this tutorial](https://ribofilio.readthedocs.io/en/latest/tutorial.html) for a complete Ribosomal profiling protocol using Ribofilio.
 
 
 ## Pipeline 
