@@ -11,8 +11,14 @@ Ribofilio is free and open source.
 Details
 -----------
 Authors: Sherine Awad
+
+
 Contact: sherine.awad@gmail.com 
+
+
 Github: https://github.com/SherineAwad/ribofilio.git
+
+
 License: MIT
 
 Topics
