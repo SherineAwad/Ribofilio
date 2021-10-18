@@ -182,6 +182,8 @@ def regression(output, num_bins, gene_bins,
     regression_model.fit(x_value, y_value, sample_weight=weight)
     #  Predict
     y_predicted = regression_model.predict(x_value)
+    fp = open(str(output)+".bins.txt", "a+")
+    print(y_predicted,x_value, file=fp)
     #  Model evaluation
     rmse = mean_squared_error(y_value, y_predicted, sample_weight=weight)
     rsquare = r2_score(y_value, y_predicted, sample_weight=weight)
