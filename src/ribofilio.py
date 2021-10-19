@@ -182,8 +182,10 @@ def regression(output, num_bins, gene_bins,
     regression_model.fit(x_value, y_value, sample_weight=weight)
     #  Predict
     y_predicted = regression_model.predict(x_value)
-    fp = open(str(output)+".bins.txt", "a+")
-    print(y_predicted,x_value, file=fp)
+    fp = open(str(output)+".bins.csv", "a+")
+    print("X", '\t', "Y", file=fp)
+    for i in range(0, len(y_predicted)):
+        print(x_value[i][0], '\t', y_predicted[i][0], file=fp)
     #  Model evaluation
     rmse = mean_squared_error(y_value, y_predicted, sample_weight=weight)
     rsquare = r2_score(y_value, y_predicted, sample_weight=weight)

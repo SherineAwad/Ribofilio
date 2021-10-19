@@ -36,28 +36,29 @@ rule all:
         expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['FP_1'], RNA = config['RNA_1'], SUBSET=config['GO']),
         #dropoff rate on subsest of GO for treatment 
         expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['FP_2'], RNA = config['RNA_2'], SUBSET=config['GL']),
-        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['FP_2'], RNA = config['RNA_2'], SUBSET=config['GO']),
+        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['FP_2'], RNA = config['RNA_2'], SUBSET=config['GO']),        
         #compare significance of GO subset to main dataset either control or treatment 
         expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['FP_1'], RNA = config['RNA_1'], SUBSET=config['GL']),
         expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['FP_1'], RNA = config['RNA_1'], SUBSET=config['GO']),
         expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['FP_2'], RNA = config['RNA_2'], SUBSET=config['GL']),
         expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['FP_2'], RNA = config['RNA_2'], SUBSET=config['GO']),
         #compare significance of control vs treatment 
-        expand("{FP1}_{RNA1}.{FP2}.{RNA2}.ttest.log", FP1 = config['FP_1'], RNA1 = config['RNA_1'], FP2 = config['FP_2'], RNA2 = config['RNA_2']), 
+        expand("{FP1}_{RNA1}.{FP2}_{RNA2}.ttest.log", FP1 = config['FP_1'], RNA1 = config['RNA_1'], FP2 = config['FP_2'], RNA2 = config['RNA_2']),
         #Case study of running on single genes for both control and treatment 
-        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['FP_1'], RNA = config['RNA_1'], SUBSET="msh2"), 
+        expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['FP_1'], RNA = config['RNA_1'], SUBSET="msh2"),
         expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['FP_1'], RNA = config['RNA_1'], SUBSET="mlh1"),
         expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['FP_2'], RNA = config['RNA_2'], SUBSET="msh2"),
         expand("{FP}_{RNA}-{SUBSET}.regression.log", FP = config['FP_2'], RNA = config['RNA_2'], SUBSET="mlh1"),
         #Compare Gene Length of control vs treatment 
-	expand("{FP1}_{RNA1}_{FP2}_{RNA2}-{SUBSET}.ttest.log", FP1 = config['FP_1'], RNA1 = config['RNA_1'], FP2 = config['FP_2'], RNA2 = config['RNA_2'], SUBSET=config['GL']) 
+        expand("{FP1}_{RNA1}_{FP2}_{RNA2}-{SUBSET}.ttest.log", FP1 = config['FP_1'], RNA1 = config['RNA_1'], FP2 = config['FP_2'], RNA2 = config['RNA_2'], SUBSET=config['GL'])
+        
 
 rule compare: 
    input: 
         "{SAMPLE1}_{SAMPLE2}.regression.log",
         "{SAMPLE3}_{SAMPLE4}.regression.log" 
    output: 
-        "{SAMPLE1}_{SAMPLE2}.{SAMPLE3}.{SAMPLE4}.ttest.log" 
+        "{SAMPLE1}_{SAMPLE2}.{SAMPLE3}_{SAMPLE4}.ttest.log" 
    conda: 'env/env-ttest.yaml'
    shell: 
      """
@@ -65,6 +66,18 @@ rule compare:
      """
 
 rule compare_to_subset:
+    input: 
+        "{SAMPLE1}_{SAMPLE2}.regression.log",
+        "{SAMPLE1}_{SAMPLE2}-{SUBSET}.regression.log"
+    conda: 'env/env-ttest.yaml'
+    output: 
+         "{SAMPLE1}_{SAMPLE2}-{SUBSET}.ttest.log" 
+    shell:
+       """
+       python scripts/ttest.py {input[0]} {input[1]} > {output}
+       """
+  
+rule compare_subsets:
    input: 
        "{SAMPLE1}_{SAMPLE2}-{SUBSET}.regression.log",
        "{SAMPLE3}_{SAMPLE4}-{SUBSET}.regression.log"

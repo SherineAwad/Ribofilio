@@ -10,4 +10,5 @@ pipeline/*fastq
 pipeline/BINSIZE*
 pipeline/galore*
 pipeline/fastqc*
+pipeline/*csv
 data/*
