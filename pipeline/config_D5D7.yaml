@@ -1,11 +1,13 @@
 
 
-FP_1: ["D8FP"]
-RNA_1: ["D8mRNA"]
+FP_1: ["D5FP"]
+RNA_1: ["D5mRNA"]
 
 
-FP_2: ['D10FP']
-RNA_2: ['D10mRNA']
+FP_2: ['D7FP']
+RNA_2: ['D7mRNA']
+
+
 
 
 src: "/rds/project/yhbl2/rds-yhbl2-genehunter/SM/ribofilio/src"

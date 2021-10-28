@@ -1,20 +1,18 @@
 
 
-FP_1: ["D3FP"]
-RNA_1: ["D3mRNA"]
+FP_1: ["D6FP"]
+RNA_1: ["D6mRNA"]
 
 
-FP_2: ['D6FP']
-RNA_2: ['D6mRNA']
-
-
+FP_2: ['D8FP']
+RNA_2: ['D8mRNA']
 
 
 src: "/rds/project/yhbl2/rds-yhbl2-genehunter/SM/ribofilio/src"
 scripts: "/rds/project/yhbl2/rds-yhbl2-genehunter/SM/ribofilio/pipeline/scripts"
 GENOME: "yeast.fa"
 INDEX: "yeast"
-ADAPTERS: "CTGTAGGCACCATCAAT"
+ADAPTERS: "AAAAAAAAAAAAA"
 
 BINSIZE: 50 
 

@@ -1,7 +1,7 @@
 
 
-FP_1: ["D1FP"]
-RNA_1: ["D1mRNA"]
+FP_1: ["D2FP"]
+RNA_1: ["D2mRNA"]
 
 
 FP_2: ['D4FP']
@@ -10,8 +10,8 @@ RNA_2: ['D4mRNA']
 
 
 
-src: "/rds/project/rds-O11U8YqSuCk/SM/ribofilio/src"
-scripts: "/rds/project/rds-O11U8YqSuCk/SM/ribofilio/pipeline/scripts"
+src: "/rds/project/yhbl2/rds-yhbl2-genehunter/SM/ribofilio/src"
+scripts: "/rds/project/yhbl2/rds-yhbl2-genehunter/SM/ribofilio/pipeline/scripts"
 GENOME: "yeast.fa"
 INDEX: "yeast"
 ADAPTERS: "CTGTAGGCACCATCAAT"
