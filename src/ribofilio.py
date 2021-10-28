@@ -185,7 +185,8 @@ def regression(output, num_bins, gene_bins,
     fp = open(str(output)+".bins.csv", "w+")
     print("X \t Y \t Y_Predicted", file=fp)
     for i in range(0, len(y_predicted)):
-        print(x_value[i][0], '\t', y_value[i][0],'\t', y_predicted[i][0], file=fp)
+        print(x_value[i][0], '\t', y_value[i][0],
+              '\t', y_predicted[i][0], file=fp)
     #  Model evaluation
     rmse = mean_squared_error(y_value, y_predicted, sample_weight=weight)
     rsquare = r2_score(y_value, y_predicted, sample_weight=weight)
