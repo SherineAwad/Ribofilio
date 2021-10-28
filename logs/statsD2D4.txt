@@ -1,0 +1,2098 @@
+{
+    "total_runtime": 7910.097759485245,
+    "rules": {
+        "trim": {
+            "mean-runtime": 645.4376600980759,
+            "min-runtime": 368.1260561943054,
+            "max-runtime": 1210.6047973632812
+        },
+        "tosam": {
+            "mean-runtime": 244.06454753875732,
+            "min-runtime": 149.71482372283936,
+            "max-runtime": 435.1265950202942
+        },
+        "tobed": {
+            "mean-runtime": 508.0511465668678,
+            "min-runtime": 306.9197916984558,
+            "max-runtime": 895.809219121933
+        },
+        "subset": {
+            "mean-runtime": 25.4883470913259,
+            "min-runtime": 17.877614736557007,
+            "max-runtime": 40.03675413131714
+        },
+        "ribofilio": {
+            "mean-runtime": 55.22397994995117,
+            "min-runtime": 41.44523882865906,
+            "max-runtime": 69.00272107124329
+        },
+        "compare_to_subset": {
+            "mean-runtime": 1.3197600413591435,
+            "min-runtime": 1.1525733470916748,
+            "max-runtime": 1.5491509437561035
+        },
+        "compare_subsets": {
+            "mean-runtime": 1.2792534487588065,
+            "min-runtime": 1.2308292388916016,
+            "max-runtime": 1.4000067710876465
+        },
+        "compare": {
+            "mean-runtime": 1.2933802604675293,
+            "min-runtime": 1.2933802604675293,
+            "max-runtime": 1.2933802604675293
+        },
+        "all": {
+            "mean-runtime": 0.002420663833618164,
+            "min-runtime": 0.002420663833618164,
+            "max-runtime": 0.002420663833618164
+        }
+    },
+    "files": {
+        "galore/D4FP_trimmed.fq.gz": {
+            "start-time": "Wed Oct 27 12:44:06 2021",
+            "stop-time": "Wed Oct 27 12:51:09 2021",
+            "duration": 422.8221788406372,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP.sam": {
+            "start-time": "Wed Oct 27 12:51:09 2021",
+            "stop-time": "Wed Oct 27 12:54:09 2021",
+            "duration": 180.2208502292633,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP.bowtie2.bam": {
+            "start-time": "Wed Oct 27 12:54:09 2021",
+            "stop-time": "Wed Oct 27 13:00:21 2021",
+            "duration": 372.03972268104553,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP.bed": {
+            "start-time": "Wed Oct 27 12:54:09 2021",
+            "stop-time": "Wed Oct 27 13:00:21 2021",
+            "duration": 372.03972268104553,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "galore/D4mRNA_trimmed.fq.gz": {
+            "start-time": "Wed Oct 27 13:00:21 2021",
+            "stop-time": "Wed Oct 27 13:20:32 2021",
+            "duration": 1210.6047973632812,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "galore/D2FP_trimmed.fq.gz": {
+            "start-time": "Wed Oct 27 13:20:32 2021",
+            "stop-time": "Wed Oct 27 13:26:40 2021",
+            "duration": 368.1260561943054,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP.sam": {
+            "start-time": "Wed Oct 27 13:26:40 2021",
+            "stop-time": "Wed Oct 27 13:29:10 2021",
+            "duration": 149.71482372283936,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP.bowtie2.bam": {
+            "start-time": "Wed Oct 27 13:29:10 2021",
+            "stop-time": "Wed Oct 27 13:34:16 2021",
+            "duration": 306.9197916984558,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP.bed": {
+            "start-time": "Wed Oct 27 13:29:10 2021",
+            "stop-time": "Wed Oct 27 13:34:16 2021",
+            "duration": 306.9197916984558,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4mRNA.sam": {
+            "start-time": "Wed Oct 27 13:34:17 2021",
+            "stop-time": "Wed Oct 27 13:41:32 2021",
+            "duration": 435.1265950202942,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4mRNA.bowtie2.bam": {
+            "start-time": "Wed Oct 27 13:41:32 2021",
+            "stop-time": "Wed Oct 27 13:56:28 2021",
+            "duration": 895.809219121933,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4mRNA.bed": {
+            "start-time": "Wed Oct 27 13:41:32 2021",
+            "stop-time": "Wed Oct 27 13:56:28 2021",
+            "duration": 895.809219121933,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0006396.regression.log": {
+            "start-time": "Wed Oct 27 13:56:28 2021",
+            "stop-time": "Wed Oct 27 13:57:03 2021",
+            "duration": 35.25269317626953,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0000462.regression.log": {
+            "start-time": "Wed Oct 27 13:57:03 2021",
+            "stop-time": "Wed Oct 27 13:57:34 2021",
+            "duration": 30.666441679000854,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0042254.regression.log": {
+            "start-time": "Wed Oct 27 13:57:34 2021",
+            "stop-time": "Wed Oct 27 13:58:06 2021",
+            "duration": 32.45828819274902,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-yeastg5000.regression.log": {
+            "start-time": "Wed Oct 27 13:58:06 2021",
+            "stop-time": "Wed Oct 27 13:58:36 2021",
+            "duration": 29.84485363960266,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0022626.regression.log": {
+            "start-time": "Wed Oct 27 13:58:36 2021",
+            "stop-time": "Wed Oct 27 13:59:04 2021",
+            "duration": 27.83174729347229,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-yeast20003000.regression.log": {
+            "start-time": "Wed Oct 27 13:59:04 2021",
+            "stop-time": "Wed Oct 27 13:59:35 2021",
+            "duration": 31.179729461669922,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0006412.regression.log": {
+            "start-time": "Wed Oct 27 13:59:35 2021",
+            "stop-time": "Wed Oct 27 14:00:07 2021",
+            "duration": 32.36404013633728,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "galore/D2mRNA_trimmed.fq.gz": {
+            "start-time": "Wed Oct 27 14:00:07 2021",
+            "stop-time": "Wed Oct 27 14:09:48 2021",
+            "duration": 580.1976079940796,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-yeast0500.regression.log": {
+            "start-time": "Wed Oct 27 14:09:48 2021",
+            "stop-time": "Wed Oct 27 14:10:26 2021",
+            "duration": 37.891250133514404,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0005840.regression.log": {
+            "start-time": "Wed Oct 27 14:10:26 2021",
+            "stop-time": "Wed Oct 27 14:10:59 2021",
+            "duration": 33.55727744102478,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-msh2.regression.log": {
+            "start-time": "Wed Oct 27 14:10:59 2021",
+            "stop-time": "Wed Oct 27 14:11:28 2021",
+            "duration": 28.99179458618164,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0009651.regression.log": {
+            "start-time": "Wed Oct 27 14:11:28 2021",
+            "stop-time": "Wed Oct 27 14:11:59 2021",
+            "duration": 30.973945379257202,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0015934.regression.log": {
+            "start-time": "Wed Oct 27 14:11:59 2021",
+            "stop-time": "Wed Oct 27 14:12:30 2021",
+            "duration": 30.70794153213501,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0007049.regression.log": {
+            "start-time": "Wed Oct 27 14:12:30 2021",
+            "stop-time": "Wed Oct 27 14:13:00 2021",
+            "duration": 29.949169158935547,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0042255.regression.log": {
+            "start-time": "Wed Oct 27 14:13:00 2021",
+            "stop-time": "Wed Oct 27 14:13:29 2021",
+            "duration": 29.508598804473877,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0030684.regression.log": {
+            "start-time": "Wed Oct 27 14:13:30 2021",
+            "stop-time": "Wed Oct 27 14:13:59 2021",
+            "duration": 28.99719500541687,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0030686.regression.log": {
+            "start-time": "Wed Oct 27 14:13:59 2021",
+            "stop-time": "Wed Oct 27 14:14:28 2021",
+            "duration": 29.75118637084961,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0006950.regression.log": {
+            "start-time": "Wed Oct 27 14:14:28 2021",
+            "stop-time": "Wed Oct 27 14:14:59 2021",
+            "duration": 30.67653226852417,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0015935.regression.log": {
+            "start-time": "Wed Oct 27 14:14:59 2021",
+            "stop-time": "Wed Oct 27 14:15:29 2021",
+            "duration": 29.73745059967041,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA.regression.log": {
+            "start-time": "Wed Oct 27 14:15:29 2021",
+            "stop-time": "Wed Oct 27 14:16:38 2021",
+            "duration": 69.00272107124329,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0030686.ttest.log": {
+            "start-time": "Wed Oct 27 14:16:38 2021",
+            "stop-time": "Wed Oct 27 14:16:39 2021",
+            "duration": 1.3016650676727295,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0007049.ttest.log": {
+            "start-time": "Wed Oct 27 14:16:39 2021",
+            "stop-time": "Wed Oct 27 14:16:40 2021",
+            "duration": 1.245896339416504,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0003735.regression.log": {
+            "start-time": "Wed Oct 27 14:16:40 2021",
+            "stop-time": "Wed Oct 27 14:17:15 2021",
+            "duration": 34.241015911102295,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0003735.ttest.log": {
+            "start-time": "Wed Oct 27 14:17:15 2021",
+            "stop-time": "Wed Oct 27 14:17:16 2021",
+            "duration": 1.5491509437561035,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-yeast20003000.ttest.log": {
+            "start-time": "Wed Oct 27 14:17:16 2021",
+            "stop-time": "Wed Oct 27 14:17:18 2021",
+            "duration": 1.487252950668335,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0044249.regression.log": {
+            "start-time": "Wed Oct 27 14:17:18 2021",
+            "stop-time": "Wed Oct 27 14:17:48 2021",
+            "duration": 29.89930009841919,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0006396.ttest.log": {
+            "start-time": "Wed Oct 27 14:17:48 2021",
+            "stop-time": "Wed Oct 27 14:17:49 2021",
+            "duration": 1.285606861114502,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0044249.ttest.log": {
+            "start-time": "Wed Oct 27 14:17:49 2021",
+            "stop-time": "Wed Oct 27 14:17:50 2021",
+            "duration": 1.2745518684387207,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0008135.regression.log": {
+            "start-time": "Wed Oct 27 14:17:50 2021",
+            "stop-time": "Wed Oct 27 14:18:20 2021",
+            "duration": 29.55307650566101,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0000462.ttest.log": {
+            "start-time": "Wed Oct 27 14:18:20 2021",
+            "stop-time": "Wed Oct 27 14:18:21 2021",
+            "duration": 1.402219533920288,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0006412.ttest.log": {
+            "start-time": "Wed Oct 27 14:18:21 2021",
+            "stop-time": "Wed Oct 27 14:18:23 2021",
+            "duration": 1.4205422401428223,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0015935.ttest.log": {
+            "start-time": "Wed Oct 27 14:18:23 2021",
+            "stop-time": "Wed Oct 27 14:18:24 2021",
+            "duration": 1.2845265865325928,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0015934.ttest.log": {
+            "start-time": "Wed Oct 27 14:18:24 2021",
+            "stop-time": "Wed Oct 27 14:18:26 2021",
+            "duration": 1.3880903720855713,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0009651.ttest.log": {
+            "start-time": "Wed Oct 27 14:18:26 2021",
+            "stop-time": "Wed Oct 27 14:18:27 2021",
+            "duration": 1.4085724353790283,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-yeastg5000.ttest.log": {
+            "start-time": "Wed Oct 27 14:18:27 2021",
+            "stop-time": "Wed Oct 27 14:18:28 2021",
+            "duration": 1.2422723770141602,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0042254.ttest.log": {
+            "start-time": "Wed Oct 27 14:18:28 2021",
+            "stop-time": "Wed Oct 27 14:18:30 2021",
+            "duration": 1.350069284439087,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0022626.ttest.log": {
+            "start-time": "Wed Oct 27 14:18:30 2021",
+            "stop-time": "Wed Oct 27 14:18:31 2021",
+            "duration": 1.3305046558380127,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-mlh1.regression.log": {
+            "start-time": "Wed Oct 27 14:18:31 2021",
+            "stop-time": "Wed Oct 27 14:19:01 2021",
+            "duration": 30.392231941223145,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0030687.regression.log": {
+            "start-time": "Wed Oct 27 14:19:02 2021",
+            "stop-time": "Wed Oct 27 14:19:31 2021",
+            "duration": 29.618990898132324,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-yeast30004000.regression.log": {
+            "start-time": "Wed Oct 27 14:19:31 2021",
+            "stop-time": "Wed Oct 27 14:20:03 2021",
+            "duration": 31.58454442024231,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0000466.regression.log": {
+            "start-time": "Wed Oct 27 14:20:03 2021",
+            "stop-time": "Wed Oct 27 14:20:33 2021",
+            "duration": 30.166491270065308,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0022627.regression.log": {
+            "start-time": "Wed Oct 27 14:20:33 2021",
+            "stop-time": "Wed Oct 27 14:21:04 2021",
+            "duration": 30.58710527420044,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0022627.ttest.log": {
+            "start-time": "Wed Oct 27 14:21:04 2021",
+            "stop-time": "Wed Oct 27 14:21:05 2021",
+            "duration": 1.4400851726531982,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-yeast0500.ttest.log": {
+            "start-time": "Wed Oct 27 14:21:05 2021",
+            "stop-time": "Wed Oct 27 14:21:06 2021",
+            "duration": 1.2789299488067627,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0006364.regression.log": {
+            "start-time": "Wed Oct 27 14:21:06 2021",
+            "stop-time": "Wed Oct 27 14:21:36 2021",
+            "duration": 29.692052125930786,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0002181.regression.log": {
+            "start-time": "Wed Oct 27 14:21:36 2021",
+            "stop-time": "Wed Oct 27 14:22:11 2021",
+            "duration": 34.66648888587952,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-yeast5001000.regression.log": {
+            "start-time": "Wed Oct 27 14:22:11 2021",
+            "stop-time": "Wed Oct 27 14:22:46 2021",
+            "duration": 35.33367109298706,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-yeast5001000.ttest.log": {
+            "start-time": "Wed Oct 27 14:22:46 2021",
+            "stop-time": "Wed Oct 27 14:22:48 2021",
+            "duration": 1.548874855041504,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0030684.ttest.log": {
+            "start-time": "Wed Oct 27 14:22:48 2021",
+            "stop-time": "Wed Oct 27 14:22:49 2021",
+            "duration": 1.3932874202728271,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0000466.ttest.log": {
+            "start-time": "Wed Oct 27 14:22:49 2021",
+            "stop-time": "Wed Oct 27 14:22:51 2021",
+            "duration": 1.4282970428466797,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0006950.ttest.log": {
+            "start-time": "Wed Oct 27 14:22:51 2021",
+            "stop-time": "Wed Oct 27 14:22:52 2021",
+            "duration": 1.4664316177368164,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0006364.ttest.log": {
+            "start-time": "Wed Oct 27 14:22:52 2021",
+            "stop-time": "Wed Oct 27 14:22:54 2021",
+            "duration": 1.3355867862701416,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0016458.regression.log": {
+            "start-time": "Wed Oct 27 14:22:54 2021",
+            "stop-time": "Wed Oct 27 14:23:23 2021",
+            "duration": 29.18435001373291,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0022857.regression.log": {
+            "start-time": "Wed Oct 27 14:23:23 2021",
+            "stop-time": "Wed Oct 27 14:23:55 2021",
+            "duration": 32.126784801483154,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0030529.regression.log": {
+            "start-time": "Wed Oct 27 14:23:55 2021",
+            "stop-time": "Wed Oct 27 14:24:26 2021",
+            "duration": 31.346787691116333,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0030529.ttest.log": {
+            "start-time": "Wed Oct 27 14:24:26 2021",
+            "stop-time": "Wed Oct 27 14:24:27 2021",
+            "duration": 1.1525733470916748,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0030687.ttest.log": {
+            "start-time": "Wed Oct 27 14:24:27 2021",
+            "stop-time": "Wed Oct 27 14:24:29 2021",
+            "duration": 1.212294578552246,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0022857.ttest.log": {
+            "start-time": "Wed Oct 27 14:24:29 2021",
+            "stop-time": "Wed Oct 27 14:24:30 2021",
+            "duration": 1.2389938831329346,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2mRNA.sam": {
+            "start-time": "Wed Oct 27 14:24:30 2021",
+            "stop-time": "Wed Oct 27 14:28:01 2021",
+            "duration": 211.19592118263245,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-yeast30004000.ttest.log": {
+            "start-time": "Wed Oct 27 14:28:01 2021",
+            "stop-time": "Wed Oct 27 14:28:03 2021",
+            "duration": 1.4667305946350098,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0006406.regression.log": {
+            "start-time": "Wed Oct 27 14:28:03 2021",
+            "stop-time": "Wed Oct 27 14:28:32 2021",
+            "duration": 29.050309419631958,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-yeast40005000.regression.log": {
+            "start-time": "Wed Oct 27 14:28:32 2021",
+            "stop-time": "Wed Oct 27 14:29:01 2021",
+            "duration": 29.184378623962402,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0030490.regression.log": {
+            "start-time": "Wed Oct 27 14:29:01 2021",
+            "stop-time": "Wed Oct 27 14:29:30 2021",
+            "duration": 28.933539628982544,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0003723.regression.log": {
+            "start-time": "Wed Oct 27 14:29:30 2021",
+            "stop-time": "Wed Oct 27 14:30:02 2021",
+            "duration": 32.48046088218689,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0042274.regression.log": {
+            "start-time": "Wed Oct 27 14:30:02 2021",
+            "stop-time": "Wed Oct 27 14:30:31 2021",
+            "duration": 28.733525037765503,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0022625.regression.log": {
+            "start-time": "Wed Oct 27 14:30:31 2021",
+            "stop-time": "Wed Oct 27 14:31:02 2021",
+            "duration": 30.990506887435913,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-yeast10002000.regression.log": {
+            "start-time": "Wed Oct 27 14:31:02 2021",
+            "stop-time": "Wed Oct 27 14:31:42 2021",
+            "duration": 40.03675413131714,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-yeast10002000.ttest.log": {
+            "start-time": "Wed Oct 27 14:31:42 2021",
+            "stop-time": "Wed Oct 27 14:31:44 2021",
+            "duration": 1.2558984756469727,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0005840.ttest.log": {
+            "start-time": "Wed Oct 27 14:31:44 2021",
+            "stop-time": "Wed Oct 27 14:31:45 2021",
+            "duration": 1.2256410121917725,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0008135.ttest.log": {
+            "start-time": "Wed Oct 27 14:31:45 2021",
+            "stop-time": "Wed Oct 27 14:31:46 2021",
+            "duration": 1.3764243125915527,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0030490.ttest.log": {
+            "start-time": "Wed Oct 27 14:31:46 2021",
+            "stop-time": "Wed Oct 27 14:31:48 2021",
+            "duration": 1.2105724811553955,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0006406.ttest.log": {
+            "start-time": "Wed Oct 27 14:31:48 2021",
+            "stop-time": "Wed Oct 27 14:31:49 2021",
+            "duration": 1.2411680221557617,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0042274.ttest.log": {
+            "start-time": "Wed Oct 27 14:31:49 2021",
+            "stop-time": "Wed Oct 27 14:31:50 2021",
+            "duration": 1.2742321491241455,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0006457.regression.log": {
+            "start-time": "Wed Oct 27 14:31:50 2021",
+            "stop-time": "Wed Oct 27 14:32:20 2021",
+            "duration": 29.835794687271118,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0006457.ttest.log": {
+            "start-time": "Wed Oct 27 14:32:20 2021",
+            "stop-time": "Wed Oct 27 14:32:22 2021",
+            "duration": 1.4623401165008545,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2mRNA.bowtie2.bam": {
+            "start-time": "Wed Oct 27 14:32:22 2021",
+            "stop-time": "Wed Oct 27 14:39:59 2021",
+            "duration": 457.435852766037,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2mRNA.bed": {
+            "start-time": "Wed Oct 27 14:32:22 2021",
+            "stop-time": "Wed Oct 27 14:39:59 2021",
+            "duration": 457.435852766037,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-yeastg5000.regression.log": {
+            "start-time": "Wed Oct 27 14:39:59 2021",
+            "stop-time": "Wed Oct 27 14:40:19 2021",
+            "duration": 19.533026695251465,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-yeast20003000.regression.log": {
+            "start-time": "Wed Oct 27 14:40:19 2021",
+            "stop-time": "Wed Oct 27 14:40:40 2021",
+            "duration": 21.477280139923096,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0000462.regression.log": {
+            "start-time": "Wed Oct 27 14:40:40 2021",
+            "stop-time": "Wed Oct 27 14:41:00 2021",
+            "duration": 20.25436544418335,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0030686.regression.log": {
+            "start-time": "Wed Oct 27 14:41:00 2021",
+            "stop-time": "Wed Oct 27 14:41:18 2021",
+            "duration": 18.07132887840271,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA_D4FP_D4mRNA-yeastg5000.ttest.log": {
+            "start-time": "Wed Oct 27 14:41:19 2021",
+            "stop-time": "Wed Oct 27 14:41:20 2021",
+            "duration": 1.2528133392333984,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0044249.regression.log": {
+            "start-time": "Wed Oct 27 14:41:20 2021",
+            "stop-time": "Wed Oct 27 14:41:40 2021",
+            "duration": 19.792788982391357,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0015935.regression.log": {
+            "start-time": "Wed Oct 27 14:41:40 2021",
+            "stop-time": "Wed Oct 27 14:41:59 2021",
+            "duration": 19.4538152217865,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0005840.regression.log": {
+            "start-time": "Wed Oct 27 14:41:59 2021",
+            "stop-time": "Wed Oct 27 14:42:22 2021",
+            "duration": 22.390408515930176,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0016458.regression.log": {
+            "start-time": "Wed Oct 27 14:42:22 2021",
+            "stop-time": "Wed Oct 27 14:42:40 2021",
+            "duration": 18.524066925048828,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0009651.regression.log": {
+            "start-time": "Wed Oct 27 14:42:40 2021",
+            "stop-time": "Wed Oct 27 14:42:59 2021",
+            "duration": 18.866549968719482,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0042255.ttest.log": {
+            "start-time": "Wed Oct 27 14:42:59 2021",
+            "stop-time": "Wed Oct 27 14:43:00 2021",
+            "duration": 1.4230198860168457,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0016458.ttest.log": {
+            "start-time": "Wed Oct 27 14:43:00 2021",
+            "stop-time": "Wed Oct 27 14:43:02 2021",
+            "duration": 1.547325611114502,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0002181.ttest.log": {
+            "start-time": "Wed Oct 27 14:43:02 2021",
+            "stop-time": "Wed Oct 27 14:43:04 2021",
+            "duration": 1.4978508949279785,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0006396.regression.log": {
+            "start-time": "Wed Oct 27 14:43:04 2021",
+            "stop-time": "Wed Oct 27 14:43:22 2021",
+            "duration": 18.513603687286377,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0042255.regression.log": {
+            "start-time": "Wed Oct 27 14:43:22 2021",
+            "stop-time": "Wed Oct 27 14:43:42 2021",
+            "duration": 19.44275426864624,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0042254.regression.log": {
+            "start-time": "Wed Oct 27 14:43:42 2021",
+            "stop-time": "Wed Oct 27 14:44:01 2021",
+            "duration": 18.94849944114685,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0030684.regression.log": {
+            "start-time": "Wed Oct 27 14:44:01 2021",
+            "stop-time": "Wed Oct 27 14:44:18 2021",
+            "duration": 17.877614736557007,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0022626.regression.log": {
+            "start-time": "Wed Oct 27 14:44:18 2021",
+            "stop-time": "Wed Oct 27 14:44:37 2021",
+            "duration": 18.1333487033844,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0006950.regression.log": {
+            "start-time": "Wed Oct 27 14:44:37 2021",
+            "stop-time": "Wed Oct 27 14:44:56 2021",
+            "duration": 19.797994375228882,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-mlh1.regression.log": {
+            "start-time": "Wed Oct 27 14:44:56 2021",
+            "stop-time": "Wed Oct 27 14:45:15 2021",
+            "duration": 18.095900535583496,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA.regression.log": {
+            "start-time": "Wed Oct 27 14:45:15 2021",
+            "stop-time": "Wed Oct 27 14:45:56 2021",
+            "duration": 41.44523882865906,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0006412.regression.log": {
+            "start-time": "Wed Oct 27 14:45:56 2021",
+            "stop-time": "Wed Oct 27 14:46:17 2021",
+            "duration": 20.873804569244385,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0003735.regression.log": {
+            "start-time": "Wed Oct 27 14:46:17 2021",
+            "stop-time": "Wed Oct 27 14:46:40 2021",
+            "duration": 23.44786787033081,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0030686.ttest.log": {
+            "start-time": "Wed Oct 27 14:46:40 2021",
+            "stop-time": "Wed Oct 27 14:46:42 2021",
+            "duration": 1.4283027648925781,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0003735.ttest.log": {
+            "start-time": "Wed Oct 27 14:46:42 2021",
+            "stop-time": "Wed Oct 27 14:46:43 2021",
+            "duration": 1.2645459175109863,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0016458.ttest.log": {
+            "start-time": "Wed Oct 27 14:46:43 2021",
+            "stop-time": "Wed Oct 27 14:46:45 2021",
+            "duration": 1.3109207153320312,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0006396.ttest.log": {
+            "start-time": "Wed Oct 27 14:46:45 2021",
+            "stop-time": "Wed Oct 27 14:46:46 2021",
+            "duration": 1.3594448566436768,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0030529.regression.log": {
+            "start-time": "Wed Oct 27 14:46:46 2021",
+            "stop-time": "Wed Oct 27 14:47:06 2021",
+            "duration": 19.539255380630493,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-yeast40005000.ttest.log": {
+            "start-time": "Wed Oct 27 14:47:06 2021",
+            "stop-time": "Wed Oct 27 14:47:07 2021",
+            "duration": 1.3825578689575195,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0000462.ttest.log": {
+            "start-time": "Wed Oct 27 14:47:07 2021",
+            "stop-time": "Wed Oct 27 14:47:08 2021",
+            "duration": 1.4010999202728271,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0008135.regression.log": {
+            "start-time": "Wed Oct 27 14:47:08 2021",
+            "stop-time": "Wed Oct 27 14:47:27 2021",
+            "duration": 18.817622184753418,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0022626.ttest.log": {
+            "start-time": "Wed Oct 27 14:47:27 2021",
+            "stop-time": "Wed Oct 27 14:47:29 2021",
+            "duration": 1.343843698501587,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0044249.ttest.log": {
+            "start-time": "Wed Oct 27 14:47:29 2021",
+            "stop-time": "Wed Oct 27 14:47:30 2021",
+            "duration": 1.2508456707000732,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0008135.ttest.log": {
+            "start-time": "Wed Oct 27 14:47:30 2021",
+            "stop-time": "Wed Oct 27 14:47:31 2021",
+            "duration": 1.2163231372833252,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0005840.ttest.log": {
+            "start-time": "Wed Oct 27 14:47:31 2021",
+            "stop-time": "Wed Oct 27 14:47:32 2021",
+            "duration": 1.1986896991729736,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0006412.ttest.log": {
+            "start-time": "Wed Oct 27 14:47:32 2021",
+            "stop-time": "Wed Oct 27 14:47:34 2021",
+            "duration": 1.222501516342163,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-yeast20003000.ttest.log": {
+            "start-time": "Wed Oct 27 14:47:34 2021",
+            "stop-time": "Wed Oct 27 14:47:35 2021",
+            "duration": 1.3743929862976074,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0042254.ttest.log": {
+            "start-time": "Wed Oct 27 14:47:35 2021",
+            "stop-time": "Wed Oct 27 14:47:36 2021",
+            "duration": 1.2466685771942139,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0006950.ttest.log": {
+            "start-time": "Wed Oct 27 14:47:36 2021",
+            "stop-time": "Wed Oct 27 14:47:38 2021",
+            "duration": 1.2089438438415527,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0003723.ttest.log": {
+            "start-time": "Wed Oct 27 14:47:38 2021",
+            "stop-time": "Wed Oct 27 14:47:39 2021",
+            "duration": 1.2072372436523438,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0030529.ttest.log": {
+            "start-time": "Wed Oct 27 14:47:39 2021",
+            "stop-time": "Wed Oct 27 14:47:40 2021",
+            "duration": 1.2525584697723389,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-yeastg5000.ttest.log": {
+            "start-time": "Wed Oct 27 14:47:40 2021",
+            "stop-time": "Wed Oct 27 14:47:41 2021",
+            "duration": 1.2162418365478516,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0030684.ttest.log": {
+            "start-time": "Wed Oct 27 14:47:41 2021",
+            "stop-time": "Wed Oct 27 14:47:43 2021",
+            "duration": 1.269646167755127,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0009651.ttest.log": {
+            "start-time": "Wed Oct 27 14:47:43 2021",
+            "stop-time": "Wed Oct 27 14:47:44 2021",
+            "duration": 1.2952630519866943,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA.D4FP_D4mRNA.ttest.log": {
+            "start-time": "Wed Oct 27 14:47:44 2021",
+            "stop-time": "Wed Oct 27 14:47:45 2021",
+            "duration": 1.2933802604675293,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0002181.regression.log": {
+            "start-time": "Wed Oct 27 14:47:45 2021",
+            "stop-time": "Wed Oct 27 14:48:07 2021",
+            "duration": 21.571255445480347,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0006364.regression.log": {
+            "start-time": "Wed Oct 27 14:48:07 2021",
+            "stop-time": "Wed Oct 27 14:48:26 2021",
+            "duration": 19.03647518157959,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0006364.ttest.log": {
+            "start-time": "Wed Oct 27 14:48:26 2021",
+            "stop-time": "Wed Oct 27 14:48:27 2021",
+            "duration": 1.3780372142791748,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0000466.regression.log": {
+            "start-time": "Wed Oct 27 14:48:27 2021",
+            "stop-time": "Wed Oct 27 14:48:46 2021",
+            "duration": 18.87873339653015,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-yeast30004000.regression.log": {
+            "start-time": "Wed Oct 27 14:48:46 2021",
+            "stop-time": "Wed Oct 27 14:49:06 2021",
+            "duration": 19.613631010055542,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-yeast5001000.regression.log": {
+            "start-time": "Wed Oct 27 14:49:06 2021",
+            "stop-time": "Wed Oct 27 14:49:29 2021",
+            "duration": 23.002047538757324,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-yeast5001000.ttest.log": {
+            "start-time": "Wed Oct 27 14:49:29 2021",
+            "stop-time": "Wed Oct 27 14:49:30 2021",
+            "duration": 1.3751137256622314,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA_D4FP_D4mRNA-yeast5001000.ttest.log": {
+            "start-time": "Wed Oct 27 14:49:30 2021",
+            "stop-time": "Wed Oct 27 14:49:32 2021",
+            "duration": 1.4000067710876465,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0022625.ttest.log": {
+            "start-time": "Wed Oct 27 14:49:32 2021",
+            "stop-time": "Wed Oct 27 14:49:33 2021",
+            "duration": 1.3615460395812988,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0006406.regression.log": {
+            "start-time": "Wed Oct 27 14:49:33 2021",
+            "stop-time": "Wed Oct 27 14:49:52 2021",
+            "duration": 18.337034225463867,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0022627.regression.log": {
+            "start-time": "Wed Oct 27 14:49:52 2021",
+            "stop-time": "Wed Oct 27 14:50:12 2021",
+            "duration": 19.893958806991577,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0030687.regression.log": {
+            "start-time": "Wed Oct 27 14:50:12 2021",
+            "stop-time": "Wed Oct 27 14:50:30 2021",
+            "duration": 18.55811619758606,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0022857.regression.log": {
+            "start-time": "Wed Oct 27 14:50:30 2021",
+            "stop-time": "Wed Oct 27 14:50:48 2021",
+            "duration": 18.218317985534668,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0022857.ttest.log": {
+            "start-time": "Wed Oct 27 14:50:48 2021",
+            "stop-time": "Wed Oct 27 14:50:50 2021",
+            "duration": 1.315443754196167,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0003743.regression.log": {
+            "start-time": "Wed Oct 27 14:50:50 2021",
+            "stop-time": "Wed Oct 27 14:51:08 2021",
+            "duration": 18.31894278526306,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0006457.regression.log": {
+            "start-time": "Wed Oct 27 14:51:08 2021",
+            "stop-time": "Wed Oct 27 14:51:28 2021",
+            "duration": 19.62071990966797,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0006457.ttest.log": {
+            "start-time": "Wed Oct 27 14:51:28 2021",
+            "stop-time": "Wed Oct 27 14:51:29 2021",
+            "duration": 1.2346975803375244,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-msh2.regression.log": {
+            "start-time": "Wed Oct 27 14:51:29 2021",
+            "stop-time": "Wed Oct 27 14:51:47 2021",
+            "duration": 18.21850562095642,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-yeast0500.regression.log": {
+            "start-time": "Wed Oct 27 14:51:47 2021",
+            "stop-time": "Wed Oct 27 14:52:12 2021",
+            "duration": 24.399945497512817,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0042255.ttest.log": {
+            "start-time": "Wed Oct 27 14:52:12 2021",
+            "stop-time": "Wed Oct 27 14:52:13 2021",
+            "duration": 1.3358874320983887,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0003743.regression.log": {
+            "start-time": "Wed Oct 27 14:52:13 2021",
+            "stop-time": "Wed Oct 27 14:52:43 2021",
+            "duration": 29.936508178710938,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D4FP_D4mRNA-GO:0003743.ttest.log": {
+            "start-time": "Wed Oct 27 14:52:43 2021",
+            "stop-time": "Wed Oct 27 14:52:44 2021",
+            "duration": 1.29543137550354,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA_D4FP_D4mRNA-yeast20003000.ttest.log": {
+            "start-time": "Wed Oct 27 14:52:44 2021",
+            "stop-time": "Wed Oct 27 14:52:46 2021",
+            "duration": 1.2308292388916016,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0002181.ttest.log": {
+            "start-time": "Wed Oct 27 14:52:46 2021",
+            "stop-time": "Wed Oct 27 14:52:47 2021",
+            "duration": 1.2511656284332275,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0030687.ttest.log": {
+            "start-time": "Wed Oct 27 14:52:47 2021",
+            "stop-time": "Wed Oct 27 14:52:48 2021",
+            "duration": 1.258802890777588,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0015935.ttest.log": {
+            "start-time": "Wed Oct 27 14:52:48 2021",
+            "stop-time": "Wed Oct 27 14:52:49 2021",
+            "duration": 1.2324368953704834,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0022627.ttest.log": {
+            "start-time": "Wed Oct 27 14:52:49 2021",
+            "stop-time": "Wed Oct 27 14:52:51 2021",
+            "duration": 1.2020397186279297,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0007049.regression.log": {
+            "start-time": "Wed Oct 27 14:52:51 2021",
+            "stop-time": "Wed Oct 27 14:53:09 2021",
+            "duration": 18.411179065704346,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0015934.regression.log": {
+            "start-time": "Wed Oct 27 14:53:09 2021",
+            "stop-time": "Wed Oct 27 14:53:28 2021",
+            "duration": 18.781677722930908,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0003743.ttest.log": {
+            "start-time": "Wed Oct 27 14:53:28 2021",
+            "stop-time": "Wed Oct 27 14:53:29 2021",
+            "duration": 1.3085181713104248,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0042274.regression.log": {
+            "start-time": "Wed Oct 27 14:53:29 2021",
+            "stop-time": "Wed Oct 27 14:53:48 2021",
+            "duration": 18.483405590057373,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0003723.regression.log": {
+            "start-time": "Wed Oct 27 14:53:48 2021",
+            "stop-time": "Wed Oct 27 14:54:09 2021",
+            "duration": 21.085820198059082,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0022625.regression.log": {
+            "start-time": "Wed Oct 27 14:54:09 2021",
+            "stop-time": "Wed Oct 27 14:54:29 2021",
+            "duration": 20.349071264266968,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0022625.ttest.log": {
+            "start-time": "Wed Oct 27 14:54:29 2021",
+            "stop-time": "Wed Oct 27 14:54:31 2021",
+            "duration": 1.2666676044464111,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0030490.regression.log": {
+            "start-time": "Wed Oct 27 14:54:31 2021",
+            "stop-time": "Wed Oct 27 14:54:50 2021",
+            "duration": 19.427077293395996,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0006406.ttest.log": {
+            "start-time": "Wed Oct 27 14:54:50 2021",
+            "stop-time": "Wed Oct 27 14:54:51 2021",
+            "duration": 1.3217358589172363,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-yeast40005000.regression.log": {
+            "start-time": "Wed Oct 27 14:54:51 2021",
+            "stop-time": "Wed Oct 27 14:55:12 2021",
+            "duration": 20.40971326828003,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0000466.ttest.log": {
+            "start-time": "Wed Oct 27 14:55:12 2021",
+            "stop-time": "Wed Oct 27 14:55:13 2021",
+            "duration": 1.3806700706481934,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-yeast0500.ttest.log": {
+            "start-time": "Wed Oct 27 14:55:13 2021",
+            "stop-time": "Wed Oct 27 14:55:15 2021",
+            "duration": 1.3280632495880127,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-yeast10002000.regression.log": {
+            "start-time": "Wed Oct 27 14:55:15 2021",
+            "stop-time": "Wed Oct 27 14:55:40 2021",
+            "duration": 25.66213369369507,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0030490.ttest.log": {
+            "start-time": "Wed Oct 27 14:55:40 2021",
+            "stop-time": "Wed Oct 27 14:55:42 2021",
+            "duration": 1.2344768047332764,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0015934.ttest.log": {
+            "start-time": "Wed Oct 27 14:55:42 2021",
+            "stop-time": "Wed Oct 27 14:55:43 2021",
+            "duration": 1.331702709197998,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA_D4FP_D4mRNA-yeast30004000.ttest.log": {
+            "start-time": "Wed Oct 27 14:55:43 2021",
+            "stop-time": "Wed Oct 27 14:55:44 2021",
+            "duration": 1.2812016010284424,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0003723.ttest.log": {
+            "start-time": "Wed Oct 27 14:55:44 2021",
+            "stop-time": "Wed Oct 27 14:55:46 2021",
+            "duration": 1.2640166282653809,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA_D4FP_D4mRNA-yeast40005000.ttest.log": {
+            "start-time": "Wed Oct 27 14:55:46 2021",
+            "stop-time": "Wed Oct 27 14:55:47 2021",
+            "duration": 1.2591679096221924,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-yeast40005000.ttest.log": {
+            "start-time": "Wed Oct 27 14:55:47 2021",
+            "stop-time": "Wed Oct 27 14:55:48 2021",
+            "duration": 1.263965129852295,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA_D4FP_D4mRNA-yeast0500.ttest.log": {
+            "start-time": "Wed Oct 27 14:55:48 2021",
+            "stop-time": "Wed Oct 27 14:55:49 2021",
+            "duration": 1.2677714824676514,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-yeast30004000.ttest.log": {
+            "start-time": "Wed Oct 27 14:55:49 2021",
+            "stop-time": "Wed Oct 27 14:55:51 2021",
+            "duration": 1.3005337715148926,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-yeast10002000.ttest.log": {
+            "start-time": "Wed Oct 27 14:55:51 2021",
+            "stop-time": "Wed Oct 27 14:55:52 2021",
+            "duration": 1.2574703693389893,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA_D4FP_D4mRNA-yeast10002000.ttest.log": {
+            "start-time": "Wed Oct 27 14:55:52 2021",
+            "stop-time": "Wed Oct 27 14:55:53 2021",
+            "duration": 1.262983798980713,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0042274.ttest.log": {
+            "start-time": "Wed Oct 27 14:55:53 2021",
+            "stop-time": "Wed Oct 27 14:55:55 2021",
+            "duration": 1.278393030166626,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        },
+        "D2FP_D2mRNA-GO:0007049.ttest.log": {
+            "start-time": "Wed Oct 27 14:55:55 2021",
+            "stop-time": "Wed Oct 27 14:55:56 2021",
+            "duration": 1.2669599056243896,
+            "priority": 0,
+            "resources": {
+                "_cores": 1,
+                "_nodes": 1,
+                "tmpdir": "/tmp"
+            }
+        }
+    }
+}
