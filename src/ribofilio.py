@@ -9,7 +9,6 @@ import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 from scipy.stats import t
-from scipy.stats import norm 
 # Read subsets of genes --subset option
 
 
@@ -212,7 +211,7 @@ def regression(output, num_bins, gene_bins,
     # Calculate tscore and pvalue of
     # how different the slope is from a slope of zero
     tscore = regression_model.coef_[0][0]/stand_error
-    pvalue = 2 * (t.sf(abs(tscore), df= (num_bins - df)) )
+    pvalue = 2 * (t.sf(abs(tscore), df=(num_bins - df)))
     # Do some rounding and print to both file and screen
     stand_error = np.round(stand_error, decimals=4)
     margin_error = np.round(margin_error, decimals=4)
