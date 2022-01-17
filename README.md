@@ -1,8 +1,8 @@
 # Ribofilio 
 
 [![Snakemake](https://img.shields.io/badge/snakemake-≥6.0.2-brightgreen.svg)](https://snakemake.github.io)
-[![Documentation Status](https://readthedocs.org/projects/ribofilio/badge/)](http://dammit.readthedocs.io/en/latest)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Documentation Status](https://readthedocs.org/projects/ribofilio/badge/)](http://ribofilio.readthedocs.io/en/latest)
+[![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![codecov](https://codecov.io/gh/sherineawad/ribofilio/branch/master/graph/badge.svg?token=X3Q5S63NXT)](https://codecov.io/gh/sherineawad/ribofilio)
 
 ```
