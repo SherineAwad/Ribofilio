@@ -161,7 +161,7 @@ def binning(binsize, positions, gene_coverage_at_pos, max_gene_length):
 
 def regression(output, num_bins, gene_bins,
                binsize, ylogmin, ylogmax,
-               gene_coverage_at_bin, plot):
+               gene_coverage_at_bin, plot, p_value_side):
     bins = []
     # Take log of bins indeces for LOG/LOG plotting
     for i in range(0, num_bins):
@@ -211,7 +211,7 @@ def regression(output, num_bins, gene_bins,
     # Calculate tscore and pvalue of
     # how different the slope is from a slope of zero
     tscore = regression_model.coef_[0][0]/stand_error
-    pvalue = 2 * (t.sf(abs(tscore), df=(num_bins - df)))
+    pvalue = p_value_side * (t.sf(abs(tscore), df=(num_bins - df)))
     # Do some rounding and print to both file and screen
     stand_error = np.round(stand_error, decimals=4)
     margin_error = np.round(margin_error, decimals=4)
@@ -340,6 +340,9 @@ def get_arguments():
     parser.add_argument("-b", "--binsize", dest="binsize",
                         type=int, default=50,
                         help="Bin size default is 50")
+    parser.add_argument("-v", "--pvalue", dest="pvalue", type=int, default=1,
+                        help="Choose 1 for One sided pvalue, " +
+                        "and 2 for two-sided pvalue.")
     parser.add_argument("-o", "--out", dest="output", default="",
                         help="Output file name")
     parser.add_argument("-p", "--plot", dest="plot", type=int, default=1,
@@ -419,6 +422,7 @@ def main():
         gene_bins = normalize(
                               ribosomes_gene_bins,
                               rna_gene_bins, num_bins)
+    p_value_side = args.pvalue
     # Plotting and summarizing
     regression(
         output,
@@ -427,7 +431,7 @@ def main():
         binsize,
         int(args.ylogmin),
         int(args.ylogmax),
-        gene_coverage_at_bin, plot
+        gene_coverage_at_bin, plot, p_value_side
     )
     print("All is done")
 

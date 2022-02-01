@@ -27,7 +27,7 @@ def getstats(infile1, infile2):
         dr2, _, _, _, SE2, _, _, _, n2 = line.split('\t') 
     df = ( float(n1) + float(n2) )-4
     tscore = (float(dr1) - float(dr2)) / np.sqrt(np.square(float(SE1)) +np.square(float(SE2)) ) 
-    pvalue =  2 *  (t.sf(abs(tscore),df= df))
+    pvalue =    (t.sf(abs(tscore),df= df)) #Here we need one sided pvalue 
     pvalue = np.round(pvalue, decimals=4)
     print(infile1,'\t', infile2)
     print("tscore",'\t', "pvalue")

@@ -111,10 +111,11 @@ rule ribofilio:
          "{SAMPLE1}_{SAMPLE2}.regression.log"
     params:
         prefix="{SAMPLE1}_{SAMPLE2}", 
-        binsize = config['BINSIZE']
+        binsize = config['BINSIZE'],
+        pvalue_sides = config['PVALUE_SIDES']
     conda: 'env/env-ribo.yaml'
     shell:
-        "python {config[src]}/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -b {params.binsize} -o {params.prefix} "
+        "python {config[src]}/ribofilio.py -t {input.genome} -f {input.fp} -r {input.rna} -b {params.binsize} -v {params.pvalue_sides} -o {params.prefix} "
 
        
 rule subset:
