@@ -177,4 +177,4 @@ The data used to test our tool and used in the pipeline can be downloaded using 
 
 #### Sample Prepared Bed files 
 
-We provide a sample bed files [Bed Files](https://drive.google.com/drive/folders/1GgeQM7GPKiybC-6sy6a6IgQpzBll02TZ?usp=sharing)  prepared for the sake of trying out ribofilio without the need to go through the upstream pipeline. 
+We provide sample [Bed Files](https://drive.google.com/drive/folders/1GgeQM7GPKiybC-6sy6a6IgQpzBll02TZ?usp=sharing)  prepared for the sake of trying out ribofilio without the need to go through the upstream pipeline. 
