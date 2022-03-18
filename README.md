@@ -73,9 +73,15 @@ or simply:
    ``--binsize or -b for binsize (default: 50)`` 
 
 
+   ``--pvalue or -v choose 1 for one-sided pvalue or 2 for two-sided pvalue (default: 1) ``
+
+   
    ``--output or -o for output name`` 
 
 
+   ``--plot or -p choose 1 for turning on plot mode and 2 to disable plots (default: 1)``  
+
+   
    ``--ylogmin is the minimum y axis for log plots (default: -3)``
 
 
@@ -149,7 +155,7 @@ and output.Log.WLR.png:
 
 ## Documentation 
 
-Looking for a more detailed tutorial: Take a look into [this tutorial](https://ribofilio.readthedocs.io/en/latest/tutorial.html) for a complete Ribosomal profiling protocol using Ribofilio.
+Looking for a more detailed tutorial: Take a look into [Our Documentation](https://ribofilio.readthedocs.io/en/latest/tutorial.html) for a complete Ribosomal profiling protocol using Ribofilio.
 
 
 ## Pipeline 
