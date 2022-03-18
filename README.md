@@ -179,4 +179,4 @@ The data used to test our tool and used in the pipeline can be downloaded using 
 
 We provide a sample bed files prepared for the sake of trying out ribofilio without the need to go through the upstream pipeline. The bed files for FP and mRNA can be downloaded from the link below: 
 
-   ![Bed Files](https://drive.google.com/drive/folders/1GgeQM7GPKiybC-6sy6a6IgQpzBll02TZ?usp=sharing) 
+   [Bed Files](https://drive.google.com/drive/folders/1GgeQM7GPKiybC-6sy6a6IgQpzBll02TZ?usp=sharing) 
