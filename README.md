@@ -51,14 +51,14 @@ To run ribofilio:
 or simply:
 
 
-	python ribofilio.py -t transcripts.bed -f footprint.bed -r rnaseq.bed  -b binsize -o output 
+	python ribofilio.py -t transcripts.fa -f footprint.bed -r rnaseq.bed  -b binsize -o output 
 
 
 ##### Parameters  
 
 
 
-   ``--transcripts or -t for transcripts (required)`` 
+   ``--transcripts or -t for transcripts in fasta format (required)`` 
 
 
    ``--footprint or -f for footprint bed file (required)`` 

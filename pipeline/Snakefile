@@ -40,7 +40,7 @@ rule all:
         #compare significance of GO subset to main dataset either control or treatment 
         expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['FP_1'], RNA = config['RNA_1'], SUBSET=config['GL']),
         expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['FP_1'], RNA = config['RNA_1'], SUBSET=config['GO']),
-        ixpand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['FP_2'], RNA = config['RNA_2'], SUBSET=config['GL']),
+        expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['FP_2'], RNA = config['RNA_2'], SUBSET=config['GL']),
         expand("{FP}_{RNA}-{SUBSET}.ttest.log", FP = config['FP_2'], RNA = config['RNA_2'], SUBSET=config['GO']),
         #compare significance of control vs treatment 
         expand("{FP1}_{RNA1}.{FP2}_{RNA2}.ttest.log", FP1 = config['FP_1'], RNA1 = config['RNA_1'], FP2 = config['FP_2'], RNA2 = config['RNA_2']),

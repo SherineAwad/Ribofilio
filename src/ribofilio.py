@@ -260,17 +260,17 @@ def plot_regression(x_value, y_value, y_predicted,
                     norm_weight, dropoff_rate, dropoff_codon, rmse, rsquare,
                     stand_error, output, ymin, ymax):
     label = "Bin Number"
-    fig = plt.figure(figsize=(10, 10))
+    fig = plt.figure(figsize=(11, 11))
     plt.ylim(ymin, ymax)
     plt.scatter(x_value, y_value, s=norm_weight)
-    xtext = (" Dropoff: " + str(dropoff_rate) +
-             " Dropoff per codon: " + str(dropoff_codon) +
+    xtext = (" R: " + str(dropoff_rate) +
+             " r: " + str(dropoff_codon) +
              "\n RMSE: " + str(rmse) +
-             " RSquare: " + str(rsquare) + " SE: " + str(stand_error))
-    plt.xlabel(str(label) + "\n" + str(xtext), fontsize=10)
-    plt.ylabel("Bin Value", fontsize=10)
+             " $R^2$: " + str(rsquare) + " SE: " + str(stand_error))
+    plt.xlabel(str(label) + "\n" + str(xtext), fontsize=14)
+    plt.ylabel("Bin Value", fontsize=14)
     plt.plot(x_value, y_predicted, color="r")
-    plt.title(output + " Weighted Linear Regression", fontsize=10)
+    plt.title(output + " Weighted Linear Regression", fontsize=14)
     plt.savefig(output + ".Log.WLR.png", format="png")
     plt.clf()
     return fig
