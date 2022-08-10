@@ -79,7 +79,7 @@ or simply:
    ``--output or -o for output name`` 
 
 
-   ``--plot or -p choose 1 for turning on plot mode and 2 to disable plots (default: 1)``  
+   ``--plot or -p choose 1 for turning on plot mode and 0 to disable plots (default: 1)``  
 
    
    ``--ylogmin is the minimum y axis for log plots (default: -3)``
