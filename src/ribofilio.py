@@ -217,8 +217,8 @@ def regression(output, num_bins, gene_bins,
     margin_error = np.round(margin_error, decimals=4)
     rsquare = np.round(rsquare, decimals=4)
     rmse = np.round(rmse, decimals=4)
-    dropoff_rate = np.round(regression_model.coef_[0][0], decimals=4)
-    dropoff_codon = np.round(dropoff_codon, decimals=4)
+    dropoff_rate = abs (np.round(regression_model.coef_[0][0], decimals=4) )
+    dropoff_codon = abs (np.round(dropoff_codon, decimals=4) )
     pvalue = np.round(pvalue, decimals=4)
     regfp = open(str(output)+".regression.log", "a+")
     print("Dropoff\tDropoff per codon \tRMSE\tRsquare\tSE" +
@@ -267,10 +267,10 @@ def plot_regression(x_value, y_value, y_predicted,
              " r: " + str(dropoff_codon) +
              "\n RMSE: " + str(rmse) +
              " $R^2$: " + str(rsquare) + " SE: " + str(stand_error))
-    plt.xlabel(str(label) + "\n" + str(xtext), fontsize=14)
-    plt.ylabel("Bin Value", fontsize=14)
+    plt.xlabel(str(label) + "\n" + str(xtext), fontsize=18)
+    plt.ylabel("Bin Value", fontsize=18)
     plt.plot(x_value, y_predicted, color="r")
-    plt.title(output + " Weighted Linear Regression", fontsize=14)
+    plt.title(output + " Weighted Linear Regression", fontsize=18)
     plt.savefig(output + ".Log.WLR.png", format="png")
     plt.clf()
     return fig
