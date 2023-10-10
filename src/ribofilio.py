@@ -217,8 +217,8 @@ def regression(output, num_bins, gene_bins,
     margin_error = np.round(margin_error, decimals=4)
     rsquare = np.round(rsquare, decimals=4)
     rmse = np.round(rmse, decimals=4)
-    dropoff_rate = abs (np.round(regression_model.coef_[0][0], decimals=4) )
-    dropoff_codon = abs (np.round(dropoff_codon, decimals=4) )
+    dropoff_rate = abs(np.round(regression_model.coef_[0][0], decimals=4)) 
+    dropoff_codon = abs(np.round(dropoff_codon, decimals=4)) 
     pvalue = np.round(pvalue, decimals=4)
     regfp = open(str(output)+".regression.log", "a+")
     print("Dropoff\tDropoff per codon \tRMSE\tRsquare\tSE" +
@@ -260,17 +260,21 @@ def plot_regression(x_value, y_value, y_predicted,
                     norm_weight, dropoff_rate, dropoff_codon, rmse, rsquare,
                     stand_error, output, ymin, ymax):
     label = "Bin Number"
-    fig = plt.figure(figsize=(11, 11))
+    fig = plt.figure(figsize=(14, 14))
     plt.ylim(ymin, ymax)
     plt.scatter(x_value, y_value, s=norm_weight)
-    xtext = (" R: " + str(dropoff_rate) +
-             " r: " + str(dropoff_codon) +
+    xtext = (" ${r_b}$: " + str(dropoff_rate) +
+             "\n ${r_c}$: " + str(dropoff_codon) +
              "\n RMSE: " + str(rmse) +
-             " $R^2$: " + str(rsquare) + " SE: " + str(stand_error))
-    plt.xlabel(str(label) + "\n" + str(xtext), fontsize=18)
-    plt.ylabel("Bin Value", fontsize=18)
+             "\n $R^2$: " + str(rsquare) + "\n SE: " + str(stand_error))
+    plt.text(0, 1, str(xtext), fontsize = 18, bbox = dict(facecolor = 'whitesmoke', alpha = 0.5)) 
+    #plt.xlabel(str(label) +"\n" + str(xtext), fontsize=20)
+    plt.xlabel(str(label) +"\n", fontsize=20, weight ='bold') 
+    plt.ylabel("Bin Value", fontsize=20, weight='bold')
     plt.plot(x_value, y_predicted, color="r")
-    plt.title(output + " Weighted Linear Regression", fontsize=18)
+    plt.yticks(fontsize=16)
+    plt.xticks(fontsize=16)
+    plt.title(output + " Weighted Linear Regression", fontsize=20)
     plt.savefig(output + ".Log.WLR.png", format="png")
     plt.clf()
     return fig
