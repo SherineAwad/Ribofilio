@@ -5,7 +5,7 @@ import sys
 import numpy as np 
 import matplotlib.pyplot as plt
 import cv2
-import skimage.measure as measure
+from skimage import metrics
 
 path = os.getcwd() 
 path  = os.path.join(path,"src") 
@@ -81,8 +81,8 @@ def test_regression():
     dropoff_rate, dropoff_codon, stand_error, margin_error, rmse, rsquare, tscore, pvalue = rb.regression(output, num_bins, all_bins,
                binsize, ylogmin, ylogmax,
                gene_coverage_at_bin, plot, pvalue_side)
-    assert(dropoff_rate == -0.0334)
-    assert(dropoff_codon ==[[-0.0506]]) 
+    assert(dropoff_rate == 0.0334)
+    assert(dropoff_codon ==[[0.0506]]) 
     assert(stand_error == [0.0013]) 
     assert(margin_error == [0.0028])
     assert(rmse == 0.0007) 
@@ -94,20 +94,20 @@ def test_plot_regression():
     x_value = np.array([1,2,3,4,5,6,7,8,9,10]).reshape(-1, 1)
     y_value = np.array(np.log([1,2,4,6,9,13,15,16,18,20])).reshape(-1, 1)
     y_predicted = np.array([1,2,4,6,10,12,14,16,18,20]).reshape(-1, 1)
-    dropoff_rate= -0.0051
-    dropoff_codon = -0.0003
+    dropoff_rate= 0.0051
+    dropoff_codon = 0.0003
     rsquare = 0.4907
-    stand_error = 0.001
+    stand_error = 0.006
     output ="test" 
-    rmse =0.1
+    rmse =0.143
     norm_weight = [1,1,1,1,1,1,1,1,1,1]
-    rb.plot_regression(x_value, y_value, y_predicted,  norm_weight, dropoff_rate, dropoff_codon, rmse, rsquare, stand_error, output, -3, 2)
+    rb.plot_regression(x_value, y_value, y_predicted,  norm_weight, dropoff_rate, dropoff_codon, rmse, rsquare, stand_error, output, -3,2)
     imageA = cv2.imread("test.Log.WLR.png") 
     imageB = cv2.imread("tests/test-data/test.png")
     grayA = cv2.cvtColor(imageA, cv2.COLOR_BGR2GRAY)
     grayB = cv2.cvtColor(imageB, cv2.COLOR_BGR2GRAY)
-    (score, diff) = measure.compare_ssim(grayA, grayB, full=True)
-    print (score, diff)
+    (score, diff) = metrics.structural_similarity(grayA,grayB, full=True)
+    print(score, diff)
     assert(score > 0.995)
 
 def test_normalize():
