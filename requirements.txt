@@ -8,4 +8,3 @@ scikit-learn
 scipy
 opencv-python
 scikit-image==0.17.2
-importlib-metadata==4.11.1
