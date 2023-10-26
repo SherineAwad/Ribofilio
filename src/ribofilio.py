@@ -104,8 +104,8 @@ def get_gene_coverage_at_bin(max_gene_length, binsize, genes_length):
 def get_gene_coverage_at_pos(max_gene_length, coverage, genes_length):
     gene_coverage_at_pos = [0] * (max_gene_length + 1)
     fp = open("geneL.txt", "a+")
-    for gene in genes_length: 
-          print(gene, genes_length[gene], file =fp) 
+    for gene in genes_length:
+        print(gene, genes_length[gene], file=fp)
     for gene in coverage:
         for i in range(1, genes_length[gene] + 1):
             gene_coverage_at_pos[i] += 1
@@ -188,7 +188,7 @@ def regression(output, num_bins, gene_bins,
     print("X \t Y \t Weights \t Y_Predicted", file=fp)
     for i in range(0, len(y_predicted)):
         print(x_value[i][0], '\t', y_value[i][0],
-              '\t', norm_weight[i], '\t',y_predicted[i][0], file=fp)
+              '\t', norm_weight[i], '\t', y_predicted[i][0], file=fp)
     #  Model evaluation
     rmse = mean_squared_error(y_value, y_predicted, sample_weight=weight)
     rsquare = r2_score(y_value, y_predicted, sample_weight=weight)
